@@ -1,0 +1,166 @@
+<!--ELI:mpc-->
+<div class="eli5">
+  <div class="eli-head"><span class="eli-badge">ELI5</span><h3 class="eli-title">MPC explained like you're five</h3></div>
+  <svg class="dia" viewBox="0 0 620 230" role="img" aria-label="Receding horizon: at time k plan N steps and apply only the first; at k+1 the window slides one step and the plan is redone">
+    <text x="10" y="40" class="mutedt">time k</text>
+    <g><rect x="80" y="20" width="60" height="34" class="bar"/><rect x="140" y="20" width="60" height="34" class="eli-plan"/><rect x="200" y="20" width="60" height="34" class="eli-plan"/><rect x="260" y="20" width="60" height="34" class="eli-plan"/><rect x="320" y="20" width="60" height="34" class="eli-plan"/></g>
+    <g text-anchor="middle"><text x="110" y="42">apply</text><text x="170" y="42">plan</text><text x="230" y="42">plan</text><text x="290" y="42">plan</text><text x="350" y="42">plan</text></g>
+    <text x="400" y="42" class="mutedt">← horizon N = 5 steps</text>
+    <text x="10" y="110" class="mutedt">time k+1</text>
+    <g><rect x="140" y="90" width="60" height="34" class="bar"/><rect x="200" y="90" width="60" height="34" class="eli-plan"/><rect x="260" y="90" width="60" height="34" class="eli-plan"/><rect x="320" y="90" width="60" height="34" class="eli-plan"/><rect x="380" y="90" width="60" height="34" class="eli-plan"/></g>
+    <g text-anchor="middle"><text x="170" y="112">apply</text><text x="230" y="112">new</text><text x="290" y="112">new</text><text x="350" y="112">new</text><text x="410" y="112">new</text></g>
+    <text x="460" y="112" class="mutedt">window slid →</text>
+    <text x="10" y="180" class="mutedt">time k+2</text>
+    <g><rect x="200" y="160" width="60" height="34" class="bar"/><rect x="260" y="160" width="60" height="34" class="eli-plan"/><rect x="320" y="160" width="60" height="34" class="eli-plan"/><rect x="380" y="160" width="60" height="34" class="eli-plan"/><rect x="440" y="160" width="60" height="34" class="eli-plan"/></g>
+    <g text-anchor="middle"><text x="230" y="182">apply</text><text x="290" y="182">…</text></g>
+    <text x="80" y="220" class="mutedt">Measure → plan N steps → do only the first → measure again. Crane (P1): N = 30, re-planned every 0.1 s.</text>
+  </svg>
+  <div class="eli-grid">
+    <div class="eli-card"><h4>🚗 Driving with headlights (receding horizon)</h4><p>At night you can only see a few metres ahead. You plan for what you can see, drive a little, then look again and re-plan. You never follow an old plan blindly, because the road may have changed.</p><p class="eli-prac"><b>In your P1:</b> the crane re-solved its QP every 0.1 s and only ever used <code>uMPCout(1)</code>, the first move of each plan.</p></div>
+    <div class="eli-card"><h4>⚖️ Q vs R: two things you hate</h4><p>Q says how much you hate being <i>away from the target</i>. R says how much you hate <i>pushing hard</i>. Big Q/R: rush there, push hard. Small Q/R: stroll there gently.</p><p class="eli-prac"><b>In your P1:</b> Q = I with LQR flung the load to 46°. Putting 500 on θ and 50 on ω told the controller "I really hate swinging", and the swing dropped to 8.7°.</p></div>
+    <div class="eli-card"><h4>🏁 Q<sub>F</sub>: a promise about after the window</h4><p>Your headlights end somewhere. Q<sub>F</sub> is a price on where you are when they end, so the plan doesn't park you at the edge of a cliff just past what you can see. A good Q<sub>F</sub> is what makes MPC stable.</p><p class="eli-prac"><b>In your P1:</b> with no terminal term and only a 1 s window, the cart rushed, saw the target too late and the QP went infeasible.</p></div>
+    <div class="eli-card"><h4>🚧 Constraints: rules, not wishes</h4><p>LQR can only be <i>persuaded</i> to stay safe by changing weights. MPC treats the limits as hard rules (≤ 3 m/s, ≤ 10° swing), so it can drive right up to them and no further.</p><p class="eli-prac"><b>In your P1:</b> LQR played safe and took 7.3 s; MPC rode exactly on the 10° and 50°/s limits and took 5.4 s.</p></div>
+  </div>
+  <div class="vids">
+    <div class="vid" data-yt="8U0xiOkDcmw"><span class="vsrc">MATLAB · Understanding MPC, part 1</span><b>Why Use Model Predictive Control?</b></div>
+    <div class="vid" data-yt="9OYWiuefK14"><span class="vsrc">YouTube lecture</span><b>MPC, The Complete Story: Part 1, The Receding Horizon</b></div>
+    <div class="vid" data-list="PLn8PRpmsu08ozoeoXgxPSBKLyd4YEHww8"><span class="vsrc">MATLAB · playlist</span><b>Understanding Model Predictive Control (full series)</b></div>
+  </div>
+</div>
+<!--/ELI-->
+<!--ELI:ddp-->
+<div class="eli5">
+  <div class="eli-head"><span class="eli-badge">ELI5</span><h3 class="eli-title">Deterministic DP explained like you're five</h3></div>
+  <svg class="dia" viewBox="0 0 620 200" role="img" aria-label="Backward pass: price tags computed from H back to A">
+    <g class="edge"><line x1="80" y1="100" x2="220" y2="60"/><line x1="240" y1="60" x2="380" y2="100"/><line x1="400" y1="100" x2="540" y2="100"/></g>
+    <g><circle class="nodeA" cx="70" cy="100" r="20"/><circle class="nodeA" cx="230" cy="60" r="20"/><circle class="nodeA" cx="390" cy="100" r="20"/><circle class="nodeA" cx="550" cy="100" r="20"/></g>
+    <g text-anchor="middle"><text x="70" y="105">A</text><text x="230" y="65">B</text><text x="390" y="105">F</text><text x="550" y="105">H</text>
+      <text x="150" y="70" class="lab">333</text><text x="310" y="70" class="lab">280</text><text x="470" y="92" class="lab">450</text></g>
+    <g text-anchor="middle" class="lab"><text x="550" y="140">🏷 0</text><text x="390" y="140">🏷 450</text><text x="230" y="25">🏷 730</text><text x="70" y="140">🏷 1063</text></g>
+    <path class="edge" style="stroke:var(--mark);stroke-width:2" d="M540,170 L80,170" marker-end="url(#arL)"/>
+    <defs><marker id="arL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--mark)"/></marker></defs>
+    <text x="310" y="192" text-anchor="middle" class="mutedt">price tags (cost-to-go) are filled in from the end, right to left</text>
+  </svg>
+  <div class="eli-grid">
+    <div class="eli-card"><h4>🔙 Plan the trip backwards</h4><p>Stand at the destination and ask every city one question: "how much does it cost to get from here to the end, at best?" Write that on a price tag. Cities next to the end are easy; each earlier city just adds its road cost to the next city's tag and keeps the cheapest.</p><p class="eli-prac"><b>In your P2:</b> tags E 807, F 450, G 603, then B 730, C 854, D 1056, then A = 1063 via B.</p></div>
+    <div class="eli-card"><h4>🧩 Principle of optimality</h4><p>If the best route from A to H goes through F, then the part from F to H must itself be the best route from F. Otherwise you could swap in a better ending and beat the "best" route. That's why the tags can be reused.</p><p class="eli-prac"><b>In your P2:</b> all three best paths go through F, the cheapest "hub" into H.</p></div>
+    <div class="eli-card"><h4>🍬 The greedy trap</h4><p>Grabbing the cheapest road right now is like eating all your sweets first: nice now, painful later. Always compare <i>road cost + price tag of where it leads</i>.</p><p class="eli-prac"><b>In your P2:</b> A→D (230) looked cheapest but led to a 1305 trip, 5th of 9.</p></div>
+    <div class="eli-card"><h4>💥 Curse of dimensionality</h4><p>DP is exact, but the number of price tags can explode. A salesperson visiting 20 cities has about 6×10<sup>16</sup> possible tours; DP needs about 4×10<sup>8</sup> steps. At 50 cities even DP gives up, so we approximate (tab 05).</p><p class="eli-prac"><b>In your P2:</b> the TSP DP state was (where am I, which cities are left).</p></div>
+  </div>
+  <div class="vids">
+    <div class="vid" data-yt="M1q_k8rkrfo"><span class="vsrc">Operations research lecture</span><b>Bellman's Principle of Optimality: Dynamic Programming Concept</b></div>
+    <div class="vid" data-yt="NbsnlRMrOOw"><span class="vsrc">University lecture</span><b>Dynamic programming for the shortest path problem</b></div>
+    <div class="vid" data-yt="aNL4Uz3_jPM"><span class="vsrc">Worked numerical</span><b>Dynamic Programming: Shortest Path Problem, numerical example</b></div>
+  </div>
+</div>
+<!--/ELI-->
+<!--ELI:sdp-->
+<div class="eli5">
+  <div class="eli-head"><span class="eli-badge">ELI5</span><h3 class="eli-title">Stochastic DP explained like you're five</h3></div>
+  <svg class="dia" viewBox="0 0 620 230" role="img" aria-label="Decision tree: at A choose East or West; chance decides the city; expected costs 1210.4 and 1013">
+    <rect x="20" y="95" width="44" height="40" class="nodeA"/><text x="42" y="120" text-anchor="middle">A</text>
+    <g class="edge"><line x1="64" y1="105" x2="190" y2="55"/><line x1="64" y1="125" x2="190" y2="175"/>
+      <line x1="215" y1="55" x2="380" y2="25"/><line x1="215" y1="55" x2="380" y2="85"/><line x1="215" y1="175" x2="380" y2="145"/><line x1="215" y1="175" x2="380" y2="205"/></g>
+    <g><circle class="node" cx="202" cy="55" r="14"/><circle class="node" cx="202" cy="175" r="14"/></g>
+    <g class="mutedt"><text x="90" y="65">East</text><text x="90" y="175">West</text><text x="290" y="30">0.6</text><text x="290" y="80">0.4</text><text x="290" y="150">0.8</text><text x="290" y="200">0.2</text></g>
+    <g><text x="388" y="30">B: 333 + 883 = 1216</text><text x="388" y="90">C: 282 + 920 = 1202</text><text x="388" y="150">D: 230 + 718 = 948</text><text x="388" y="210">E: 300 + 973 = 1273</text></g>
+    <g class="lab"><text x="150" y="40" text-anchor="middle">E = 1210.4</text><text x="150" y="208" text-anchor="middle">E = 1013 ✓</text></g>
+  </svg>
+  <p class="stat">□ = you choose · ○ = chance chooses. Average at each ○, take the best at each □. (Your P3 Part B.)</p>
+  <div class="eli-grid">
+    <div class="eli-card"><h4>🎲 Choose before the dice, react after</h4><p>Some choices are made before luck shows its hand, so you judge them by their <b>average</b>. Later choices are made after you see what happened, so you just pick the best.</p><p class="eli-prac"><b>In your P3:</b> East or West is chosen on averages (1210.4 vs 1013), but at D or E Tom simply picks the cheapest next city.</p></div>
+    <div class="eli-card"><h4>📜 A policy, not a plan</h4><p>A plan says "go A, D, F, H". A policy says "if you end up at D go to F; if at E go to G". With randomness you need the rule for every outcome, because you don't know where you'll be.</p><p class="eli-prac"><b>In your P3:</b> the output <code>['West','G','F','F','G',…]</code> is exactly that list of rules.</p></div>
+    <div class="eli-card"><h4>📊 "Expected" means "on average over many trips"</h4><p>1063 is what Tom pays on average; any single trip on A-B-F-H can cost from 430 to 2030. DP with E{·} doesn't care about that spread, only the average.</p><p class="eli-prac"><b>In your P3:</b> spreading B→F's costs but keeping the mean changed nothing. Moving the mean changed the path.</p></div>
+    <div class="eli-card"><h4>🌫️ Noise is a tax you can't dodge</h4><p>If the state is pushed by noise w with variance σ², a squared cost picks up an extra σ² you can't control: E{(a+w)²} = a² + σ². The best control is the same as without noise, but the cost goes up by σ² per stage.</p><p class="eli-prac"><b>2024 Q2:</b> exactly this, which is why J<sub>0</sub> = β(x<sub>0</sub>² + 3σ²).</p></div>
+    <div class="eli-card"><h4>🅿️ Stopping problems: take it or keep looking</h4><p>Parking: take this spot, or gamble that a better one is ahead? Compare "stop now" with "the average cost of carrying on". The answer is usually a threshold: keep looking until about here, then take the first one you see.</p><p class="eli-prac"><b>In your P3:</b> with c = 1 it was "take the first free spot"; with cheap search the threshold moved later (k* = 1, 5, 7, 8).</p></div>
+  </div>
+  <div class="vids">
+    <div class="vid" data-yt="Nd1-UUMVfz4"><span class="vsrc">David Silver · UCL RL course, Lecture 3</span><b>Planning by Dynamic Programming (MDPs, Bellman expectation)</b></div>
+    <div class="vid" data-list="PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ"><span class="vsrc">DeepMind × UCL · playlist</span><b>Reinforcement learning lecture series</b></div>
+  </div>
+</div>
+<!--/ELI-->
+<!--ELI:ihdp-->
+<div class="eli5">
+  <div class="eli-head"><span class="eli-badge">ELI5</span><h3 class="eli-title">Infinite-horizon DP explained like you're five</h3></div>
+  <svg class="dia" viewBox="0 0 620 250" role="img" aria-label="Grid world values from Practical 4 with arrows showing the optimal route along row 1 then down column 3">
+    <g id="g4"></g>
+    <text x="360" y="40">Values V(x) after value iteration (P4, α = 0.9)</text>
+    <text x="360" y="64" class="mutedt">Darker = better. Arrows = optimal policy.</text>
+    <text x="360" y="100" class="mutedt">Sweep 1: only the cell next to the goal knows.</text>
+    <text x="360" y="120" class="mutedt">Sweep 2: its neighbours learn from it…</text>
+    <text x="360" y="140" class="mutedt">…good news ripples out one cell per sweep</text>
+    <text x="360" y="160" class="mutedt">until every cell knows its value.</text>
+    <text x="360" y="196" class="mutedt">Orange outline = −10 rough terrain</text>
+  </svg>
+  <div class="eli-grid">
+    <div class="eli-card"><h4>💸 Discounting: tomorrow's sweets are worth less</h4><p>A sweet today beats a sweet next week. α = 0.9 means each step into the future counts for 90% of the one before. It also keeps "forever" sums finite.</p><p class="eli-prac"><b>In your P4:</b> V(0,0) = −1 − 0.9 − 0.81 − … = −4.0951 for a 6-move path.</p></div>
+    <div class="eli-card"><h4>📣 Value iteration = a rumour spreading from the goal</h4><p>Each sweep, every cell asks its neighbours "how good is it next to you?" and updates itself. Good news travels outward one step per sweep until nothing changes.</p><p class="eli-prac"><b>In your P4:</b> 7 sweeps on the 4×4 deterministic lake; 180 on the slippery one, because slip probabilities make the news travel slowly.</p></div>
+    <div class="eli-card"><h4>🔁 Policy iteration = try, score, improve</h4><p>Pick any rule. Score it fully (how good is every cell if I always follow it?). Change each cell to its best move given those scores. Repeat until nothing changes. Few rounds, but each one is heavy.</p><p class="eli-prac"><b>In your P4:</b> PI needed only 5 rounds on the slippery lake, compared with 180 VI sweeps, and reached the same answer.</p></div>
+    <div class="eli-card"><h4>🧊 Plan for the slip</h4><p>On ice you don't always go where you aim. The smart move next to a hole is the one whose <i>accidental</i> slides are safe, even if that means pushing into a wall.</p><p class="eli-prac"><b>In your P4:</b> the "walk straight" policy reached the goal 4.7% of the time on ice; the ice-aware one reached it 74.7% of the time.</p></div>
+  </div>
+  <div class="vids">
+    <div class="vid" data-yt="Nd1-UUMVfz4"><span class="vsrc">David Silver · UCL RL course, Lecture 3</span><b>Planning by DP: policy evaluation, policy iteration, value iteration</b></div>
+    <div class="vid" data-yt="NFo9v_yKQXA"><span class="vsrc">Mutual Information</span><b>Reinforcement Learning, by the Book (MDPs and the Bellman equations)</b></div>
+  </div>
+</div>
+<!--/ELI-->
+<!--ELI:adp-->
+<div class="eli5">
+  <div class="eli-head"><span class="eli-badge">ELI5</span><h3 class="eli-title">Approximate DP explained like you're five</h3></div>
+  <svg class="dia" viewBox="0 0 620 220" role="img" aria-label="Lookahead tree: look exactly a few steps ahead, then use a rough guess J-tilde at the leaves">
+    <g class="edge"><line x1="310" y1="40" x2="170" y2="100"/><line x1="310" y1="40" x2="310" y2="100"/><line x1="310" y1="40" x2="450" y2="100"/>
+      <line x1="170" y1="100" x2="120" y2="165"/><line x1="170" y1="100" x2="220" y2="165"/><line x1="310" y1="100" x2="280" y2="165"/><line x1="310" y1="100" x2="340" y2="165"/><line x1="450" y1="100" x2="400" y2="165"/><line x1="450" y1="100" x2="500" y2="165"/></g>
+    <circle class="nodeA" cx="310" cy="40" r="16"/><text x="310" y="45" text-anchor="middle">x</text>
+    <g><circle class="node" cx="170" cy="100" r="12"/><circle class="node" cx="310" cy="100" r="12"/><circle class="node" cx="450" cy="100" r="12"/></g>
+    <g><rect x="104" y="165" width="32" height="24" class="bar2"/><rect x="204" y="165" width="32" height="24" class="bar2"/><rect x="264" y="165" width="32" height="24" class="bar2"/><rect x="324" y="165" width="32" height="24" class="bar2"/><rect x="384" y="165" width="32" height="24" class="bar2"/><rect x="484" y="165" width="32" height="24" class="bar2"/></g>
+    <g text-anchor="middle" font-size="11"><text x="120" y="182">J̃</text><text x="220" y="182">J̃</text><text x="280" y="182">J̃</text><text x="340" y="182">J̃</text><text x="400" y="182">J̃</text><text x="500" y="182">J̃</text></g>
+    <text x="20" y="75" class="mutedt">exact costs g for ℓ steps</text>
+    <text x="20" y="182" class="mutedt">rough guess at the leaves →</text>
+    <text x="310" y="212" text-anchor="middle" class="mutedt">ℓ = 2 lookahead. The tree grows like b^ℓ, so each extra step multiplies the work.</text>
+  </svg>
+  <div class="eli-grid">
+    <div class="eli-card"><h4>♟️ Look a few moves ahead, then guess</h4><p>A chess player can't compute the whole game. They look 2–3 moves ahead exactly, then <i>judge</i> the board with a rule of thumb (J̃). Better rule of thumb, or deeper look, means better play.</p><p class="eli-prac"><b>In your P5:</b> straight-line distance as J̃; ℓ = 3 was enough to play perfectly.</p></div>
+    <div class="eli-card"><h4>🪤 A bad guess can trap you</h4><p>"Closer as the crow flies" isn't always closer: walls and swamps exist. A heuristic that ignores them can walk you in circles.</p><p class="eli-prac"><b>In your P5:</b> (3,0) ↔ (3,1) looped forever because the −10 cells were invisible to the distance guess.</p></div>
+    <div class="eli-card"><h4>🧑‍🏫 Rollout: ask a simple helper</h4><p>For each option, ask a simple helper (e.g. "always go to the nearest city") to finish the job, and see what it would cost. Pick the option whose finish is cheapest. You can never do worse than the helper alone.</p><p class="eli-prac"><b>In your P2/P5 world:</b> nearest neighbour gave 58 on the AB = 50 TSP; rollout on top of it found the optimal 40.</p></div>
+    <div class="eli-card"><h4>🎚️ Features + weights: describe, don't memorise</h4><p>Instead of a table with one number per state, describe each state with a few features ("how far from the goal?") and learn a weight for each. That's a few numbers instead of millions.</p><p class="eli-prac"><b>In your P5:</b> three features, weights learned [10, 10, 2], and the guess was exactly right everywhere.</p></div>
+    <div class="eli-card"><h4>🎯 Certainty equivalence: pretend the dice show their average</h4><p>Replace each random thing by its average, solve the easy deterministic problem, and apply the first move. It's cheap and often very good. It is exact when the noise only affects the cost.</p><p class="eli-prac"><b>In your P3:</b> mean edge costs gave the exact stochastic answer, 1063.</p></div>
+  </div>
+  <div class="vids">
+    <div class="vid" data-yt="k-r2el7rW7I"><span class="vsrc">Dimitri Bertsekas · ASU 2021, Lecture 4</span><b>Approximation in value and policy space; rollout</b></div>
+    <div class="vid" data-yt="xdI52Mjivv0"><span class="vsrc">Dimitri Bertsekas · ASU 2021, Lecture 5</span><b>Deterministic and stochastic rollout</b></div>
+    <div class="vid" data-yt="g5hG5GvZpM0"><span class="vsrc">Dimitri Bertsekas · talk</span><b>Lessons from AlphaZero for Optimal, Model Predictive, and Adaptive Control</b></div>
+  </div>
+</div>
+<!--/ELI-->
+<!--ELI:rl-->
+<div class="eli5">
+  <div class="eli-head"><span class="eli-badge">ELI5</span><h3 class="eli-title">Reinforcement learning explained like you're five</h3></div>
+  <svg class="dia" viewBox="0 0 620 210" role="img" aria-label="TD update nudges the old guess halfway to the target: SARSA target -100 gives -51, Q-learning target -1.99 gives -1.995">
+    <text x="20" y="22">One update, δ = 0.5: new guess = old + δ·(target − old)</text>
+    <line x1="40" y1="80" x2="590" y2="80" class="edge"/>
+    <g class="mutedt" text-anchor="middle"><text x="40" y="100">−100</text><text x="315" y="100">−50</text><text x="590" y="100">0</text></g>
+    <circle cx="40" cy="80" r="7" style="fill:var(--mark)"/><text x="40" y="62" text-anchor="middle" class="lab">target</text>
+    <circle cx="579" cy="80" r="7" class="nodeA"/><text x="560" y="62" text-anchor="end">old −2</text>
+    <circle cx="309.5" cy="80" r="7" style="fill:var(--accent)"/><text x="309.5" y="62" text-anchor="middle">new −51</text>
+    <text x="20" y="40" class="mutedt">SARSA: next action was an exploratory "down" off the cliff</text>
+    <line x1="40" y1="170" x2="590" y2="170" class="edge"/>
+    <g class="mutedt" text-anchor="middle"><text x="40" y="190">−3</text><text x="315" y="190">−2</text><text x="590" y="190">−1</text></g>
+    <circle cx="315" cy="170" r="7" class="nodeA"/><text x="300" y="155" text-anchor="end">old −2</text>
+    <circle cx="317.8" cy="170" r="5" style="fill:var(--mark)"/><text x="335" y="155" class="lab">target −1.99 → new −1.995 (barely moves)</text>
+    <text x="20" y="130" class="mutedt">Q-learning: uses the best next action instead (zoomed in)</text>
+  </svg>
+  <div class="eli-grid">
+    <div class="eli-card"><h4>🎮 Learning by playing</h4><p>No rulebook (no model): you learn a game by trying moves and remembering what happened. RL replaces "compute with the model" by "learn from experience".</p><p class="eli-prac"><b>In your P6:</b> the agent didn't know where the cliff was; it found out by falling off.</p></div>
+    <div class="eli-card"><h4>📝 Q-table = sticky notes</h4><p>For every (place, move) there's a sticky note: "how good is this?" After each move you nudge the note towards <i>what just happened + what you now think comes next</i>. The size of the nudge is the learning rate δ.</p><p class="eli-prac"><b>In your P6:</b> <code>Q[s,a] += lr*(td_target - Q[s,a])</code>, the picture above.</p></div>
+    <div class="eli-card"><h4>🍜 Explore vs exploit</h4><p>Always order your favourite dish and you'll never find a better one; always try new ones and you'll eat badly. ε-greedy: usually pick the best known (1 − ε), sometimes try something random (ε).</p><p class="eli-prac"><b>In your P6:</b> ε = 0.5 explored so much that some runs never learned a path at all.</p></div>
+    <div class="eli-card"><h4>🧗 SARSA = careful, Q-learning = confident</h4><p>SARSA learns from what it <i>actually</i> does next, clumsy random steps included, so it learns "I sometimes trip, stay away from the edge". Q-learning learns as if it will act perfectly from now on, so the edge looks fine.</p><p class="eli-prac"><b>In your P6:</b> SARSA took a 17-step safe detour; Q-learning took the 13-step cliff edge. With ε = 0 they agree.</p></div>
+    <div class="eli-card"><h4>📉 Calm down over time</h4><p>Early on, big nudges and lots of exploring. Later, small nudges and mostly the best move, or you'll never settle (Robbins–Monro: Σδ = ∞, Σδ² &lt; ∞; ε → 0).</p><p class="eli-prac"><b>In your P6:</b> resetting k each episode kept ε high forever, so SARSA never found the 13-step path.</p></div>
+  </div>
+  <div class="vids">
+    <div class="vid" data-yt="0iqz4tcKN58"><span class="vsrc">Steve Brunton · University of Washington</span><b>Q-Learning: Model-Free RL and Temporal Difference Learning</b></div>
+    <div class="vid" data-yt="0g4j2k_Ggc4"><span class="vsrc">David Silver · UCL RL course, Lecture 5</span><b>Model-Free Control (SARSA, Q-learning)</b></div>
+    <div class="vid" data-yt="AJiG3ykOxmY"><span class="vsrc">YouTube explainer</span><b>Temporal Difference Learning (including Q-Learning)</b></div>
+  </div>
+</div>
+<!--/ELI-->

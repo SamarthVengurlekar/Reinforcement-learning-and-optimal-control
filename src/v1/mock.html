@@ -1,0 +1,106 @@
+<!-- ===================== MOCK EXAM ===================== -->
+<section class="panel" id="mock" data-panel="mock" hidden>
+  <h2>Mock exam built from your practicals</h2>
+  <p class="lede">A second full paper in the same shape as 2024 (3 questions, 100 marks): MPC in words, stochastic DP by hand, then a learning algorithm by hand. Every question is a variation on something you did in P1–P6. Sit it in exam time with only the cheatsheet, then open the solutions.</p>
+  <div class="box exam"><span class="tag">Format</span>
+    <p>Q1 MPC (25) · Q2 Stochastic DP (40) · Q3 Q-learning vs SARSA (35). Show the recursion or update for every step; most marks are for the working, not the final number.</p>
+  </div>
+
+  <h3>Question 1 · Model Predictive Control (25 marks)</h3>
+  <p>A gantry crane cart moves along a 12 m track and carries a load modelled as a rigid rod. The state is \(x=[p,\ v,\ \theta,\ \omega]^\top\) and the input is the motor force u. The cart starts at rest at p = 2 m and must stop with no swing at p = 10 m within 10 s. The cart is rated to 3 m/s, the motor gives at most 100 N, and for safety the load must not swing more than 10° or faster than 50°/s. The controller samples at T<sub>s</sub> = 0.1 s.</p>
+  <div class="q"><div class="meta"><span class="t">1(a)</span><span>6 marks</span></div>
+    <p>Write down the initial condition, the target state, and all state and input constraints, in SI units.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>\(x_0=[2,0,0,0]^\top\), \(x^*=[10,0,0,0]^\top\). Constraints: \(0\le p\le12\) m; \(-3\le v\le3\) m/s; \(|\theta|\le10^\circ=0.1745\) rad; \(|\omega|\le50^\circ/\text{s}=0.8727\) rad/s; \(-100\le u\le100\) N. Note that the angle limit also keeps the system where the linearised model is valid.</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">1(b)</span><span>6 marks</span></div>
+    <p>Propose Q and R using Bryson's rule. State the rule and explain what it achieves.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>Rule: \(Q_{ii}=1/(x_i^{\max})^2\), \(R=1/(u^{\max})^2\). It scales each term so that a state at its largest acceptable value costs about 1, which normalises different units (metres vs radians). Q = diag(1/8², 1/3², 1/0.1745², 1/0.8727²) ≈ diag(0.016, 0.11, 32.8, 1.31); R = 1/100² = 10<sup>−4</sup>. It is a starting point; you then tune by simulation (raising the θ, ω weights if the swing is the binding constraint, or the p weight if it is too slow).</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">1(c)</span><span>7 marks</span></div>
+    <p>An LQR design meets every limit but settles in 7.3 s and only reaches 1.8 m/s. Explain why LQR is conservative here and how constrained MPC with the receding-horizon principle improves on it.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>LQR is a fixed linear law \(u=-K(x-x^*)\); its largest push is at t = 0 when the error is largest (8 m). To keep the swing within limits at that worst moment the gains must be small, which slows the whole move. Constraints are met only indirectly through tuning, and the swing scales with the move size, so a longer move would break the limits.</p>
+      <p>MPC writes the limits directly as inequalities on the predicted states and inputs over the horizon N and solves a QP each sample. It applies only the first input, then re-measures and re-solves (receding horizon), giving feedback \(u_k=\kappa(x_k)\). The controller can then run <b>on</b> the limits when that helps (v near 3 m/s, θ at 10°) and back off when needed. In the practical: 5.4 s with no overshoot vs 7.3 s for LQR. Simple weights (Q = I, R = 1) suffice because the constraints, not the weights, enforce safety.</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">1(d)</span><span>6 marks</span></div>
+    <p>For a 3 s horizon, how many decision variables and inequality constraints does the condensed QP have? Discuss the computational implications of the horizon choice.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>N = 3/0.1 = 30. Decision variables: 30 (one scalar input per step). Inequalities: 2·4·30 = 240 state bounds + 2·30 = 60 input bounds = <b>300</b>. The Hessian \(H=2(\Phi^\top\bar Q\Phi+\bar R)\) is 30×30 and constant, but the QP must be solved every sample and finish within 100 ms. Solve time grows roughly as N² to N³. Too short an N (0.5–1 s) is cheap but short-sighted, settles slowly and can become infeasible (no terminal constraint means no recursive-feasibility guarantee). Beyond about 3 s there was no performance gain, only extra computation.</p></div></details></div>
+
+  <h3>Question 2 · Stochastic dynamic programming (40 marks)</h3>
+  <p><b>(a) Parking.</b> A driver passes street parks k = 0, 1, 2. Each is free with probability ρ = 0.5, independently. At a free park the driver may park at cost s(k) = 3 − k or drive on at cost c = 0.4; at a full park the driver must drive on (cost c). If no park has been taken after k = 2, the driver must use the multi-storey car park at cost S = 3, so J<sub>3</sub>(·) = 3.</p>
+  <div class="q"><div class="meta"><span class="t">2(a)(i)</span><span>15 marks</span></div>
+    <p>Write the DP recursion for J<sub>k</sub>(free) and J<sub>k</sub>(full). Compute both for k = 2, 1, 0 and state the optimal policy.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <div class="mjx-wrap">\[J_k(\text{full})=c+\rho J_{k+1}(\text{free})+(1-\rho)J_{k+1}(\text{full}),\qquad J_k(\text{free})=\min\{s(k),\ J_k(\text{full})\}\]</div>
+      <div class="tblwrap"><table>
+        <tr><th>k</th><th class="l">drive on = c + 0.5J<sub>k+1</sub>(free) + 0.5J<sub>k+1</sub>(full)</th><th>park s(k)</th><th>J<sub>k</sub>(free)</th><th>J<sub>k</sub>(full)</th><th>If free</th></tr>
+        <tr><td>3</td><td class="l">terminal</td><td>–</td><td>3</td><td>3</td><td>–</td></tr>
+        <tr><td>2</td><td class="l">0.4 + 0.5·3 + 0.5·3 = 3.4</td><td>1</td><td>1</td><td>3.4</td><td>park</td></tr>
+        <tr><td>1</td><td class="l">0.4 + 0.5·1 + 0.5·3.4 = 2.6</td><td>2</td><td>2</td><td>2.6</td><td>park</td></tr>
+        <tr><td>0</td><td class="l">0.4 + 0.5·2 + 0.5·2.6 = 2.7</td><td>3</td><td>2.7</td><td>2.7</td><td><b>drive</b></td></tr>
+      </table></div>
+      <p>Optimal policy: at k = 0 drive on even if the park is free (2.7 &lt; 3); at k = 1 and 2 park if free; otherwise the multi-storey. This is a <b>threshold rule</b> with threshold k* = 1. Expected cost before seeing park 0: 0.5(2.7) + 0.5(2.7) = <b>2.7</b>.</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">2(a)(ii)</span><span>10 marks</span></div>
+    <p>Keeping ρ = 0.5 and S = 3, find the range of search cost c for which the driver should park at k = 0 when it is free. Interpret the result.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>Work symbolically. k = 2: drive = c + 3, so J<sub>2</sub>(free) = min(1, c+3) = 1 and J<sub>2</sub>(full) = c + 3. k = 1: drive = c + 0.5(1) + 0.5(c+3) = 1.5c + 2, so J<sub>1</sub>(free) = min(2, 1.5c+2) = 2 and J<sub>1</sub>(full) = 1.5c + 2. k = 0: drive = c + 0.5(2) + 0.5(1.5c+2) = <b>1.75c + 2</b>.</p>
+      <p>Park at k = 0 iff 3 ≤ 1.75c + 2 ⇔ <b>c ≥ 4/7 ≈ 0.571</b>. Check: c = 0.4 gives 2.7 &lt; 3 (drive), as in (i). Interpretation: the fee falls by 1 per park, so skipping a park is worth it only while the expected search cost is low enough. Expensive searching makes the driver take the first free spot (like your P3 baseline with c = 1).</p></div></details></div>
+  <p><b>(b) Random road closure.</b> From A, Tom chooses East (reaches B with probability 0.6, otherwise C) or West (reaches D with probability p, otherwise E), learning which only at the fork. Leg costs: A→B 333, A→C 282, A→D 230, A→E 300; B→F 553, B→G 280; C→F 470, C→G 404; D→F 268, D→G 606; E→F 807, E→G 370; F→H 450, G→H 603.</p>
+  <div class="q"><div class="meta"><span class="t">2(b)</span><span>15 marks</span></div>
+    <p>(i) Compute J(B), J(C), J(D), J(E) and the expected cost of East. (ii) For p = 0.5, should Tom go East or West? (iii) Find the value of p below which East is optimal.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>(i) J(F) = 450, J(G) = 603. J(B) = min(553+450, 280+603) = 883 (G); J(C) = min(470+450, 404+603) = 920 (F); J(D) = min(268+450, 606+603) = 718 (F); J(E) = min(807+450, 370+603) = 973 (G). East = 0.6(333+883) + 0.4(282+920) = 729.6 + 480.8 = <b>1210.4</b>.</p>
+      <p>(ii) West = 0.5(230+718) + 0.5(300+973) = 474 + 636.5 = <b>1110.5</b> &lt; 1210.4, so go <b>West</b>.</p>
+      <p>(iii) West = 948p + 1273(1−p) = 1273 − 325p. East is better when 1273 − 325p &gt; 1210.4 ⇔ <b>p &lt; 0.193</b>.</p>
+      <p>The decision at A is made before the closure is revealed, so it uses the expectation. Decisions at B to E are made after, so they are deterministic minimisations. The answer is a policy: West; then D→F→H if at D, or E→G→H if at E.</p></div></details></div>
+
+  <h3>Question 3 · Q-learning vs SARSA (35 marks)</h3>
+  <svg class="dia" viewBox="0 0 520 210" role="img" aria-label="Mock cliff graph: 1 to 2 to G along the edge; 1 to 3 to 4 to G along the safe route; 2 B falls back to 1 with -100">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker></defs>
+    <g class="edge" marker-end="url(#ar)">
+      <line x1="82" y1="160" x2="238" y2="160"/><line x1="282" y1="160" x2="438" y2="160"/>
+      <line x1="70" y1="140" x2="140" y2="62"/><line x1="182" y1="45" x2="318" y2="45"/><line x1="360" y1="62" x2="440" y2="142"/>
+    </g>
+    <path class="edge" style="stroke:var(--mark)" d="M255,180 C200,215 110,215 70,182" marker-end="url(#ar)"/>
+    <g><circle class="nodeA" cx="60" cy="160" r="20"/><circle class="node" cx="260" cy="160" r="20"/><circle class="node" cx="160" cy="45" r="20"/><circle class="node" cx="340" cy="45" r="20"/><circle class="nodeA" cx="460" cy="160" r="20"/></g>
+    <g text-anchor="middle"><text x="60" y="165">1</text><text x="260" y="165">2</text><text x="160" y="50">3</text><text x="340" y="50">4</text><text x="460" y="165">G</text></g>
+    <g class="lab" text-anchor="middle" font-size="12"><text x="160" y="152">1–A (−1)</text><text x="360" y="152">2–A (−1)</text><text x="88" y="95">1–B (−1)</text><text x="250" y="36">3–A (−1)</text><text x="425" y="95">4–A (−1)</text><text x="165" y="206">2–B: fall, −100, back to 1</text></g>
+  </svg>
+  <p>A small cliff problem. States 1 (start), 2 (cliff edge), 3 and 4 (safe route), G (goal, terminal, Q(G,·) = 0). Moves: 1–A→2, 1–B→3, 2–A→G, 2–B→1 (falls off, reward −100), 3–A→4, 3–B→1, 4–A→G, 4–B→3. Every move other than the fall gives reward −1. Use learning rate δ = 0.5, discount α = 0.9, Q-table initialised to 0, and the pre-sampled ε-greedy episodes</p>
+  <p class="mono" style="text-align:center">ep1 = 1 –A→ 2 –B→ 1 –B→ 3 –A→ 4 –A→ G &nbsp;&nbsp; ep2 = 1 –A→ 2 –B→ 1 –A→ 2 –A→ G</p>
+  <div class="q"><div class="meta"><span class="t">3(a)</span><span>20 marks</span></div>
+    <p>Process ep1 then ep2 with (i) SARSA and (ii) Q-learning. Show every update and give both final Q-tables.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>Update: Q ← Q + 0.5(target − Q). SARSA target = r + 0.9·Q(x′,u′) using the next pair in the episode. Q-learning target = r + 0.9·max<sub>u</sub>Q(x′,u). On reaching G, target = r.</p>
+      <div class="tblwrap"><table>
+        <tr><th>step</th><th>(x,u,r,x′)</th><th class="l">SARSA target</th><th>SARSA Q</th><th class="l">Q-learning target</th><th>Q-learn. Q</th></tr>
+        <tr><td colspan="6" class="l"><b>ep1</b></td></tr>
+        <tr><td>1</td><td>(1,A,−1,2)</td><td class="l">−1 + 0.9·Q(2,B)=0 → −1</td><td>−0.5</td><td class="l">−1 + 0.9·0 = −1</td><td>−0.5</td></tr>
+        <tr><td>2</td><td>(2,B,−100,1)</td><td class="l">−100 + 0.9·Q(1,B)=0 → −100</td><td>−50</td><td class="l">−100 + 0.9·max(−0.5, 0) = −100</td><td>−50</td></tr>
+        <tr><td>3</td><td>(1,B,−1,3)</td><td class="l">−1 + 0.9·Q(3,A) = −1</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
+        <tr><td>4</td><td>(3,A,−1,4)</td><td class="l">−1 + 0.9·Q(4,A) = −1</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
+        <tr><td>5</td><td>(4,A,−1,G)</td><td class="l">−1 (terminal)</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
+        <tr><td colspan="6" class="l"><b>ep2</b></td></tr>
+        <tr><td>6</td><td>(1,A,−1,2)</td><td class="l">−1 + 0.9·<b>Q(2,B)</b> = −1 + 0.9(−50) = −46</td><td>−0.5 + 0.5(−45.5) = <b>−23.25</b></td><td class="l">−1 + 0.9·max(Q(2,A)=0, −50) = −1</td><td>−0.75</td></tr>
+        <tr><td>7</td><td>(2,B,−100,1)</td><td class="l">−100 + 0.9·Q(1,A) = −100 + 0.9(−23.25) = −120.925</td><td>−85.4625</td><td class="l">−100 + 0.9·max(−0.75, −0.5) = −100.45</td><td>−75.225</td></tr>
+        <tr><td>8</td><td>(1,A,−1,2)</td><td class="l">−1 + 0.9·Q(2,A) = −1</td><td>−23.25 + 0.5(22.25) = −12.125</td><td class="l">−1 + 0.9·max(0, −75.2) = −1</td><td>−0.875</td></tr>
+        <tr><td>9</td><td>(2,A,−1,G)</td><td class="l">−1 (terminal)</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
+      </table></div>
+      <div class="tblwrap"><table>
+        <tr><th>Final</th><th>Q(1,A)</th><th>Q(1,B)</th><th>Q(2,A)</th><th>Q(2,B)</th><th>Q(3,A)</th><th>Q(4,A)</th><th>others</th></tr>
+        <tr><td class="l">SARSA</td><td><b>−12.125</b></td><td>−0.5</td><td>−0.5</td><td>−85.4625</td><td>−0.5</td><td>−0.5</td><td>0</td></tr>
+        <tr><td class="l">Q-learning</td><td><b>−0.875</b></td><td>−0.5</td><td>−0.5</td><td>−75.225</td><td>−0.5</td><td>−0.5</td><td>0</td></tr>
+      </table></div>
+      <p>The key difference is step 6. SARSA bootstraps from the action actually taken next, (2,B), the exploratory fall, so Q(1,A) is dragged down to −23.25. Q-learning bootstraps from the best action at 2, (2,A), so Q(1,A) is barely affected.</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">3(b)</span><span>7 marks</span></div>
+    <p>Give the greedy route from 1 for each table. Do they agree? Is that the end of the story?</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>Rewards, so take the argmax. SARSA: Q(1,B) = −0.5 &gt; −12.125, so B, then 3–A, 4–A: <b>1→3→4→G</b> (the safe route). Q-learning: Q(1,B) = −0.5 &gt; −0.875, so also B: 1→3→4→G.</p>
+      <p>They agree <i>for now</i>, but for different reasons. Q-learning's preference is only an artefact of too little data: the safe route's values have been updated as if it took one step (−0.5) because the −1s haven't propagated back yet. SARSA's preference is structural: it has learned that, while exploring, stepping onto the edge is dangerous. With more episodes, Q-learning will switch to the edge (see (c)).</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">3(c)</span><span>8 marks</span></div>
+    <p>Compute the true optimal Q*(1,A) and Q*(1,B) from the Bellman equation. Which route does each algorithm converge to with (i) a constant ε = 0.2, (ii) ε<sub>k</sub> → 0? Explain.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>Q*(2,A) = −1, Q*(4,A) = −1, Q*(3,A) = −1 + 0.9(−1) = −1.9. <b>Q*(1,A)</b> = −1 + 0.9·max(Q*(2,A), Q*(2,B)) = −1 + 0.9(−1) = <b>−1.9</b>. <b>Q*(1,B)</b> = −1 + 0.9·Q*(3,A) = −1 + 0.9(−1.9) = <b>−2.71</b>. The optimal route is the edge 1→2→G.</p>
+      <p>(i) Constant ε = 0.2: <b>Q-learning</b> is off-policy, so it still converges to Q* and the greedy route is the edge. <b>SARSA</b> converges to the Q-factors of the ε-greedy policy: at state 2 it picks B (the fall) with probability ε/2 = 0.1. Roughly, stepping onto the edge is then worth about 0.9(−1) + 0.1(−100 − …) ≈ −11 or worse, much worse than the safe route (≈ −2.7), so SARSA keeps the safe route.</p>
+      <p>(ii) With ε<sub>k</sub> → 0 (greedy in the limit) and Robbins–Monro step sizes, SARSA's target becomes Q-learning's, and <b>both</b> converge to Q* and the edge route. This matches P6: SARSA with ε = 0 learned the 13-step edge path on every seed.</p></div></details></div>
+</section>

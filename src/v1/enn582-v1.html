@@ -1,0 +1,1567 @@
+<title>ENN582 Exam Prep v1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column of course notes under a sticky tab rail; callouts encode role (idea / example / exam). */
+:root{
+  --bg:#F4F5F2; --surface:#FFFFFF; --ink:#16212B; --muted:#5A6672; --line:#D8DDD8;
+  --accent:#0F5F7A; --accent-soft:#E1EDF1; --mark:#A84C0E; --mark-soft:#F6E9DD; --ok:#2E7548; --ok-soft:#E3F1E7;
+  --f-display:"Spectral",Georgia,"Times New Roman",serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F151A; --surface:#161F27; --ink:#E3E9ED; --muted:#9AA8B3; --line:#2A3640;
+  --accent:#6CC3DE; --accent-soft:#15303A; --mark:#F0A060; --mark-soft:#3A2A1C; --ok:#6BC48F; --ok-soft:#173326; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F151A; --surface:#161F27; --ink:#E3E9ED; --muted:#9AA8B3; --line:#2A3640;
+  --accent:#6CC3DE; --accent-soft:#15303A; --mark:#F0A060; --mark-soft:#3A2A1C; --ok:#6BC48F; --ok-soft:#173326; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.62}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:880px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--surface);border-bottom:1px solid var(--line)}
+header.top .wrap{padding-block:22px 14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.2;margin:0}
+h1{font-size:clamp(26px,4.4vw,36px);font-weight:700;margin-top:4px}
+header.top p{margin:6px 0 0;color:var(--muted);max-width:62ch}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+nav.tabs button{flex:0 0 auto;font:500 14px/1 var(--f-body);color:var(--muted);background:none;border:0;border-bottom:3px solid transparent;padding:14px 11px 11px;cursor:pointer;white-space:nowrap}
+nav.tabs button .n{font-family:var(--f-mono);font-size:11px;margin-right:5px;opacity:.75}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+nav.tabs button:hover{color:var(--ink)}
+button:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main .wrap{padding-block:28px 80px}
+section.panel{display:flex;flex-direction:column;gap:18px}
+section.panel>h2{font-size:clamp(24px,3.6vw,30px)}
+.lede{color:var(--muted);font-size:17px;margin:0;max-width:66ch}
+h3{font-size:21px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+h4{font:600 15px/1.3 var(--f-body);margin:6px 0 0;color:var(--accent);letter-spacing:.01em}
+p{margin:0}
+.flow>*+*{margin-top:10px}
+ul,ol{margin:0;padding-left:22px}
+li+li{margin-top:4px}
+.box{border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.idea{background:var(--accent-soft)}
+.ex{background:var(--surface);border:1px solid var(--line)}
+.exam{background:var(--mark-soft)}
+.box>.tag{font:600 11px/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase}
+.idea>.tag{color:var(--accent)} .ex>.tag{color:var(--ok)} .exam>.tag{color:var(--mark)}
+.tblwrap{overflow-x:auto;min-width:0}
+table{border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:14.5px}
+th,td{border:1px solid var(--line);padding:5px 10px;text-align:center}
+th{background:var(--accent-soft);font-weight:600}
+td.l,th.l{text-align:left}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+.mjx-wrap{overflow-x:auto;overflow-y:hidden;min-width:0}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%;padding:2px 0}
+svg.dia{display:block;max-width:100%;height:auto;margin:4px auto}
+svg.dia text{fill:var(--ink);font-family:var(--f-mono);font-size:13px}
+svg.dia .edge{stroke:var(--muted);stroke-width:1.6;fill:none}
+svg.dia .hot{stroke:var(--accent);stroke-width:3}
+svg.dia .node{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+svg.dia .nodeA{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2}
+svg.dia .lab{fill:var(--mark);font-weight:500}
+svg.dia .mutedt{fill:var(--muted);font-size:11px}
+svg.dia .bar{fill:var(--accent-soft);stroke:var(--accent)}
+svg.dia .bar2{fill:var(--mark-soft);stroke:var(--mark)}
+details.ans{border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+details.ans>summary{cursor:pointer;padding:12px 14px;font-weight:500;list-style:none;display:flex;gap:10px;align-items:baseline}
+details.ans>summary::-webkit-details-marker{display:none}
+details.ans>summary::before{content:"+";font-family:var(--f-mono);color:var(--accent);width:12px;flex:0 0 auto}
+details.ans[open]>summary::before{content:"−"}
+details.ans .body{padding:0 16px 14px 36px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.q .meta{font:500 12px/1 var(--f-mono);color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.q .meta .t{color:var(--accent)}
+.q details.ans{border-style:dashed}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.plan{display:flex;flex-direction:column;gap:8px}
+.plan label{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 14px;cursor:pointer}
+.plan input{margin-top:5px;accent-color:var(--accent);flex:0 0 auto}
+.plan .d{font:600 12px/1.6 var(--f-mono);color:var(--accent);min-width:46px}
+.plan label.done{opacity:.6}
+.marks{display:flex;flex-direction:column;gap:6px}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:10px;align-items:center;font-size:14.5px}
+.mbar{height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.mbar i{display:block;height:100%;background:var(--mark)}
+.widget{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.ctrls{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:14px}
+.ctrls label{display:flex;gap:8px;align-items:center}
+.ctrls input[type=range]{width:150px;accent-color:var(--accent)}
+.stat{font-family:var(--f-mono);font-size:13.5px;color:var(--muted)}
+.stat b{color:var(--ink);font-weight:500}
+.bad{color:var(--mark)!important} .good{color:var(--ok)!important}
+svg.chart text{fill:var(--muted);font:11px var(--f-mono)}
+svg.chart .ax{stroke:var(--line)}
+svg.chart .s1{stroke:var(--accent);fill:none;stroke-width:2}
+svg.chart .s2{stroke:var(--mark);fill:none;stroke-width:2}
+svg.chart .z{stroke:var(--muted);stroke-dasharray:3 3}
+.btn{font:500 14px/1 var(--f-body);background:var(--accent);color:var(--surface);border:0;border-radius:5px;padding:10px 14px;cursor:pointer}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:none;color:var(--accent);border:1px solid var(--accent)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{font:500 13.5px/1 var(--f-body);background:var(--surface);color:var(--accent);border:1px solid var(--line);border-radius:999px;padding:9px 13px;cursor:pointer}
+.pill:hover{border-color:var(--accent)}
+article.prac{display:flex;flex-direction:column;gap:14px;scroll-margin-top:64px}
+article.prac>h3{font-size:24px}
+.pracbox{background:var(--ok-soft)} .pracbox>.tag{color:var(--ok)}
+/* cheatsheet paper */
+.paper{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:20px 22px;font-size:13.5px;line-height:1.45}
+.paper .cs h1{font-size:20px;margin-bottom:8px}
+.paper .cs h2{font:600 14px/1.3 var(--f-body);background:var(--accent-soft);color:var(--accent);padding:4px 8px;margin:14px 0 6px;break-after:avoid}
+.paper .cs p{margin:0 0 6px}
+.paper .cs sub,.paper .cs sup{font-size:.72em}
+@media (min-width:860px){.paper .cs{column-count:2;column-gap:28px}.paper .cs h1{column-span:all}}
+.dlrow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+@media (prefers-reduced-motion:no-preference){details.ans .body{animation:fade .18s ease-out}@keyframes fade{from{opacity:.4}to{opacity:1}}}
+</style>
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'},startup:{typeset:false},options:{ignoreHtmlClass:'nomath'}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" defer></script>
+
+<header class="top"><div class="wrap">
+  <div class="eyebrow">ENN582 · Reinforcement Learning and Optimal Control</div>
+  <h1>Exam Prep v1: lectures + your practicals</h1>
+  <p>Every topic from the Week 1–6 notes, plus a lesson for each of your six practical submissions (P1–P6), a mock exam built from them, the 2024 paper solved in full, practice questions, and the cheatsheet you can carry in.</p>
+</div></header>
+
+<nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist">
+  <button role="tab" data-tab="plan"><span class="n">00</span>Study plan</button>
+  <button role="tab" data-tab="mpc"><span class="n">01</span>Model Predictive Control</button>
+  <button role="tab" data-tab="ddp"><span class="n">02</span>Deterministic DP</button>
+  <button role="tab" data-tab="sdp"><span class="n">03</span>Stochastic DP</button>
+  <button role="tab" data-tab="ihdp"><span class="n">04</span>Infinite Horizon DP</button>
+  <button role="tab" data-tab="adp"><span class="n">05</span>Approximate DP</button>
+  <button role="tab" data-tab="rl"><span class="n">06</span>Reinforcement Learning</button>
+  <button role="tab" data-tab="prac"><span class="n">P</span>Practicals P1–P6</button>
+  <button role="tab" data-tab="mock"><span class="n">M</span>Mock exam</button>
+  <button role="tab" data-tab="exam"><span class="n">★</span>2024 Exam solved</button>
+  <button role="tab" data-tab="practice"><span class="n">?</span>Practice Q&amp;A</button>
+  <button role="tab" data-tab="cheatsheet"><span class="n">↓</span>Cheatsheet</button>
+</div></nav>
+
+<main><div class="wrap">
+
+<!-- ===================== PLAN ===================== -->
+<section class="panel" id="plan" data-panel="plan">
+  <h2>Study plan</h2>
+  <p class="lede">The course is one idea told six ways: <b>pick actions now by thinking about the cost they cause later</b>. MPC does it online over a short window, DP solves it exactly backwards in time, infinite-horizon DP removes the end of time, approximate DP cuts the computation, and RL learns it from data without a model.</p>
+
+  <div class="box exam"><span class="tag">What the 2024 paper tested</span>
+    <div class="marks">
+      <div class="mrow"><span>Q1 MPC theory: role of Q, Q<sub>F</sub>, R; receding horizon idea</span><div class="mbar"><i style="width:25%"></i></div></div>
+      <div class="mrow"><span>Q2 Stochastic DP by hand: cost-to-go, policy, J<sub>0</sub>, solve for β</span><div class="mbar"><i style="width:40%"></i></div></div>
+      <div class="mrow"><span>Q3 Sarsa by hand on a 4-state graph, then extract the best route</span><div class="mbar"><i style="width:35%"></i></div></div>
+    </div>
+    <p>25 + 40 + 35 = 100 marks. 75% of the paper is <b>hand calculation</b> (DP recursion and Sarsa table updates). Expect the same shape: one explain-in-words MPC question, one DP derivation, one learning-algorithm table. VI/PI and rollout could replace any of them, so practise those calculations too.</p>
+  </div>
+
+  <div class="box idea"><span class="tag">New in v1</span>
+    <p>Each topic tab now opens with a link to the matching practical. The <b>Practicals</b> tab teaches P1–P6 (code ↔ equation, your results explained, hand-sized versions, exam questions), and the <b>Mock exam</b> tab is a second full paper built from the practicals. The cheatsheet has a new section 9 with the practical results.</p>
+  </div>
+
+  <h3>9-day plan</h3>
+  <p class="stat">Tick items as you finish them. Ticks are saved in this browser only.</p>
+  <div class="plan" id="planlist">
+    <label><input type="checkbox" id="p1"><span class="d">Day 1</span><span><b>MPC + P1 crane.</b> Read tab 01, then the P1 lesson. From memory: the cost function, the roles of Q/R/Q<sub>F</sub>, the four receding-horizon steps, and H, f, A<sub>in</sub>, b<sub>in</sub>. Do practice Q1–Q5 and P1-a to P1-d.</span></label>
+    <label><input type="checkbox" id="p2"><span class="d">Day 2</span><span><b>Deterministic DP + P2.</b> Tab 02, then P2. Redo Tom's DP table and the TSP rollout on paper. Practice Q6–Q7, P2-a, P2-b.</span></label>
+    <label><input type="checkbox" id="p3"><span class="d">Day 3</span><span><b>Stochastic DP + P3.</b> Tab 03, then P3. The fork (East/West) and parking recursions are prime exam material. Practice Q8–Q10, P3-a, P3-b.</span></label>
+    <label><input type="checkbox" id="p4"><span class="d">Day 4</span><span><b>Infinite-horizon DP + P4.</b> Tab 04, then P4. Do one slippery Bellman backup by hand; know VI vs PI cold. Practice Q11–Q13, P4-a, P4-b.</span></label>
+    <label><input type="checkbox" id="p5"><span class="d">Day 5</span><span><b>Approximate DP + P5.</b> Tab 05, then P5. One-step lookahead trap, one SGD weight update. Practice Q14–Q16, P5-a, P5-b.</span></label>
+    <label><input type="checkbox" id="p6"><span class="d">Day 6</span><span><b>RL + P6.</b> Tab 06, then P6. SARSA vs Q-learning on one transition (−51 vs −1.995). Practice Q17–Q21, P6-a, P6-b.</span></label>
+    <label><input type="checkbox" id="p7"><span class="d">Day 7</span><span><b>2024 paper, timed.</b> Only the cheatsheet allowed. Mark it against the ★ tab.</span></label>
+    <label><input type="checkbox" id="p8"><span class="d">Day 8</span><span><b>Mock exam, timed.</b> Same rules. Mark it against the M tab.</span></label>
+    <label><input type="checkbox" id="p9"><span class="d">Day 9</span><span><b>Fix gaps.</b> Redo every question you missed. Print the cheatsheet and add your own notes.</span></label>
+  </div>
+
+  <h3>Notation you will see everywhere</h3>
+  <div class="tblwrap"><table>
+    <tr><th class="l">Symbol</th><th class="l">Meaning</th></tr>
+    <tr><td>\(x_k,\ u_k,\ w_k\)</td><td class="l">state, control (action), random disturbance at time k</td></tr>
+    <tr><td>\(f(x,u,w)\)</td><td class="l">system model: gives the next state</td></tr>
+    <tr><td>\(g_k(x,u,w),\ g_N(x)\)</td><td class="l">stage cost and final (terminal) cost. Rewards are just negative costs</td></tr>
+    <tr><td>\(N\)</td><td class="l">horizon length (number of decisions)</td></tr>
+    <tr><td>\(J_k(x)\)</td><td class="l">cost-to-go: best possible cost from state x at time k to the end</td></tr>
+    <tr><td>\(\mu_k(x),\ \pi\)</td><td class="l">policy: a rule state → action; π = {μ<sub>0</sub>, μ<sub>1</sub>, …}</td></tr>
+    <tr><td>\(\alpha\)</td><td class="l">discount factor in [0,1) (infinite horizon)</td></tr>
+    <tr><td>\(p_{ij}(u)\)</td><td class="l">probability of moving i → j under action u</td></tr>
+    <tr><td>\(Q(x,u)\)</td><td class="l">action-value (Q-factor): cost of doing u in x, then behaving well</td></tr>
+    <tr><td>\(\delta\)</td><td class="l">learning rate (step size) in TD / Sarsa / Q-learning</td></tr>
+  </table></div>
+</section>
+
+<!-- ===================== MPC ===================== -->
+<section class="panel" id="mpc" data-panel="mpc" hidden>
+  <h2>01 · Model Predictive Control</h2>
+  <p class="lede">MPC is a feedback controller that, at every time step, solves a small optimisation problem: "given where I am now, what is the best plan for the next N steps?" It applies only the first move of that plan, then measures again and re-plans.</p>
+  <div class="box pracbox"><span class="tag">Your practical · P1</span><p>Gantry crane: you designed Q and R (Bryson's rule), saw LQR be conservative (7.3 s), then built the batch QP and got 5.4 s with MPC running on the swing limits.</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr1">Open the P1 lesson →</button></p></div>
+
+  <h3>1.1 The setup</h3>
+  <div class="flow">
+    <p>We have a model \(x_{k+1}=f(x_k,u_k)\) with \(f(0,0)=0\) (the origin is where we want to be), and possibly constraints \(x_k\in\mathbb X\), \(u_k\in\mathbb U\). The notation \(x_{k+\ell|k}\) means "the state at time \(k+\ell\) <i>predicted</i> using information at time \(k\)". The cost is:</p>
+    \[J(x_k,\vec u)=\sum_{\ell=0}^{N-1}\Big(x_{k+\ell|k}^\top Q\,x_{k+\ell|k}+u_{k+\ell|k}^\top R\,u_{k+\ell|k}\Big)+x_{k+N|k}^\top Q_F\,x_{k+N|k}\]
+    <p>where \(\vec u=[u_{k|k},\dots,u_{k+N-1|k}]\) is the sequence of N future inputs we choose. In general form it is \(\sum L(x,u)+F(x_{k+N|k})\). The design parameters are L, F and N.</p>
+  </div>
+
+  <h3>1.2 What Q, R and Q<sub>F</sub> do</h3>
+  <div class="grid2">
+    <div class="box idea"><span class="tag">Q ≥ 0 · state weight</span><p>Penalises being away from the target. Bigger Q ⇒ the controller works harder to drive x to 0 quickly. Diagonal entries say which states matter: \(Q=\mathrm{diag}(1,0)\) cares only about position, not velocity.</p></div>
+    <div class="box idea"><span class="tag">R &gt; 0 · input weight</span><p>Penalises control effort (fuel, energy, actuator wear). Bigger R ⇒ smaller, gentler inputs and slower response. R must be positive definite so the problem has a unique minimiser.</p></div>
+    <div class="box idea"><span class="tag">Q<sub>F</sub> ≥ 0 · terminal weight</span><p>Penalises where the plan <i>ends</i>. It stands in for all the cost after the horizon, so a short-sighted plan doesn't leave the state somewhere bad. Choosing it well (e.g. from a Lyapunov or Riccati equation) gives closed-loop stability.</p></div>
+  </div>
+  <p>Only the <b>ratio</b> matters for the shape of the response. With \(R=\rho I\): small ρ (Q large relative to R) ⇒ fast convergence with large inputs; large ρ ⇒ slow convergence with small inputs. The notes show this with a double integrator (ρ = 0.3 vs ρ = 10): the input and output energies \(J_{in}\) and \(J_{out}\) trade off along a curve.</p>
+
+  <div class="widget" id="mpcw">
+    <span class="eyebrow">Try it · scalar MPC tuner</span>
+    <p>Plant \(x_{k+1}=1.2\,x_k+u_k\) (unstable on its own), Q = 1, Q<sub>F</sub> = 1, R = ρ, starting from x<sub>0</sub> = 1. Each step, MPC solves the N-step problem and applies the first input.</p>
+    <div class="ctrls">
+      <label for="rho">ρ = R/Q <input type="range" id="rho" min="-2" max="1.3" step="0.05" value="-0.5"><b id="rhov" class="mono"></b></label>
+      <label for="hor">Horizon N <input type="range" id="hor" min="1" max="10" step="1" value="1"><b id="horv" class="mono"></b></label>
+    </div>
+    <div class="stat" id="mpcstat"></div>
+    <svg class="chart" id="mpcchart" viewBox="0 0 640 230" role="img" aria-label="State and input trajectories"></svg>
+    <p class="stat">Blue: state x<sub>k</sub>. Orange: input u<sub>k</sub>. Try N = 1 with ρ above 5: the closed loop goes unstable, because a 1-step plan can't see that "saving effort now" lets the state grow. Increase N and it recovers. That is the point of the horizon and of Q<sub>F</sub>.</p>
+  </div>
+
+  <h3>1.3 Receding horizon optimisation</h3>
+  <svg class="dia" viewBox="0 0 640 190" role="img" aria-label="Receding horizon windows">
+    <text x="10" y="30">time k</text>
+    <rect class="bar" x="80" y="15" width="400" height="24" rx="3"/>
+    <rect class="bar2" x="80" y="15" width="100" height="24" rx="3"/>
+    <text x="96" y="32">apply u*ₖ|ₖ</text><text x="250" y="32" class="mutedt">plan uₖ₊₁|ₖ … uₖ₊N₋₁|ₖ (discarded)</text>
+    <text x="10" y="90">time k+1</text>
+    <rect class="bar" x="180" y="75" width="400" height="24" rx="3"/>
+    <rect class="bar2" x="180" y="75" width="100" height="24" rx="3"/>
+    <text x="190" y="92">apply u*ₖ₊₁|ₖ₊₁</text><text x="350" y="92" class="mutedt">new plan from new xₖ₊₁</text>
+    <line class="edge" x1="80" y1="140" x2="630" y2="140"/>
+    <g class="mutedt"><text x="76" y="160">k</text><text x="170" y="160">k+1</text><text x="270" y="160">k+2</text><text x="370" y="160">k+3</text><text x="470" y="160">k+4</text></g>
+    <text x="80" y="182" class="mutedt">window length N = 4 slides forward one step each time</text>
+  </svg>
+  <ol>
+    <li>Measure the current state \(x_k\).</li>
+    <li>Solve \(\vec u^*_k=\arg\min_{\vec u\in\mathbb U^N}J(x_k,\vec u)\): a full N-step plan.</li>
+    <li>Apply only the first element: \(u_k=u^*_{k|k}=[I_m\ 0\ \cdots\ 0]\,\vec u^*_k\).</li>
+    <li>Move to k+1, measure \(x_{k+1}\), and solve again over a window shifted one step forward.</li>
+  </ol>
+  <p>Because it re-solves from the measured state each time, MPC is a <b>feedback</b> law \(u_k=\kappa(x_k)\), even though each optimisation produces an open-loop sequence. In general \(u^*_{k+1|k}\neq u^*_{k+1|k+1}\): the plan made at k for time k+1 is not what is applied at k+1.</p>
+  <div class="box ex"><span class="tag">Simple example</span>
+    <p>\(x_{k+1}=x_k+u_k\), N = 2, Q = R = Q<sub>F</sub> = 1, start at \(x_0=10\). Solving (via the Riccati recursion in tab 02) gives the plan rule \(u_{k|k}=-0.6x_k\), \(u_{k+1|k}=-0.5x_{k+1|k}\).</p>
+    <ul>
+      <li>At k = 0: plan \(u_{0|0}=-6\Rightarrow x_{1|0}=4\), then \(u_{1|0}=-2\Rightarrow x_{2|0}=2\). Apply only −6.</li>
+      <li>Suppose wind pushes the car: the measured \(x_1=5\), not 4.</li>
+      <li>At k = 1: re-plan from 5: \(u_{1|1}=-0.6\cdot5=-3\). The old plan (−2) would have been wrong for the real state.</li>
+      <li>Even with no disturbance (\(x_1=4\)), \(u_{1|1}=-2.4\neq u_{1|0}=-2\), because the window now looks one step further ahead.</li>
+    </ul>
+    <p>Everyday analogy: driving while looking 100 m ahead. You plan your steering for the whole 100 m, turn the wheel a little, then look again and re-plan with fresh information.</p>
+  </div>
+  <p><b>Comments from the notes:</b> MPC works for nonlinear, constrained, even stochastic or simulation-based models. Longer N is usually better (considers long-term impact) but costs more computation; moderate N is often close to infinite-horizon performance. Nonlinear models need numerical optimisation. Integral action can be added by penalising increments \(u_{k+\ell+1|k}-u_{k+\ell|k}\). With both state and input constraints the problem can become <b>infeasible</b>.</p>
+
+  <h3>1.4 LTI system, quadratic cost: the explicit solution</h3>
+  <div class="flow">
+    <p>With \(x_{k+1}=Ax_k+Bu_k\) and no constraints, stack the predictions: \(x_{k+\ell|k}=A^\ell x_k+\sum_{j=0}^{\ell-1}A^{\ell-j-1}Bu_{k+j|k}\), so</p>
+    \[\vec x_k=\begin{bmatrix}x_{k+1|k}\\ \vdots\\ x_{k+N|k}\end{bmatrix}=\Phi\vec u+\Lambda x_k,\quad \Phi=\begin{bmatrix}B&amp;0&amp;\cdots&amp;0\\ AB&amp;B&amp;\cdots&amp;0\\ \vdots&amp;&amp;\ddots&amp;\vdots\\ A^{N-1}B&amp;\cdots&amp;AB&amp;B\end{bmatrix},\quad \Lambda=\begin{bmatrix}A\\A^2\\ \vdots\\A^N\end{bmatrix}\]
+    <p>With \(\bar Q=\mathrm{diag}(Q,\dots,Q,Q_F)\) and \(R=\rho I\):</p>
+    \[J=x_k^\top(\Lambda^\top\bar Q\Lambda+Q)x_k+\vec u^\top(\Phi^\top\bar Q\Phi+\rho I)\vec u+2\vec u^\top\Phi^\top\bar Q\Lambda x_k\]
+    <p>Set \(\partial J/\partial\vec u=0\) (using \(\partial(u^\top Xu)/\partial u=2Xu\), \(\partial(a^\top u)/\partial u=a\)):</p>
+    \[\vec u^*_k=-(\Phi^\top\bar Q\Phi+\rho I)^{-1}\Phi^\top\bar Q\Lambda\,x_k,\qquad u_k=-Kx_k,\quad K=[I\ 0\cdots0](\Phi^\top\bar Q\Phi+\rho I)^{-1}\Phi^\top\bar Q\Lambda\]
+    <p>A <b>constant-gain state feedback</b>, identical to finite-horizon LQR. The Hessian is positive definite because ρ &gt; 0, so this is the unique minimum.</p>
+  </div>
+  <div class="box ex"><span class="tag">Simple example · batch form</span>
+    <p>Scalar \(a=2,\ b=1\), N = 2, Q = Q<sub>F</sub> = 1, ρ = 1. Then \(\Phi=\begin{bmatrix}1&amp;0\\2&amp;1\end{bmatrix}\), \(\Lambda=\begin{bmatrix}2\\4\end{bmatrix}\), \(\bar Q=I\).</p>
+    <p>\(H=\Phi^\top\Phi+I=\begin{bmatrix}6&amp;2\\2&amp;2\end{bmatrix}\), \(\Phi^\top\Lambda=\begin{bmatrix}10\\4\end{bmatrix}\), \(H^{-1}=\tfrac18\begin{bmatrix}2&amp;-2\\-2&amp;6\end{bmatrix}\), so \(\vec u^*=-\begin{bmatrix}1.5\\0.5\end{bmatrix}x_k\).</p>
+    <p>MPC applies \(u_k=-1.5x_k\), and the closed loop is \(x_{k+1}=(2-1.5)x_k=0.5x_k\): stable.</p>
+  </div>
+  <p><b>With constraints</b> (on position gaps, velocity, acceleration, input) the problem becomes a <b>quadratic programme</b>: \(\min_{\vec u}\ \vec u^\top H\vec u+\vec u^\top f\) subject to \(A_{in}\vec u\le B_{in}\), \(A_{eq}\vec u=B_{eq}\). Constraints on predicted states are converted to constraints on \(\vec u\) by substituting \(\vec x=\Phi\vec u+\Lambda x_k\) (the notes build them with Kronecker products, e.g. \(\mathbf 1_N\otimes[1\ 0\ 0]\) picks out the position).</p>
+  <p><b>Discretisation:</b> double integrator \(A=\begin{bmatrix}1&amp;\Delta t\\0&amp;1\end{bmatrix}\), \(B=\begin{bmatrix}\Delta t^2/2\\ \Delta t\end{bmatrix}\). In general \(\begin{bmatrix}A&amp;B\\0&amp;I\end{bmatrix}=\exp\!\Big(\begin{bmatrix}A_c&amp;B_c\\0&amp;0\end{bmatrix}T_s\Big)\).</p>
+
+  <h3>1.5 Stability (optional in notes, good for theory marks)</h3>
+  <div class="flow">
+    <p><b>Assumption 1:</b> \(F(0)=0,\ F\ge0,\ L(0,0)=0,\ L(x,u)\ge\alpha(\|x\|)\) with α increasing, α(0) = 0.<br><b>Assumption 2:</b> there is a local controller \(\kappa_f\) with \(F(f(x,\kappa_f(x)))\le F(x)-L(x,\kappa_f(x))\). The terminal cost acts like a Lyapunov function.</p>
+    <p><b>Proof idea:</b> let \(V_k=J(x_k,\vec u^*_k)\). At k+1, a feasible (not necessarily optimal) plan is "the rest of the old plan, plus \(\kappa_f\) at the end". Its cost is at most \(V_k-L(x_k,u^*_{k|k})\). Optimal is no worse, so \(0\le V_{k+1}\le V_k-\alpha(\|x_k\|)\). V is decreasing and bounded below ⇒ converges ⇒ \(\alpha(\|x_k\|)\to0\) ⇒ \(x_k\to0\).</p>
+    <p><b>Finite input set</b> (e.g. power converters, quantisers): pick R = 0, \(\kappa_f=0\), and \(Q_F\) solving the Lyapunov equation \(A^\top Q_FA+Q=Q_F\) (requires A stable). For scalar a: \(Q_F=q/(1-a^2)\).</p>
+  </div>
+
+  <h3>1.6 Case study: vehicle platooning (optional)</h3>
+  <p>Each car: \(\dot p=v,\ \dot v=a,\ \dot a=-a/\tau+u/\tau\) (τ ≈ 1.5 actuation lag). Track the gap error \(e_{i,k}=x_{i-1,k}-x_{i,k}\), which has the same dynamics \(e_{k+1}=Ae_k+B\bar u_k\), with \(u_i=u_{i-1}-\bar u_i\). Infinite-horizon LQR (DARE) ignores constraints: in the notes vehicle 3 crashes into vehicle 2 and speeds reach 288 km/h. MPC adds \(p_{min}=3\) m, \(0\le v\le25\) m/s, \(-6\le a\le3\) m/s² and solves a QP, so the cars keep their gaps and respect the speed limit.</p>
+
+  <div class="box exam"><span class="tag">Exam angle</span>
+    <p>2024 Q1 asked exactly 1.2 (10 marks) and 1.3 (15 marks). Use the four receding-horizon steps, mention "implicit feedback law κ(x)", "only first input applied", "re-measure and re-optimise", and give a small numeric example like the one above. Also mention: Q, Q<sub>F</sub> ≥ 0 and R &gt; 0; the Q:R ratio sets aggressiveness; Q<sub>F</sub> handles the tail and stability.</p>
+  </div>
+</section>
+
+<!-- ===================== DETERMINISTIC DP ===================== -->
+<section class="panel" id="ddp" data-panel="ddp" hidden>
+  <h2>02 · Deterministic Dynamic Programming</h2>
+  <p class="lede">DP solves a multi-stage decision problem by solving it backwards from the end. The best decision at every state and every time comes out of one backward sweep.</p>
+  <div class="box pracbox"><span class="tag">Your practical · P2</span><p>Tom's journey A→H by backward DP (1063, A-B-F-H; the greedy route costs 1305) and the 4-city TSP, nearest neighbour and rollout.</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr2">Open the P2 lesson →</button></p></div>
+
+  <h3>2.1 Principle of optimality</h3>
+  <div class="box idea"><span class="tag">Bellman's principle</span><p>"An optimal trajectory has the property that at an intermediate point, no matter how it was reached, the rest of the trajectory must coincide with an optimal trajectory as computed from this intermediate point as the starting point."</p><p>In plain words: if the best route Brisbane → Sydney passes through Coffs Harbour, then the Coffs Harbour → Sydney part must itself be the best route from Coffs Harbour. So solve the short "tail" problems first and build longer ones from them.</p></div>
+
+  <h3>2.2 Example: shortest path</h3>
+  <svg class="dia" viewBox="0 0 560 230" role="img" aria-label="Shortest path graph S to E">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="currentColor" style="color:var(--muted)"/></marker>
+    <marker id="arh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" style="fill:var(--accent)"/></marker></defs>
+    <line class="edge" x1="76" y1="105" x2="160" y2="52" marker-end="url(#ar)"/><text class="lab" x="105" y="68">1</text>
+    <line class="edge hot" x1="76" y1="128" x2="160" y2="178" marker-end="url(#arh)"/><text class="lab" x="105" y="168">2</text>
+    <line class="edge" x1="200" y1="40" x2="330" y2="40" marker-end="url(#ar)"/><text class="lab" x="262" y="32">6</text>
+    <line class="edge" x1="180" y1="165" x2="180" y2="62" marker-end="url(#ar)"/><text class="lab" x="188" y="118">4</text>
+    <line class="edge hot" x1="200" y1="190" x2="330" y2="190" marker-end="url(#arh)"/><text class="lab" x="262" y="210">3</text>
+    <line class="edge" x1="350" y1="168" x2="350" y2="62" marker-end="url(#ar)"/><text class="lab" x="358" y="118">1</text>
+    <line class="edge" x1="368" y1="52" x2="452" y2="104" marker-end="url(#ar)"/><text class="lab" x="418" y="70">2</text>
+    <line class="edge hot" x1="368" y1="180" x2="452" y2="128" marker-end="url(#arh)"/><text class="lab" x="418" y="170">1</text>
+    <circle class="nodeA" cx="58" cy="116" r="20"/><text x="53" y="121">S</text>
+    <circle class="node" cx="180" cy="40" r="20"/><text x="175" y="45">A</text>
+    <circle class="node" cx="180" cy="190" r="20"/><text x="175" y="195">C</text>
+    <circle class="node" cx="350" cy="40" r="20"/><text x="345" y="45">B</text>
+    <circle class="node" cx="350" cy="190" r="20"/><text x="345" y="195">D</text>
+    <circle class="nodeA" cx="472" cy="116" r="20"/><text x="467" y="121">E</text>
+  </svg>
+  <p>Define dist(X) = minimum cost from X to E. Work backwards from the goal:</p>
+  <div class="tblwrap"><table>
+    <tr><th class="l">Node</th><th class="l">Calculation</th><th>dist</th><th class="l">Decision</th></tr>
+    <tr><td>E</td><td class="l">goal</td><td>0</td><td class="l">–</td></tr>
+    <tr><td>B</td><td class="l">2 + dist(E)</td><td>2</td><td class="l">go to E</td></tr>
+    <tr><td>D</td><td class="l">min{1 + dist(E), 1 + dist(B)} = min{1, 3}</td><td>1</td><td class="l">go to E</td></tr>
+    <tr><td>A</td><td class="l">6 + dist(B)</td><td>8</td><td class="l">go to B</td></tr>
+    <tr><td>C</td><td class="l">min{3 + dist(D), 4 + dist(A)} = min{4, 12}</td><td>4</td><td class="l">go to D</td></tr>
+    <tr><td>S</td><td class="l">min{2 + dist(C), 1 + dist(A)} = min{6, 9}</td><td>6</td><td class="l">go to C</td></tr>
+  </table></div>
+  <p>Optimal route S → C → D → E, cost 6. Notice the greedy first step (S → A costs only 1) is wrong. DP sees that A leads to an expensive tail. Unlike A*, DP is guaranteed optimal with no heuristic needed.</p>
+
+  <h3>2.3 The DP algorithm</h3>
+  <div class="flow">
+    <p>System \(x_{k+1}=f_k(x_k,u_k)\), cost \(J(x_0,\vec u)=g_N(x_N)+\sum_{k=0}^{N-1}g_k(x_k,u_k)\). The cost-to-go \(J_k(x_k)\) is the optimal cost of the tail problem from \(x_k\) at time k.</p>
+    \[J_N(x_N)=g_N(x_N),\qquad J_k(x_k)=\min_{u_k\in\mathbb U}\Big\{g_k(x_k,u_k)+J_{k+1}\big(f_k(x_k,u_k)\big)\Big\},\quad k=N-1,\dots,0\]
+    <p>The optimal cost is \(J^*(x_0)=J_0(x_0)\). To recover the actions, go <b>forward</b>: \(u_0^*=\arg\min\{g_0(x_0,u)+J_1(f_0(x_0,u))\}\), \(x_1^*=f_0(x_0,u_0^*)\), and so on.</p>
+    <p><b>Catch:</b> \(J_k\) must be computed for <i>every</i> state, because we don't know in advance which states we'll visit. Continuous states must be discretised, and large state spaces or long horizons get expensive (the "curse of dimensionality"). This motivates tabs 05 and 06.</p>
+  </div>
+
+  <h3>2.4 LQR solved by DP</h3>
+  <div class="flow">
+    <p>For \(x_{k+1}=Ax_k+Bu_k\), \(g_k=x^\top Qx+u^\top Ru\), \(g_N=x^\top Q_Fx\), the cost-to-go stays quadratic: \(J_k(x)=x^\top S_kx\).</p>
+    \[S_N=Q_F,\qquad S_k=A^\top S_{k+1}A+Q-A^\top S_{k+1}B(R+B^\top S_{k+1}B)^{-1}B^\top S_{k+1}A\]
+    \[u_k^*=L_kx_k,\qquad L_k=-(R+B^\top S_{k+1}B)^{-1}B^\top S_{k+1}A,\qquad J^*(x_0)=x_0^\top S_0x_0\]
+    <p><b>Why (one step):</b> \(J_{N-1}(x)=\min_u\{x^\top Qx+u^\top Ru+(Ax+Bu)^\top S_N(Ax+Bu)\}\). The bracket is quadratic in u. Setting its derivative to zero gives \(u=L_{N-1}x\), and substituting back gives \(x^\top S_{N-1}x\). Induction does the rest.</p>
+    <p><b>Scalar version</b> (a, b, q, r): \(S_k=q+\dfrac{a^2rS_{k+1}}{r+b^2S_{k+1}}\), \(L_k=-\dfrac{abS_{k+1}}{r+b^2S_{k+1}}\).</p>
+  </div>
+  <div class="box ex"><span class="tag">Simple example</span>
+    <p>\(a=b=q=r=1\), \(Q_F=1\), N = 2. \(S_2=1\). \(S_1=1+\frac{1\cdot1}{1+1}=1.5\). \(S_0=1+\frac{1.5}{2.5}=1.6\).</p>
+    <p>Gains: \(L_1=-\frac{1}{2}=-0.5\), \(L_0=-\frac{1.5}{2.5}=-0.6\). Optimal cost \(J^*=1.6x_0^2\). These are the numbers used in the MPC example in tab 01: MPC with N = 2 applies \(L_0=-0.6\) at every step.</p>
+  </div>
+  <div class="box exam"><span class="tag">Exam angle</span><p>Be ready to (i) run DP on a small graph or table and state the policy, (ii) do one or two Riccati steps by hand for a scalar system, and (iii) explain in words why DP works backwards (principle of optimality).</p></div>
+</section>
+
+<!-- ===================== STOCHASTIC DP ===================== -->
+<section class="panel" id="sdp" data-panel="sdp" hidden>
+  <h2>03 · Stochastic Dynamic Programming</h2>
+  <p class="lede">Now the next state depends on a random disturbance: \(x_{k+1}=f_k(x_k,u_k,w_k)\). We can't control exactly where we go, so we minimise the <b>expected</b> cost and choose a <b>policy</b> (a rule) instead of a fixed list of actions.</p>
+  <div class="box pracbox"><span class="tag">Your practical · P3</span><p>Random leg costs (certainty equivalence gives 1063 again), a random road closure (go West, 1013) and the parking stopping problem (threshold rules).</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr3">Open the P3 lesson →</button></p></div>
+
+  <h3>3.1 Policies, not sequences</h3>
+  <p>A policy is \(\pi=\{\mu_0,\dots,\mu_{N-1}\}\) with \(u_k=\mu_k(x_k)\). It uses the state we will <i>actually</i> observe later, so it reacts to the noise that happened. For stochastic systems policies typically beat fixed sequences. For deterministic systems they are equivalent. We minimise</p>
+  \[J_\pi(x_0)=\mathbb E\Big\{g_N(x_N)+\sum_{k=0}^{N-1}g_k\big(x_k,\mu_k(x_k),w_k\big)\Big\}\]
+  <p>Assumption: \(w_k\)'s distribution may depend on \(x_k,u_k\) but not on earlier w's.</p>
+
+  <h3>3.2 The stochastic DP algorithm</h3>
+  \[J_N(x)=g_N(x),\qquad J_k(x)=\min_{u\in\mathbb U}\ \mathbb E_{w_k}\Big\{g_k(x,u,w_k)+J_{k+1}\big(f_k(x,u,w_k)\big)\Big\}\]
+  <p>The only change from tab 02 is the expectation. If \(u_k^*=\mu_k^*(x_k)\) minimises the right side for every x and k, then \(\pi^*=\{\mu_0^*,\dots\}\) is optimal. You can compute the policy offline and store it, or store \(J_k\) and minimise online.</p>
+
+  <div class="box idea"><span class="tag">The expectation trick (most of exam Q2)</span>
+    <p>If \(\mathbb E\{w\}=0\), \(\mathbb E\{w^2\}=\sigma^2\), and w is uncorrelated with x and u, then for any expression a built from x and u:</p>
+    \[\mathbb E\{(a+w)^2\}=a^2+2a\,\mathbb E\{w\}+\mathbb E\{w^2\}=a^2+\sigma^2\]
+    <p>The noise adds a constant σ² that does <b>not</b> depend on u, so it doesn't change the best u. It only raises the cost. Vector version: \(\mathbb E\{w^\top Sw\}=\mathrm{tr}(S\Sigma)\).</p>
+  </div>
+
+  <div class="box ex"><span class="tag">Worked example (same structure as 2024 Q2)</span>
+    <p>\(x_{k+1}=x_k+u_k+w_k\), \(g_k=\beta x_k^2\), \(g_N=\beta x_N^2\), N = 3.</p>
+    <ul>
+      <li>\(J_3(x)=\beta x^2\).</li>
+      <li>\(J_2(x)=\min_u\mathbb E\{\beta x^2+\beta(x+u+w)^2\}=\beta x^2+\beta\min_u(x+u)^2+\beta\sigma^2\). Minimised at \(u=-x\), so \(J_2(x)=\beta x^2+\beta\sigma^2\).</li>
+      <li>\(J_1(x)=\beta x^2+\min_u\mathbb E\{\beta(x+u+w)^2+\beta\sigma^2\}=\beta x^2+2\beta\sigma^2\), with \(u=-x\).</li>
+      <li>\(J_0(x)=\beta x^2+3\beta\sigma^2\), with \(u=-x\).</li>
+    </ul>
+    <p>Pattern: \(J_k(x)=\beta x^2+(N-k)\beta\sigma^2\). Each remaining step adds one unit of unavoidable noise cost \(\beta\sigma^2\).</p>
+  </div>
+
+  <h3>3.3 LQR with noise and with packet dropouts</h3>
+  <div class="flow">
+    <p><b>Additive noise</b> \(x_{k+1}=Ax_k+Bu_k+w_k\): the gains \(L_k\) are exactly the deterministic ones (certainty equivalence). The cost increases by \(\sum_k\mathbb E\{w_k^\top S_{k+1}w_k\}\).</p>
+    <p><b>Intermittent communication:</b> \(B_k=B\) with probability Γ, and \(B_k=0\) with probability 1−Γ (wireless dropouts). Averaging over \(B_k\) gives \(\mathbb E\{B_k\}=\Gamma B\) and \(\mathbb E\{B_k^\top SB_k\}=\Gamma B^\top SB\), so</p>
+    \[L_k=-(R+\Gamma B^\top S_{k+1}B)^{-1}\Gamma B^\top S_{k+1}A,\quad S_k=A^\top S_{k+1}A+Q-A^\top S_{k+1}\Gamma B(R+\Gamma B^\top S_{k+1}B)^{-1}\Gamma B^\top S_{k+1}A\]
+    <p>Γ = 1 recovers ordinary LQR.</p>
+  </div>
+
+  <h3>3.4 Markov Decision Processes</h3>
+  <div class="flow">
+    <p>When states and actions are finite, describe the randomness with <b>transition probabilities</b> instead of an equation:</p>
+    \[p_{ij}(u)=\Pr(x_{k+1}=j\mid x_k=i,\ u_k=u),\qquad\sum_j p_{ij}(u)=1\]
+    <p>The DP recursion becomes a weighted sum: \(J_k(i)=\min_u\big\{g(i,u)+\sum_jp_{ij}(u)J_{k+1}(j)\big\}\). (Any MDP can be written as \(x_{k+1}=w_k\), and any \(f(x,u,w)\) model gives \(p_{ij}\).)</p>
+  </div>
+  <div class="box ex"><span class="tag">Rover on Pluto (from the notes)</span>
+    <p>States T (top), R (rolling), B (bottom). Actions 0 = idle, 1 = drive. Harvest h = 3 at the top, driving costs e = 2. Costs: g(T,0) = −3, g(T,1) = −1, g(R,0) = g(B,0) = 0, g(R,1) = g(B,1) = 2. N = 3, \(g_3=0\).</p>
+    <div class="grid2">
+      <div class="tblwrap"><table><tr><th>P(0)</th><th>T</th><th>R</th><th>B</th></tr><tr><th>T</th><td>.75</td><td>.25</td><td>0</td></tr><tr><th>R</th><td>0</td><td>0</td><td>1</td></tr><tr><th>B</th><td>0</td><td>0</td><td>1</td></tr></table></div>
+      <div class="tblwrap"><table><tr><th>P(1)</th><th>T</th><th>R</th><th>B</th></tr><tr><th>T</th><td>.8</td><td>.2</td><td>0</td></tr><tr><th>R</th><td>.9</td><td>0</td><td>.1</td></tr><tr><th>B</th><td>0</td><td>.1</td><td>.9</td></tr></table></div>
+    </div>
+    <p><b>k = 2</b> (\(J_3=0\)): \(J_2(T)=\min\{-3,-1\}=-3\) (idle), \(J_2(R)=\min\{0,2\}=0\), \(J_2(B)=0\).</p>
+    <p><b>k = 1</b>: \(J_1(T)=\min\{-3+0.75(-3),\ -1+0.8(-3)\}=\min\{-5.25,-3.4\}=-5.25\) (idle).<br>\(J_1(R)=\min\{0+1\cdot0,\ 2+0.9(-3)\}=\min\{0,-0.7\}=-0.7\) (drive). \(J_1(B)=\min\{0,2\}=0\) (idle).</p>
+    <p><b>k = 0</b>: \(J_0(T)=\min\{-3+0.75(-5.25)+0.25(-0.7),\ -1+0.8(-5.25)+0.2(-0.7)\}=\min\{-7.1125,-5.34\}\) (idle).<br>\(J_0(R)=\min\{0,\ 2+0.9(-5.25)\}=-2.725\) (drive). \(J_0(B)=\min\{0,\ 2+0.1(-0.7)\}=\min\{0,1.93\}=0\) (idle).</p>
+    <div class="tblwrap"><table><tr><th></th><th>μ<sub>0</sub></th><th>μ<sub>1</sub></th><th>μ<sub>2</sub></th></tr><tr><th>T</th><td>0</td><td>0</td><td>0</td></tr><tr><th>R</th><td>1</td><td>1</td><td>0</td></tr><tr><th>B</th><td>0</td><td>0</td><td>0</td></tr></table></div>
+    <p>Note the policy depends on time: at the last step, driving while rolling isn't worth it, because there's no future harvest to gain.</p>
+  </div>
+  <div class="box exam"><span class="tag">Exam angle</span><p>2024 Q2 was 40 marks of exactly section 3.2. Write each \(J_k\) explicitly, show the expectation step, differentiate, state \(\mu_k(x)\), then give \(J_0(x_0)\). Part (b) is algebra on your final answer. For MDP questions, lay out a table per stage with one column per action.</p></div>
+</section>
+
+<!-- ===================== INFINITE HORIZON DP ===================== -->
+<section class="panel" id="ihdp" data-panel="ihdp" hidden>
+  <h2>04 · Infinite Horizon Dynamic Programming</h2>
+  <p class="lede">For systems that run "forever" (continuing tasks), we discount future costs. The optimal policy then stops depending on time: one rule for all k. Two algorithms find it: Value Iteration and Policy Iteration.</p>
+  <div class="box pracbox"><span class="tag">Your practical · P4</span><p>Grid world VI with resets, and Frozen Lake deterministic vs slippery: VI took 180 iterations, PI 5, and the slippery-optimal policy hugs walls.</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr4">Open the P4 lesson →</button></p></div>
+
+  <h3>4.1 Discounted cost</h3>
+  \[J_\pi(x)=\lim_{N\to\infty}\mathbb E\Big\{\sum_{k=0}^{N-1}\alpha^kg\big(x_k,\mu_k(x_k),w_k\big)\Big\},\qquad \alpha\in[0,1)\]
+  <ul>
+    <li>α = 0: myopic, only today's cost counts. α near 1: far-sighted, future costs matter almost as much (and algorithms converge more slowly).</li>
+    <li>Discounting keeps the infinite sum finite: if \(|g|\le M\) then \(|J|\le M/(1-\alpha)\). Useful identity: \(\sum_{k\ge0}\alpha^k=\frac1{1-\alpha}\). Example: cost 1 every step with α = 0.9 ⇒ total 10.</li>
+    <li>Key recursive property: \(J_\pi(x_0)=\mathbb E\{g(x_0,\mu(x_0),w_0)\}+\alpha J_\pi(x_1)\). Today's cost plus the discounted cost from tomorrow.</li>
+    <li>For shortest-path problems that end in finite time, α = 1 is allowed.</li>
+  </ul>
+
+  <h3>4.2 Bellman's equation</h3>
+  \[J^*(x)=\min_{u}\ \mathbb E_w\Big\{g(x,u,w)+\alpha J^*\big(f(x,u,w)\big)\Big\}\qquad\text{finite: }J^*(i)=\min_u\Big\{g(i,u)+\alpha\sum_jp_{ij}(u)J^*(j)\Big\}\]
+  <p>\(J^*\) is the fixed point of the Bellman operator \(TJ(x)=\min_u\mathbb E\{g+\alpha J(f)\}\). The minimising u at each x is the optimal stationary policy \(\mu^*\). For a fixed policy μ: \(J_\mu=T_\mu J_\mu\), i.e. \(J_\mu(i)=g(i,\mu(i))+\alpha\sum_jp_{ij}(\mu(i))J_\mu(j)\).</p>
+
+  <h3>4.3 Value Iteration (VI)</h3>
+  <div class="flow">
+    <p>Start from any bounded \(V_0\) (usually 0) and apply Bellman's equation repeatedly:</p>
+    \[V_{k+1}(i)=\min_u\Big\{g(i,u)+\alpha\sum_jp_{ij}(u)V_k(j)\Big\}\qquad\text{matrix form: }V_{k+1}=\min\{G(0)+\alpha P(0)V_k,\ G(1)+\alpha P(1)V_k\}\]
+    <p>(min taken row by row). \(V_k\) is the optimal k-stage cost. It is DP run forwards with the time index reversed. \(V_k\to J^*\) as k → ∞ (T is a contraction: the error shrinks like \(\alpha^K M/(1-\alpha)\)). The greedy policy often settles before the values do, but that is not guaranteed.</p>
+  </div>
+
+  <div class="widget" id="viw">
+    <span class="eyebrow">Try it · VI on the Rover</span>
+    <div class="ctrls">
+      <label for="alpha">α <input type="range" id="alpha" min="0.5" max="0.99" step="0.01" value="0.9"><b id="alphav" class="mono"></b></label>
+      <label for="iters">iterations k <input type="range" id="iters" min="0" max="80" step="1" value="3"><b id="itersv" class="mono"></b></label>
+    </div>
+    <div class="tblwrap"><table id="vitab"></table></div>
+    <p class="stat" id="vistat"></p>
+  </div>
+
+  <h3>4.4 Policy Iteration (PI)</h3>
+  <ol>
+    <li><b>Policy evaluation (critic):</b> for the current policy μ, solve the linear equations \(J_\mu=g_\mu+\alpha P_\mu J_\mu\), i.e. \(J_\mu=(I-\alpha P_\mu)^{-1}g_\mu\). Or iterate \(J_{\mu,k+1}=g_\mu+\alpha P_\mu J_{\mu,k}\) until it settles.</li>
+    <li><b>Policy improvement (actor):</b> \(\mu^{new}(i)=\arg\min_u\{g(i,u)+\alpha\sum_jp_{ij}(u)J_\mu(j)\}\).</li>
+    <li>If the policy didn't change, stop: it is optimal. Otherwise go to 1.</li>
+  </ol>
+  <p>There are finitely many policies and each iteration improves, so PI stops in finitely many steps. For the Rover with α = 0.96 it converges within 2 improvements (notes, Table 1): μ = (0,0,0) → (0,1,0) → (0,1,1).</p>
+  <div class="box ex"><span class="tag">Simple example · 2-state machine</span>
+    <p>States G (good) and D (damaged). Actions 0 = keep running, 1 = repair. Costs g(G,0) = 0, g(G,1) = 2, g(D,0) = 5, g(D,1) = 7. α = 0.9.</p>
+    <p>\(P(0)=\begin{bmatrix}0.7&amp;0.3\\0&amp;1\end{bmatrix}\), \(P(1)=\begin{bmatrix}0.9&amp;0.1\\0.6&amp;0.4\end{bmatrix}\) (rows G, D).</p>
+    <p><b>Evaluate μ = (0,0):</b> \(J(D)=5+0.9J(D)\Rightarrow J(D)=50\). \(J(G)=0.9(0.7J(G)+0.3\cdot50)\Rightarrow0.37J(G)=13.5\Rightarrow J(G)=36.49\).</p>
+    <p><b>Improve:</b> G: u=0 → 36.49, u=1 → \(2+0.9(0.9\cdot36.49+0.1\cdot50)=36.05\). D: u=0 → 50, u=1 → \(7+0.9(0.6\cdot36.49+0.4\cdot50)=44.70\). New μ = (1,1).</p>
+    <p><b>Evaluate (1,1):</b> J = (26.16, 33.01). <b>Improve:</b> G: 25.40 (u=0) vs 26.16 (u=1) → 0. D: 34.71 vs 33.01 → 1. New μ = (0,1).</p>
+    <p><b>Evaluate (0,1):</b> J = (20.77, 28.46). <b>Improve:</b> G: 20.77 vs 21.38 → 0. D: 30.62 vs 28.46 → 1. Unchanged ⇒ <b>optimal μ* = (keep running when good, repair when damaged)</b>, J* = (20.77, 28.46).</p>
+  </div>
+
+  <h3>4.5 VI vs PI</h3>
+  <div class="tblwrap"><table>
+    <tr><th class="l"></th><th class="l">Value Iteration</th><th class="l">Policy Iteration</th></tr>
+    <tr><td class="l">Each iteration</td><td class="l">cheap: one Bellman update (minimise once per state)</td><td class="l">expensive: full policy evaluation (solve linear system)</td></tr>
+    <tr><td class="l">Iterations needed</td><td class="l">many; values converge only in the limit</td><td class="l">few; finite and exact</td></tr>
+    <tr><td class="l">Decisions evaluated over</td><td class="l">a single step</td><td class="l">the whole infinite horizon</td></tr>
+    <tr><td class="l">Output</td><td class="l">approximate J*, then extract policy</td><td class="l">optimal policy directly (actor–critic view)</td></tr>
+  </table></div>
+  <p>Variants: limit the number of evaluation sweeps in PI (optimistic/truncated PI). <b>Asynchronous</b> methods update only some states each step (e.g. those visited often), which suits real-time use. <b>Average-cost</b> problems minimise \(\lim\frac1N\mathbb E\sum g\) (optional).</p>
+  <p><b>Rover results:</b> α = 0.9 ⇒ μ = (T:0, R:1, B:0), same as the N = 3 finite-horizon policy. α = 0.96 ⇒ μ = (0, 1, 1): when you value the future more, it becomes worth driving up from the bottom.</p>
+  <div class="box exam"><span class="tag">Exam angle</span><p>Likely tasks: 2–3 VI iterations in a table, one PI evaluation (2×2 linear system) plus improvement, the role of α, and a VI vs PI comparison. 2×2 inverse: \(\begin{bmatrix}a&amp;b\\c&amp;d\end{bmatrix}^{-1}=\frac1{ad-bc}\begin{bmatrix}d&amp;-b\\-c&amp;a\end{bmatrix}\).</p></div>
+</section>
+
+<!-- ===================== APPROX DP ===================== -->
+<section class="panel" id="adp" data-panel="adp" hidden>
+  <h2>05 · Approximate Dynamic Programming</h2>
+  <p class="lede">Exact DP needs \(J_k\) for every state, which is impossible for big problems. Instead, use an approximation \(\tilde J\) of the cost-to-go and choose actions by a one-step (or multi-step) lookahead. This loses guaranteed optimality but gains speed.</p>
+  <div class="box pracbox"><span class="tag">Your practical · P5</span><p>Distance heuristic + one-step lookahead loops in a dead end; ℓ = 3 fixes it. Linear features learn r = [10, 10, 2] exactly by SGD.</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr5">Open the P5 lesson →</button></p></div>
+
+  <h3>5.1 Approximation in value space</h3>
+  \[\tilde u_k\in\arg\min_{u}\Big\{g_k(x_k,u)+\tilde J_{k+1}\big(f_k(x_k,u)\big)\Big\}\]
+  <p>No backward pass: the controls are computed going forward, because \(\tilde J\) is assumed available. If \(\tilde J=J\) exactly, you get the optimal control. The better \(\tilde J\), the better the policy. \(\tilde J\) can come from intuition (a heuristic), from rollout, or from a trained parametric model.</p>
+
+  <h3>5.2 Rollout</h3>
+  <div class="flow">
+    <p>Pick a simple <b>base policy</b> (a heuristic). To evaluate each candidate action, apply it, then "roll out" the base policy to the end and add up the cost. That total is \(\tilde J\). Choose the action with the lowest total. Then move one step and repeat.</p>
+    <p><b>Cost improvement property:</b> the rollout policy is never worse than the base policy (typically strictly better). The name comes from Tesauro's backgammon program, which "rolled out" many games from a position.</p>
+  </div>
+  <div class="box ex"><span class="tag">Travelling salesman (from the notes)</span>
+    <p>Start and end at A, visit every city once. Distances: AB 100, AC 300, AD 100, AE 75, BC 50, BD 75, BE 125, CD 100, CE 125, DE 50. Base policy = <b>nearest neighbour</b> (always go to the closest unvisited city). Nearest neighbour alone gives A-E-D-B-C-A = 550.</p>
+    <div class="tblwrap"><table>
+      <tr><th>Stage</th><th class="l">Candidate + N.N. completion</th><th>Length</th></tr>
+      <tr><td rowspan="4">1</td><td class="l"><b>A B</b> C D E A</td><td><b>375</b></td></tr>
+      <tr><td class="l">A C B D E A</td><td>550</td></tr>
+      <tr><td class="l">A D E B C A</td><td>625</td></tr>
+      <tr><td class="l">A E D B C A</td><td>550</td></tr>
+      <tr><td rowspan="3">2</td><td class="l"><b>A B C</b> D E A</td><td><b>375</b></td></tr>
+      <tr><td class="l">A B D E C A</td><td>650</td></tr>
+      <tr><td class="l">A B E D C A</td><td>675</td></tr>
+      <tr><td rowspan="2">3</td><td class="l"><b>A B C D</b> E A</td><td><b>375</b></td></tr>
+      <tr><td class="l">A B C E D A</td><td>425</td></tr>
+    </table></div>
+    <p>Rollout tour A-B-C-D-E-A = 375, which is optimal here (not always). Check one: A→B 100, B→C 50, C→D 100, D→E 50, E→A 75 = 375.</p>
+  </div>
+
+  <h3>5.3 Stochastic problems and certainty-equivalent control</h3>
+  <div class="flow">
+    <p>With noise there are two things to approximate: the cost-to-go and the expectation \(\mathbb E_w\{\cdot\}\). <b>Certainty-equivalent control (CEC)</b> replaces the random \(w_k\) by one typical value \(\bar w_k\) (usually \(\mathbb E\{w_k\}\)), giving a deterministic problem:</p>
+    \[\min_u\Big\{g_k(x_k,u,\bar w_k)+\tilde J_{k+1}\big(f_k(x_k,u,\bar w_k)\big)\Big\}\]
+    <p>For linear systems with quadratic cost and Gaussian noise (LQG), CEC is exactly optimal, as you saw in tab 03 where noise didn't change the LQR gain.</p>
+  </div>
+  <div class="box ex"><span class="tag">Simple example</span><p>\(x_1=x+u+w\) with \(\mathbb E w=1\), cost \(u^2+x_1^2\). CEC: set w = 1 and minimise \(u^2+(x+u+1)^2\Rightarrow u=-(x+1)/2\). The true expected cost is \(u^2+(x+u+1)^2+\mathrm{Var}(w)\), which has the same minimiser, so CEC is exact here because the cost is quadratic.</p></div>
+
+  <h3>5.4 Multistep lookahead and truncated rollout</h3>
+  <p>Look ℓ steps ahead instead of one: optimise \(u_k,\mu_{k+1},\dots,\mu_{k+\ell-1}\) for \(\mathbb E\{\sum_{j=k}^{k+\ell-1}g_j+\tilde J_{k+\ell}(x_{k+\ell})\}\), apply only the first control, and repeat (exactly the MPC idea). Large ℓ compensates for a poor \(\tilde J\) but costs more computation. <b>Truncated rollout:</b> run the base policy for ℓ−1 steps, then add a terminal approximation \(\tilde J_{k+\ell}\). If ℓ is large, \(\tilde J=0\) often works. For infinite horizon: \(\tilde\mu(x)\in\arg\min_u\mathbb E\{g(x,u,w)+\alpha\tilde J(f(x,u,w))\}\).</p>
+
+  <h3>5.5 Parametric approximation</h3>
+  <div class="flow">
+    <p>Choose a family \(\tilde J(x,r)\) with tunable parameters r (polynomials, Gaussian bases, neural networks). Simplest and most common: <b>features</b> \(\phi(x)=[\phi_1(x),\dots,\phi_m(x)]^\top\) (handcrafted, e.g. aggregated states) and a <b>linear</b> architecture</p>
+    \[\tilde J(x,r)=r^\top\phi(x)=\sum_{\ell=1}^m r_\ell\,\phi_\ell(x)\qquad(r=\text{weights})\]
+    <p><b>Training:</b> collect samples \((x^s,\beta^s)\) where \(\beta^s\) is a (noisy) cost estimate at \(x^s\), and minimise the squared error</p>
+    \[\Phi(r)=\tfrac12\sum_{s=1}^q\big(\tilde J(x^s,r)-\beta^s\big)^2\]
+    <p>For the linear architecture this is convex, and setting the gradient to zero gives least squares:</p>
+    \[\hat r=\Big(\sum_s\phi(x^s)\phi(x^s)^\top\Big)^{-1}\sum_s\beta^s\phi(x^s)\]
+    <p>Or <b>gradient descent</b>: \(r^{\ell+1}=r^\ell-\gamma^\ell\sum_s\phi(x^s)\big(r^{\ell\top}\phi(x^s)-\beta^s\big)\), with a decreasing step size \(\gamma^\ell\). <b>Stochastic GD</b> uses one (or a few) random samples per step: cheaper and often faster. For finite horizons you fit a separate \(r_k\) for each stage, working backwards. Infinite horizon needs only one r.</p>
+  </div>
+  <div class="box ex"><span class="tag">Simple example</span>
+    <p>Features \(\phi(x)=[1,\ x]^\top\), samples (x, β) = (0, 1), (1, 3), (2, 7).</p>
+    <p>\(\sum\phi\phi^\top=\begin{bmatrix}3&amp;3\\3&amp;5\end{bmatrix}\), \(\sum\beta\phi=\begin{bmatrix}11\\17\end{bmatrix}\), inverse \(=\frac16\begin{bmatrix}5&amp;-3\\-3&amp;3\end{bmatrix}\) ⇒ \(\hat r=\frac16\begin{bmatrix}4\\18\end{bmatrix}=\begin{bmatrix}0.667\\3\end{bmatrix}\). So \(\tilde J(x)=0.667+3x\).</p>
+    <p>One GD step from r = 0 with γ = 0.1: gradient \(=-[11,17]^\top\) ⇒ \(r^1=[1.1,\ 1.7]^\top\).</p>
+  </div>
+  <div class="box exam"><span class="tag">Exam angle</span><p>Expect "explain rollout and why it improves on the base policy", a short rollout computation, CEC in words, or a small least-squares fit. Key phrases: base policy, cost improvement, one-step lookahead, certainty equivalence, features and weights.</p></div>
+</section>
+
+<!-- ===================== RL ===================== -->
+<section class="panel" id="rl" data-panel="rl" hidden>
+  <h2>06 · Reinforcement Learning</h2>
+  <p class="lede">Everything so far needed a model (f or p<sub>ij</sub>). RL learns good actions directly from experience: try an action, see the cost and the next state, and nudge a table of estimates. These are tabular methods for finite states and actions.</p>
+  <div class="box pracbox"><span class="tag">Your practical · P6</span><p>Cliff Walking: Q-learning takes the 13-step edge path, SARSA a 15/17-step safe detour, because SARSA learns the value of the exploring policy.</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr6">Open the P6 lesson →</button></p></div>
+
+  <svg class="dia" viewBox="0 0 520 150" role="img" aria-label="Agent environment loop">
+    <rect class="bar" x="20" y="45" width="140" height="56" rx="6"/><text x="62" y="78">Agent</text>
+    <rect class="bar2" x="360" y="45" width="140" height="56" rx="6"/><text x="380" y="78">Environment</text>
+    <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" style="fill:var(--muted)"/></marker></defs>
+    <path class="edge" d="M160,58 C240,20 290,20 360,58" marker-end="url(#ar2)"/><text x="232" y="26">action uₖ</text>
+    <path class="edge" d="M360,92 C290,130 240,130 160,92" marker-end="url(#ar2)"/><text x="186" y="142">cost g(xₖ,uₖ,wₖ), next state xₖ₊₁</text>
+  </svg>
+  <p>The traditional alternative is system identification (fit a model from data, then use MPC/DP). RL skips the explicit model. It is also called neuro-dynamic programming.</p>
+
+  <h3>6.1 Temporal-difference (TD) prediction</h3>
+  <div class="flow">
+    <p>Goal: estimate \(J_\mu(x)\) for a fixed policy μ from data. Bellman says \(J_\mu(x)=\mathbb E\{g+\alpha J_\mu(x')\}\), so each observed \(g+\alpha J(x')\) is an unbiased sample of \(J_\mu(x)\). Nudge the estimate toward it:</p>
+    \[J(x_k)\leftarrow J(x_k)+\delta_k\Big[\underbrace{g(x_k,\mu(x_k),w_k)+\alpha J(x_{k+1})}_{\text{TD target}}-J(x_k)\Big]\]
+    <p>The bracket is the <b>TD error</b>: how surprised we are. δ is the learning rate. It is a Robbins–Monro stochastic approximation scheme.</p>
+  </div>
+  <div class="box ex"><span class="tag">Simple example</span><p>J = 0 everywhere, α = 0.9, δ = 0.5. Observed: A (cost 2) → B (cost 0) → A (cost 2) → B.<br>
+  1) \(J(A)=0+0.5(2+0.9\cdot0-0)=1\). 2) \(J(B)=0+0.5(0+0.9\cdot1-0)=0.45\). 3) \(J(A)=1+0.5(2+0.9\cdot0.45-1)=1.7025\).</p></div>
+
+  <h3>6.2 Action-value functions (Q-factors)</h3>
+  <div class="flow">
+    \[Q_\mu(x,u)=\mathbb E\{g(x,u,w)+\alpha J_\mu(f(x,u,w))\}\]
+    <p>"Cost of doing u now, then following μ." The optimal Q-factor gives both the value and the policy without a model:</p>
+    \[J^*(x)=\min_uQ^*(x,u),\qquad\mu^*(x)=\arg\min_uQ^*(x,u),\qquad Q^*(x,u)=\mathbb E\Big\{g(x,u,w)+\alpha\min_{u'}Q^*(f(x,u,w),u')\Big\}\]
+    <p>The last equation is the <b>Q-Bellman equation</b>, the basis of Q-learning.</p>
+  </div>
+
+  <h3>6.3 Sarsa (on-policy)</h3>
+  \[Q(x,u)\leftarrow Q(x,u)+\delta\Big[g(x,u,w)+\alpha\,Q(x',u')-Q(x,u)\Big]\]
+  <p>Uses the quintuple (x, u, g, x′, u′): <b>S</b>tate, <b>A</b>ction, <b>R</b>eward, <b>S</b>tate, <b>A</b>ction. Here u′ is the action actually taken next. Algorithm 1: measure x, pick u (ε-greedy); loop: apply u, observe g and x′, pick u′ (ε-greedy), update Q(x,u), set x←x′, u←u′. Only the visited entry changes. Terminal states start (and stay) at Q = 0.</p>
+
+  <h3>6.4 Exploration: ε-greedy</h3>
+  <p>With probability 1−ε pick the greedy action \(\arg\min_uQ(x,u)\) (exploit). With probability ε pick a random action (explore). Since the random pick can also land on the greedy action, P(greedy) = 1 − ε + ε/|U|. ε usually decreases over time, e.g. \(\varepsilon_k=1/k\) or \(\max(1/k,0.01)\). Without exploration some actions are never tried and their Q stays wrong.</p>
+
+  <h3>6.5 Q-learning (off-policy)</h3>
+  \[Q(x,u)\leftarrow Q(x,u)+\delta\Big[g(x,u,w)+\alpha\min_{u'}Q(x',u')-Q(x,u)\Big]\]
+  <p>Same as Sarsa except the target uses the <b>best</b> next action, not the one taken. It learns \(Q^*\) (the greedy policy's values) while behaving ε-greedily. That makes it <b>off-policy</b>: the policy being learned differs from the policy being followed. Sarsa learns the values of the policy it actually follows (<b>on-policy</b>), including its exploration, so it tends to be more cautious.</p>
+  <div class="box ex"><span class="tag">Simple example · one update, two algorithms</span><p>Costs. Q(s1,a) = 4, Q(s2,a) = 3, Q(s2,b) = 1. Observe (s1, a, g = 2, s2) and the ε-greedy rule explores and picks a next. δ = 0.5, α = 0.9.<br>
+  Sarsa: \(4+0.5(2+0.9\cdot Q(s2,a)-4)=4+0.5(0.7)=4.35\).<br>
+  Q-learning: \(4+0.5(2+0.9\cdot\min\{3,1\}-4)=4+0.5(-1.1)=3.45\).</p></div>
+
+  <h3>6.6 Convergence conditions</h3>
+  <ul>
+    <li>Every (x,u) pair visited infinitely often (enough exploration).</li>
+    <li>Learning rate: \(\delta_k&gt;0,\ \sum_k\delta_k=\infty,\ \sum_k\delta_k^2&lt;\infty\). Example: \(\delta_k=1/k\) works. Constant δ fails the second condition. \(1/k^2\) fails the first (it stops learning too early).</li>
+    <li>For Sarsa to reach \(Q^*\), the policy must become greedy in the limit (ε → 0). With constant ε, Sarsa converges to the Q of the ε-greedy policy.</li>
+    <li>In the Rover experiments: δ = 0.1, \(\varepsilon_k=\max(1/k,0.01)\), 500 episodes of 1000 steps, with Q carried between episodes.</li>
+  </ul>
+
+  <h3>6.7 Bigger problems and caveats</h3>
+  <p>For large spaces use \(\hat Q(x,u;r)\) (e.g. a neural network) and minimise the squared TD error \(\mathbb E\{(g+\alpha\min_u\hat Q(x',u;r)-\hat Q(x,u;r))^2\}\) by gradient descent. This is deep RL (DQN). Convergence of learning does <b>not</b> guarantee closed-loop stability, because learning and plant dynamics are coupled and discounting doesn't force stability. Use expert knowledge (features, known dynamics) and don't learn what you already know.</p>
+
+  <div class="box exam"><span class="tag">Exam angle · rewards vs costs</span><p>The notes minimise costs. 2024 Q3 gave <b>rewards</b>, so the best action is the one with the <b>largest</b> Q (equivalently use cost = −reward). The Sarsa update itself has no min/max, so it is unchanged. Q-learning would use max. Always lay out a table: step, (x,u), r, (x′,u′), old Q, target, new Q.</p></div>
+</section>
+
+<!-- ===================== PRACTICALS ===================== -->
+<section class="panel" id="prac" data-panel="prac" hidden>
+  <h2>Your practicals as exam lessons</h2>
+  <p class="lede">Each of your six practical submissions (P1–P6) taught by hand: what the problem was, the equation behind the code you wrote, your results and why they came out that way, a hand-sized version you can do on paper, and exam questions drawn from it.</p>
+  <div class="pills" role="navigation" aria-label="Practicals">
+    <button type="button" class="pill" data-scroll="pr1">P1 · MPC crane</button>
+    <button type="button" class="pill" data-scroll="pr2">P2 · Shortest path &amp; TSP</button>
+    <button type="button" class="pill" data-scroll="pr3">P3 · Stochastic DP</button>
+    <button type="button" class="pill" data-scroll="pr4">P4 · VI &amp; PI</button>
+    <button type="button" class="pill" data-scroll="pr5">P5 · Approx. in value space</button>
+    <button type="button" class="pill" data-scroll="pr6">P6 · Q-learning vs SARSA</button>
+  </div>
+  <div class="box idea"><span class="tag">How to use this tab</span>
+    <p>The exam won't ask you to write Python or MATLAB. It asks for the <b>idea behind the code</b> (explain in words) and <b>small versions of the same calculations</b> (by hand). For each practical: (1) read the "code ↔ equation" box until you can write the equation from memory; (2) redo the hand-sized example on paper; (3) answer the exam questions before opening them.</p>
+  </div>
+
+  <!-- ============ P1 ============ -->
+  <article class="prac" id="pr1">
+    <h3>P1 · Model Predictive Control: the gantry crane</h3>
+    <p class="stat">Topic tab: 01 MPC · 2024 exam link: Q1 (role of Q, Q<sub>F</sub>, R; receding horizon)</p>
+
+    <h4>The problem in plain words</h4>
+    <p>A cart runs along a 12 m crane track with a load hanging below it, modelled as a rigid rod. A motor pushes the cart with at most 100 N. The cart must carry a container from the dock (p = 2 m) to the ship (p = 10 m) in under 10 s, and for safety the load may not swing more than 10° or faster than 50°/s.</p>
+    <div class="tblwrap"><table>
+      <tr><th class="l">Item</th><th class="l">Your answer (Q1)</th></tr>
+      <tr><td class="l">State</td><td class="l">\(x=[p,\ v,\ \theta,\ \omega]^\top\): position, velocity, rod angle, angular rate</td></tr>
+      <tr><td class="l">Initial condition</td><td class="l">\(x_0=[2,0,0,0]^\top\) (at rest over the containers)</td></tr>
+      <tr><td class="l">Goal</td><td class="l">\(x^*=[10,0,0,0]^\top\): over the ship, stopped, no swing, within 10 s</td></tr>
+      <tr><td class="l">State constraints</td><td class="l">\(0\le p\le 12\) m, \(|v|\le 3\) m/s, \(|\theta|\le 10^\circ=0.1745\) rad, \(|\omega|\le 50^\circ/\text{s}=0.8727\) rad/s</td></tr>
+      <tr><td class="l">Input constraint</td><td class="l">\(|u|\le 100\) N</td></tr>
+    </table></div>
+    <p>The angle limits do two jobs: they keep the load safe, and they keep the system in the small-angle region where the <b>linearised</b> model is valid.</p>
+
+    <h4>Step 1: continuous → discrete time</h4>
+    <p>Controllers run on a computer, so the model is sampled every \(T_s=0.1\) s with a zero-order hold (input held constant between samples):</p>
+    <div class="mjx-wrap">\[\begin{bmatrix}A & B\\ 0 & I\end{bmatrix}=\exp\!\left(\begin{bmatrix}A_c & B_c\\ 0 & 0\end{bmatrix}T_s\right)\quad\Rightarrow\quad x_{k+1}=Ax_k+Bu_k\]</div>
+    <p>That is the line <code>ABdisc = expm([Ac Bc; zeros(1,5)]*Ts)</code> in your code.</p>
+
+    <h4>Step 2: choosing Q and R (Bryson's rule)</h4>
+    <p>The states have very different units (metres and radians), so start by normalising each weight with the largest value you will tolerate:</p>
+    <div class="mjx-wrap">\[Q_{ii}=\frac{1}{(x_i^{\max})^2},\qquad R=\frac{1}{(u^{\max})^2}\]</div>
+    <div class="tblwrap"><table>
+      <tr><th>State</th><th>max allowed</th><th>\(Q_{ii}=1/\max^2\)</th></tr>
+      <tr><td>p (8 m move)</td><td>8</td><td>0.016</td></tr>
+      <tr><td>v</td><td>3</td><td>0.11</td></tr>
+      <tr><td>θ</td><td>0.1745</td><td>32.8</td></tr>
+      <tr><td>ω</td><td>0.8727</td><td>1.31</td></tr>
+      <tr><td>u</td><td>100</td><td>R = 1×10<sup>−4</sup></td></tr>
+    </table></div>
+    <p>Then you tuned by looking at B: one newton for one sample changes ω by about 1.05 rad/s but v by only 0.23 m/s. <b>The swing reacts long before the cart moves fast</b>, so the swing limits are the binding constraints and the 100 N limit is never close. That is why your final choice was <code>Q = diag([0.5 1 500 50])</code>, R = 1: large weights on θ and ω, a moderate weight on p.</p>
+
+    <h4>Step 3: what LQR achieved and why it is conservative</h4>
+    <div class="tblwrap"><table>
+      <tr><th class="l">Design</th><th>Settling</th><th>peak θ</th><th>peak ω</th><th>peak v</th><th>Meets spec?</th></tr>
+      <tr><td class="l">Q = I, R = 1</td><td>4.4 s</td><td class="bad">46°</td><td class="bad">251°/s</td><td class="bad">3.67 m/s</td><td class="bad">No, every state limit broken</td></tr>
+      <tr><td class="l">Bryson</td><td class="bad">11.3 s</td><td>7.0°</td><td>38°/s</td><td>1.42</td><td class="bad">No, too slow</td></tr>
+      <tr><td class="l">diag(0.5,1,500,50), R=1</td><td>7.3 s</td><td>8.7°</td><td>37°/s</td><td>1.82</td><td class="good">Yes</td></tr>
+    </table></div>
+    <p>LQR is a fixed linear law \(u=-K(x-x^*)\), so its biggest push happens at t = 0 when the error is 8 m. The gains have to be detuned for that worst moment, which slows the rest of the move: the cart only reaches 1.82 of the allowed 3 m/s. The constraints are met only <b>indirectly, by trial and error</b>, and the swing scales with the move size: the same gains on a 10 m move give about 10.8°, which breaks the limit.</p>
+
+    <h4>Step 4: the MPC code ↔ the batch equations</h4>
+    <div class="box idea"><span class="tag">Code ↔ equation</span>
+      <p>Your loop builds the prediction \(\vec x=\Phi\vec u+\Lambda x_k\) (code: <code>Phi</code> = Φ, <code>Delta</code> = Λ), with \(\bar Q=\text{blkdiag}(Q,\dots,Q)\) and \(\bar R=\text{blkdiag}(R,\dots,R)\). Tracking cost \((\vec x-\vec x^*)^\top\bar Q(\vec x-\vec x^*)+\vec u^\top\bar R\vec u\) becomes a QP in \(\vec u\):</p>
+      <div class="mjx-wrap">\[H=2(\Phi^\top\bar Q\Phi+\bar R),\qquad f=2\Phi^\top\bar Q(\Lambda x_k-\vec x^*)\]</div>
+      <p>State bounds \(\vec x_{\min}\le\Phi\vec u+\Lambda x_k\le\vec x_{\max}\) are split into two "≤" rows each:</p>
+      <div class="mjx-wrap">\[\underbrace{\begin{bmatrix}-\Phi\\ \Phi\\ -I\\ I\end{bmatrix}}_{A_{in}}\vec u\le\underbrace{\begin{bmatrix}\Lambda x_k-\vec x_{\min}\\ \vec x_{\max}-\Lambda x_k\\ -\vec u_{\min}\\ \vec u_{\max}\end{bmatrix}}_{b_{in}}\]</div>
+      <p>H is fixed, but f and b<sub>in</sub> depend on the measured \(x_k\), so the QP is re-solved every sample and only <code>uMPCout(1)</code> is applied. That is the receding-horizon principle in one line.</p>
+    </div>
+    <p><b>Size of the QP</b> with N = 30: N = 30 decision variables (one input per step) and \(2\cdot4N+2N=10N=300\) inequality rows. Each QP must finish within T<sub>s</sub> = 100 ms.</p>
+    <div class="tblwrap"><table>
+      <tr><th>Horizon</th><th>0.5 s</th><th>1 s</th><th>2 s</th><th>3 s (chosen)</th><th>5 s</th></tr>
+      <tr><td class="l">Settling time</td><td class="bad">19.0 s</td><td>8.8 s</td><td>5.7 s</td><td class="good">5.4 s</td><td>5.4 s</td></tr>
+    </table></div>
+    <p>MPC with plain Q = I, R = 1 and N = 30 settled in 5.4 s with no overshoot, riding exactly on the 10° and 50°/s limits. The weights no longer have to enforce safety, because the constraints do that. A longer horizon than 3 s cost computation and gained nothing. With Q = diag(1,0,0,0) and a 1 s horizon the QP became <b>infeasible</b> at about 2.9 s: the cart rushed, and by the time the target came into view it could no longer brake within the swing limits. There is no terminal constraint, so recursive feasibility is not guaranteed.</p>
+
+    <div class="box ex"><span class="tag">Hand-sized version · constrained scalar MPC</span>
+      <p>Plant \(x_{k+1}=2x_k+u_k\), q = r = q<sub>F</sub> = 1, N = 1, constraint \(|u|\le 0.5\). Start at \(x_0=2\).</p>
+      <p>Unconstrained: \(J=x^2+u^2+(2x+u)^2\Rightarrow dJ/du=2u+2(2x+u)=0\Rightarrow u=-x=-2\).</p>
+      <p>Constrained: with one decision variable, J is a convex parabola in u, so the constrained optimum is the unconstrained one <b>clipped</b> to the bound: \(u_0=-0.5\). Then \(x_1=4-0.5=3.5\), \(u_1=-0.5\), \(x_2=6.5\): <b>the state diverges</b>.</p>
+      <p>Lesson: no controller can beat physics. To stop |x| growing we need \(|2x+u|\le|x|\), and the best case is \(2|x|-0.5\le|x|\iff|x|\le0.5\). Outside that region the constrained problem cannot be stabilised. This is why feasibility and terminal sets matter. (With more than one decision variable, clipping is <i>not</i> the QP solution in general; you need the QP solver.)</p>
+    </div>
+
+    <div class="box exam"><span class="tag">Common traps</span>
+      <ul>
+        <li>Constraints are only enforced <b>at the sample times</b>. Simulating the continuous model between samples gave about 10.1° and 53.7°/s, slightly over the limits. Fixes: tighten the constraints (9.5°, 45°/s) or reduce T<sub>s</sub>.</li>
+        <li>Running exactly on the limits leaves no robustness margin against disturbances (wind, payload mass), so hard constraints can become infeasible. Fixes: soft constraints or constraint tightening.</li>
+        <li>Without constraints, and with the Riccati solution as Q<sub>F</sub>, MPC gives <b>exactly</b> the LQR law.</li>
+      </ul>
+    </div>
+
+    <h4>Exam questions from P1</h4>
+    <div class="q"><div class="meta"><span class="t">P1-a · words</span><span>8 marks</span></div>
+      <p>Compare LQR and MPC under five headings: horizon, constraints, online computation, form of the control law, and guarantees.</p>
+      <details class="ans"><summary>Show answer</summary><div class="body">
+        <ul>
+          <li><b>Horizon:</b> LQR is infinite-horizon. MPC is finite-horizon N, and the receding horizon recovers infinite-horizon behaviour.</li>
+          <li><b>Constraints:</b> LQR cannot include them; you can only tune Q, R and hope. MPC writes them into the QP as inequalities.</li>
+          <li><b>Computation:</b> LQR solves the Riccati equation once offline, then computes \(u=-Kx\) online. MPC solves a QP every sample, which must finish within T<sub>s</sub>.</li>
+          <li><b>Law:</b> LQR is a fixed linear gain. Constrained MPC is a nonlinear (piecewise-affine) feedback that changes with the active constraints.</li>
+          <li><b>Guarantees:</b> LQR is stabilising if (A,B) is stabilisable and (A,Q<sup>½</sup>) detectable. MPC needs a suitable N, terminal cost or terminal set for stability and recursive feasibility.</li>
+        </ul></div></details></div>
+    <div class="q"><div class="meta"><span class="t">P1-b · calculation</span><span>6 marks</span></div>
+      <p>Using Bryson's rule, give Q and R for the crane with limits p 8 m (move size), v 3 m/s, θ 10°, ω 50°/s, u 100 N. Why were the final θ and ω weights made even larger than this?</p>
+      <details class="ans"><summary>Show answer</summary><div class="body">
+        <p>Q = diag(1/64, 1/9, 1/0.1745², 1/0.8727²) = diag(0.016, 0.11, 32.8, 1.31); R = 1/100² = 10<sup>−4</sup>. Bryson's weights met every limit but took 11.3 s, which is too slow. The input enters ω much more strongly than v (B<sub>4</sub> ≈ −1.05 vs B<sub>2</sub> ≈ 0.23), so swing is the active constraint. The final design raised the θ and ω weights relative to p (and used R = 1 for smoothness) to get 7.3 s while staying inside 10° and 50°/s.</p></div></details></div>
+    <div class="q"><div class="meta"><span class="t">P1-c · words</span><span>6 marks</span></div>
+      <p>With a 1 s horizon and Q = diag(1,0,0,0), R = 0.01, the MPC solver reported "infeasible" part-way through the move. Explain why, and give two remedies.</p>
+      <details class="ans"><summary>Show answer</summary><div class="body"><p>Only position error is penalised, so the optimiser drives the cart as fast as allowed. A 1 s window cannot see the target until it is close; by then braking hard enough to stop would break the swing limits, so no input sequence satisfies all constraints and the QP is infeasible. Hard constraints plus a short horizon and no terminal constraint mean recursive feasibility is not guaranteed. Remedies: a longer horizon (2–3 s worked); weights on v, θ, ω for a smooth approach; a terminal constraint or terminal set that guarantees recursive feasibility; soft constraints with slack variables.</p></div></details></div>
+    <div class="q"><div class="meta"><span class="t">P1-d · calculation</span><span>4 marks</span></div>
+      <p>For a 4-state, 1-input system with box constraints on every state and the input, how many decision variables and inequality rows does the condensed MPC QP have for N = 20?</p>
+      <details class="ans"><summary>Show answer</summary><div class="body"><p>Decision variables: N·m = 20. Inequalities: upper and lower bounds on 4 states at each of the N steps give 2·4·20 = 160, plus 2·20 = 40 for the input, so 200 rows in total (10N).</p></div></details></div>
+  </article>
+
+  <!-- ============ P2 ============ -->
+  <article class="prac" id="pr2">
+    <h3>P2 · Deterministic DP: Tom's journey and the travelling salesperson</h3>
+    <p class="stat">Topic tabs: 02 Deterministic DP, 05 Approximate DP (rollout, nearest neighbour)</p>
+
+    <h4>Part A: shortest path A → H as a staged graph</h4>
+    <svg class="dia" viewBox="0 0 560 250" role="img" aria-label="Staged graph A to H with optimal path A-B-F-H highlighted">
+      <g class="edge">
+        <line x1="70" y1="125" x2="210" y2="45"/><line x1="70" y1="125" x2="210" y2="125"/><line x1="70" y1="125" x2="210" y2="205"/>
+        <line x1="210" y1="45" x2="350" y2="125"/><line x1="210" y1="45" x2="350" y2="205"/><line x1="210" y1="125" x2="350" y2="45"/><line x1="210" y1="125" x2="350" y2="125"/><line x1="210" y1="125" x2="350" y2="205"/><line x1="210" y1="205" x2="350" y2="45"/><line x1="210" y1="205" x2="350" y2="125"/><line x1="210" y1="205" x2="350" y2="205"/><line x1="210" y1="45" x2="350" y2="45"/>
+        <line x1="350" y1="45" x2="490" y2="125"/><line x1="350" y1="205" x2="490" y2="125"/>
+      </g>
+      <g class="edge hot"><line x1="70" y1="125" x2="210" y2="45"/><line x1="210" y1="45" x2="350" y2="125"/><line x1="350" y1="125" x2="490" y2="125"/></g>
+      <g><circle class="nodeA" cx="70" cy="125" r="18"/><circle class="nodeA" cx="210" cy="45" r="18"/><circle class="node" cx="210" cy="125" r="18"/><circle class="node" cx="210" cy="205" r="18"/><circle class="node" cx="350" cy="45" r="18"/><circle class="nodeA" cx="350" cy="125" r="18"/><circle class="node" cx="350" cy="205" r="18"/><circle class="nodeA" cx="490" cy="125" r="18"/></g>
+      <g text-anchor="middle"><text x="70" y="130">A</text><text x="210" y="50">B</text><text x="210" y="130">C</text><text x="210" y="210">D</text><text x="350" y="50">E</text><text x="350" y="130">F</text><text x="350" y="210">G</text><text x="490" y="130">H</text></g>
+      <g class="lab" text-anchor="middle"><text x="70" y="160">J=1063</text><text x="210" y="20">730</text><text x="242" y="150">854</text><text x="210" y="240">1056</text><text x="350" y="20">807</text><text x="382" y="150">450</text><text x="350" y="240">603</text><text x="490" y="160">0</text></g>
+    </svg>
+    <p class="stat">Cost-to-go J at every city (orange). Bold path: A → B → F → H.</p>
+    <div class="tblwrap"><table>
+      <tr><th>City</th><th class="l">Options: edge + J(next)</th><th>J</th><th>Best next</th></tr>
+      <tr><td>E, F, G</td><td class="l">only → H: 807, 450, 603</td><td>807, 450, 603</td><td>H</td></tr>
+      <tr><td>B</td><td class="l">E 553+807=1360 · F 280+450=<b>730</b> · G 370+603=973</td><td>730</td><td>F</td></tr>
+      <tr><td>C</td><td class="l">E 470+807=1277 · F 404+450=<b>854</b> · G 522+603=1125</td><td>854</td><td>F</td></tr>
+      <tr><td>D</td><td class="l">E 268+807=1075 · F 606+450=<b>1056</b> · G 767+603=1370</td><td>1056</td><td>F</td></tr>
+      <tr><td>A</td><td class="l">B 333+730=<b>1063</b> · C 282+854=1136 · D 230+1056=1286</td><td>1063</td><td>B</td></tr>
+    </table></div>
+    <p><b>The greedy trap.</b> Cheapest first leg A→D (230), then cheapest next leg D→E (268), then forced E→H (807): total 1305, only 5th of the 9 paths. The cheap first step saved 103 compared with A→B, but the tail from D costs 1056 compared with 730 from B. <b>Judge a decision by stage cost + cost-to-go, never by stage cost alone.</b> That is the principle of optimality.</p>
+    <div class="tblwrap"><table>
+      <tr><th>Path</th><th>ABFH</th><th>ACFH</th><th>ADFH</th><th>ADEH</th><th>ABGH</th><th>ACGH</th><th>ACEH</th><th>ADGH</th><th>ABEH</th></tr>
+      <tr><td>Cost</td><td class="good">1063</td><td>1136</td><td>1286</td><td>1305</td><td>1306</td><td>1407</td><td>1559</td><td>1600</td><td>1693</td></tr>
+    </table></div>
+    <div class="box idea"><span class="tag">Code ↔ equation</span>
+      <p><code>values.append(stage_cost + value_function[next_node])</code> then <code>np.min</code> / <code>np.argmin</code> is exactly</p>
+      <div class="mjx-wrap">\[J_k(x)=\min_{u}\big[g_k(x,u)+J_{k+1}(f(x,u))\big],\qquad \mu_k(x)=\arg\min_u[\cdots]\]</div>
+      <p>The loop runs <code>for k in range(num_stage-2, -1, -1)</code>, i.e. <b>backwards</b> from the end, which is the defining feature of DP.</p>
+    </div>
+
+    <h4>Part B: TSP with 4 cities</h4>
+    <div class="grid2">
+      <div class="tblwrap"><table>
+        <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+        <tr><th>A</th><td>–</td><td>5</td><td>1</td><td>15</td></tr>
+        <tr><th>B</th><td>5</td><td>–</td><td>20</td><td>4</td></tr>
+        <tr><th>C</th><td>1</td><td>20</td><td>–</td><td>3</td></tr>
+        <tr><th>D</th><td>15</td><td>4</td><td>3</td><td>–</td></tr>
+      </table></div>
+      <div class="tblwrap"><table>
+        <tr><th class="l">Tour</th><th>Cost</th></tr>
+        <tr><td class="l">A-B-D-C-A / A-C-D-B-A</td><td class="good">5+4+3+1 = 13</td></tr>
+        <tr><td class="l">A-C-B-D-A / A-D-B-C-A</td><td>1+20+4+15 = 40</td></tr>
+        <tr><td class="l">A-B-C-D-A / A-D-C-B-A</td><td>5+20+3+15 = 43</td></tr>
+      </table></div>
+    </div>
+    <p>Tours come in reversed pairs because the costs are symmetric. The four cheapest edges (1, 3, 4, 5) happen to form a closed tour, so 13 must be optimal: no 4-edge tour can cost less than the four cheapest edges. <b>DP state for TSP = (current city, set of cities still to visit)</b>. For example, from B with {C, D} left: min(B→C→D→A = 20+3+15 = 38, B→D→C→A = 4+3+1 = <b>8</b>), so J(B,{C,D}) = 8 and the 38 ordering is discarded once and never revisited.</p>
+    <div class="tblwrap"><table>
+      <tr><th>Cities n</th><th>Tours (n−1)!/2</th><th>Held–Karp DP ≈ n²2<sup>n</sup></th></tr>
+      <tr><td>4</td><td>3</td><td>256</td></tr><tr><td>10</td><td>181,440</td><td>≈10<sup>5</sup></td></tr><tr><td>20</td><td>≈6.1×10<sup>16</sup></td><td>≈4.2×10<sup>8</sup></td></tr>
+    </table></div>
+    <p>The DP only remembers <i>which</i> cities are visited, not the order, so n! orderings collapse into n2<sup>n</sup> states. Beyond about 25–30 cities even that is too much (curse of dimensionality), so you switch to approximate DP: nearest neighbour, rollout, or 2-opt.</p>
+
+    <div class="box ex"><span class="tag">Hand-sized version · nearest neighbour vs rollout (your Q17 instance)</span>
+      <p>Change only A–B from 5 to 50. Nearest neighbour = one-step lookahead with \(\tilde J=0\): from A take the cheapest unvisited city each time. A→C (1) → D (3) → B (4) → forced back to A (<b>50</b>): <b>58</b>. The optimum is A-C-B-D-A = 1+20+4+15 = <b>40</b>, because it accepts B–C (20) to avoid the 50 edge.</p>
+      <p><b>Rollout with nearest-neighbour as the base heuristic</b>: for each candidate next city, complete the tour with NN and compare totals.</p>
+      <ul>
+        <li>Step 1 at A: via B → A-B-D-C-A = 58; via C → A-C-D-B-A = 58; via D → A-D-C-B-A = 88. Tie between B and C; take C.</li>
+        <li>Step 2 at C (A, C visited): via B → A-C-B-D-A = <b>40</b>; via D → A-C-D-B-A = 58. Choose B.</li>
+        <li>Step 3 forced: B → D → A. Tour A-C-B-D-A = <b>40 = optimal</b>.</li>
+      </ul>
+      <p>Rollout is guaranteed to be <b>no worse than its base heuristic</b> (cost improvement). If the step-1 tie had gone to B, rollout would return 58: no better than NN, but never worse.</p>
+    </div>
+
+    <h4>Exam questions from P2</h4>
+    <div class="q"><div class="meta"><span class="t">P2-a · calculation</span><span>10 marks</span></div>
+      <p>Suppose the F→H energy rises from 450 to 600. Re-run the DP and give the new optimal path and cost.</p>
+      <details class="ans"><summary>Show answer</summary><div class="body">
+        <p>J(E)=807, J(F)=600, J(G)=603. J(B)=min(553+807, 280+600=<b>880</b>, 370+603=973)=880 (F). J(C)=min(1277, 404+600=1004, 522+603=1125)=1004 (F). J(D)=min(268+807=<b>1075</b>, 606+600=1206, 1370)=1075 (E). J(A)=min(333+880=<b>1213</b>, 282+1004=1286, 230+1075=1305)=1213. The path is still A-B-F-H, now costing 1213: F stays the best stop after B because 280+600 still beats 370+603. Note that D's best choice switched to E.</p></div></details></div>
+    <div class="q"><div class="meta"><span class="t">P2-b · words</span><span>6 marks</span></div>
+      <p>Why is nearest neighbour "approximate DP with \(\tilde J=0\)", and when does it fail?</p>
+      <details class="ans"><summary>Show answer</summary><div class="body"><p>One-step lookahead picks \(\arg\min_u[g(x,u)+\tilde J(f(x,u))]\). With \(\tilde J\equiv0\) this is "take the cheapest edge now". It ignores the future, so it fails whenever a cheap edge leads into a state where only expensive edges remain, typically the forced closing edge back to the start (A–B = 50 in the modified instance: NN 58 vs optimal 40).</p></div></details></div>
+  </article>
+
+  <!-- ============ P3 ============ -->
+  <article class="prac" id="pr3">
+    <h3>P3 · Stochastic DP: random costs, random roads and the parking problem</h3>
+    <p class="stat">Topic tab: 03 Stochastic DP · 2024 exam link: Q2 (expectation inside the DP)</p>
+
+    <h4>Part A: random energy on each road</h4>
+    <p>Each leg now costs one of three amounts with given probabilities, e.g. A→B: 120 (0.1), 240 (0.2), 390 (0.7). The DP takes the expectation:</p>
+    <div class="mjx-wrap">\[J_k(x)=\min_u\ \mathbb E_w\{g(x,u,w)+J_{k+1}(f(x,u,w))\}\]</div>
+    <p>\(\mathbb E\{g(A,B)\}=0.1(120)+0.2(240)+0.7(390)=12+48+273=333\). Every edge mean equals the Practical 2 cost (B→F 280, F→H 450, …), so the answer is again <b>A-B-F-H with expected cost 1063</b>.</p>
+    <div class="box idea"><span class="tag">Why the answer didn't change</span>
+      <p>Here the randomness only affects the <b>cost</b>, not where you end up: \(f(x,u,w)=u\). By linearity of expectation, \(J_k(x)=\min_u(\mathbb E\{g\}+J_{k+1}(u))\), which is deterministic DP on the mean costs. This is <b>certainty equivalence</b>: replacing randomness by its mean is exactly optimal here. It is not exact when noise moves the state and costs are non-linear (as in 2024 Q2, where \(\mathbb E\{(x+u+w)^2\}=(x+u)^2+\sigma^2\)).</p>
+    </div>
+    <div class="tblwrap"><table>
+      <tr><th class="l">Scenario you tested</th><th>Optimal path</th><th>E[cost]</th><th class="l">Lesson</th></tr>
+      <tr><td class="l">Baseline</td><td>A-B-F-H</td><td>1063</td><td class="l"></td></tr>
+      <tr><td class="l">B→F: same mean, bigger spread</td><td>A-B-F-H</td><td>1063</td><td class="l">Only the mean matters to a risk-neutral DP</td></tr>
+      <tr><td class="l">B→F: 900 now most likely</td><td>A-C-F-H</td><td>1136</td><td class="l">Shifting probability re-ranks the options</td></tr>
+      <tr><td class="l">E→H: 450 now most likely</td><td>A-D-E-H</td><td>1025</td><td class="l">The greedy route becomes optimal</td></tr>
+      <tr><td class="l">Every leg at its most likely value</td><td>A-B-F-H</td><td class="bad">890</td><td class="l">Planning with the mode underestimates cost</td></tr>
+    </table></div>
+    <p>Risk: A-B-F-H has the widest spread (430 to 2030, std ≈ 382). A risk-averse traveller minimising E[cost] + λ·std switches to A-C-F-H for λ &gt; 0.56 and A-B-G-H for λ &gt; 1.33.</p>
+
+    <h4>Part B: a road may be closed (randomness in the transition)</h4>
+    <p>From A, Tom picks a <b>direction</b>: East (reaches B with prob. 0.6, else C) or West (reaches D with prob. 0.8, else E). He only learns which road is open at the fork, then picks the best next city. The decision at A is made <b>before</b> the randomness is revealed, so it must use the expectation. The later decisions are made <b>after</b> it, so they are deterministic.</p>
+    <div class="tblwrap"><table>
+      <tr><th>City</th><th class="l">Options (edge + J)</th><th>J</th></tr>
+      <tr><td>F, G</td><td class="l">→ H: 450, 603</td><td>450, 603</td></tr>
+      <tr><td>B</td><td class="l">F 553+450=1003 · G 280+603=<b>883</b></td><td>883</td></tr>
+      <tr><td>C</td><td class="l">F 470+450=<b>920</b> · G 404+603=1007</td><td>920</td></tr>
+      <tr><td>D</td><td class="l">F 268+450=<b>718</b> · G 606+603=1209</td><td>718</td></tr>
+      <tr><td>E</td><td class="l">F 807+450=1257 · G 370+603=<b>973</b></td><td>973</td></tr>
+    </table></div>
+    <div class="mjx-wrap">\[J(\text{East})=0.6(333+883)+0.4(282+920)=729.6+480.8=1210.4\]
+    \[J(\text{West})=0.8(230+718)+0.2(300+973)=758.4+254.6=\mathbf{1013}\]</div>
+    <p>Optimal: <b>go West</b>; then D→F→H if D is reached, or E→G→H if E is. Expected cost 1013. This is a true <b>policy</b> (a rule for each outcome), not a fixed sequence of cities. That is the benefit of feedback in stochastic DP.</p>
+
+    <h4>Part C: the parking problem (optimal stopping)</h4>
+    <p>Parks k = 0 … N−1, each free with probability ρ. If park k is free you may park for s(k) = N − k or drive on for c = 1; if it is full you must drive. If nothing is free by the end, the multi-storey costs S = N.</p>
+    <div class="mjx-wrap">\[J_N=S,\qquad J_k(\text{full})=c+\rho J_{k+1}(\text{free})+(1-\rho)J_{k+1}(\text{full}),\qquad J_k(\text{free})=\min\{s(k),\ J_k(\text{full})\}\]</div>
+    <div class="box ex"><span class="tag">Hand-sized version · first three steps (N = 10, c = 1, S = 10, ρ = 0.1)</span>
+      <p>k = 9: drive = 1 + 0.1·10 + 0.9·10 = <b>11</b>; park = s(9) = 1 → J<sub>9</sub>(free) = 1, J<sub>9</sub>(full) = 11.</p>
+      <p>k = 8: drive = 1 + 0.1·1 + 0.9·11 = 1 + 0.1 + 9.9 = <b>11</b>; park = 2 → J<sub>8</sub>(free) = 2.</p>
+      <p>k = 7: drive = 1 + 0.1·2 + 0.9·11 = <b>11.1</b>; park = 3 → J<sub>7</sub>(free) = 3. Continuing back to k = 0 gives J<sub>0</sub>(full) = 13.87.</p>
+      <p>The policy is "park at the first free spot" at every k, because parking now costs N−k, while driving one more step and parking for sure costs 1 + (N−k−1) = N−k, a tie <i>at best</i>. Since the next spot is free only with probability ρ, driving on is strictly worse.</p>
+    </div>
+    <div class="tblwrap"><table>
+      <tr><th class="l">Change (N=10)</th><th>Policy k=0..9 (P = park if free, d = drive)</th><th>Threshold</th></tr>
+      <tr><td class="l">baseline c = 1</td><td class="mono">PPPPPPPPPP</td><td>0</td></tr>
+      <tr><td class="l">c = 0.3</td><td class="mono">dPPPPPPPPP</td><td>1</td></tr>
+      <tr><td class="l">c = 0.3, ρ = 0.3</td><td class="mono">dddddPPPPP</td><td>5</td></tr>
+      <tr><td class="l">c = 0.1, ρ = 0.5</td><td class="mono">dddddddPPP</td><td>7</td></tr>
+      <tr><td class="l">c = 0.3, ρ = 0.3, S = 3</td><td class="mono">ddddddddPP</td><td>8</td></tr>
+    </table></div>
+    <p>The optimal policy is always a <b>threshold rule</b>: drive past free spots until k*, then take the first free one. Cheaper search (c &lt; fee drop per step), more free spots (ρ↑) or a cheap fallback S all make the driver more patient.</p>
+    <div class="box exam"><span class="tag">Role of the terminal cost (your Q8)</span>
+      <p>J<sub>N</sub> (1) starts the backward recursion; (2) makes every policy well defined, since the trip must end; (3) is the "price of failure" every decision is compared against; (4) in general stands in for everything after the horizon (like Q<sub>F</sub> in MPC). A poor terminal cost causes end effects near the horizon.</p>
+    </div>
+
+    <h4>Exam questions from P3</h4>
+    <div class="q"><div class="meta"><span class="t">P3-a · calculation</span><span>8 marks</span></div>
+      <p>In Part B, by how much would the West road's chance of reaching D have to fall before East becomes optimal?</p>
+      <details class="ans"><summary>Show answer</summary><div class="body"><p>West = p(230+718) + (1−p)(300+973) = 948p + 1273(1−p) = 1273 − 325p. Set it equal to East = 1210.4: 325p = 62.6, so p = 0.193. If the probability of reaching D drops below about 0.19 (from 0.8), East is better.</p></div></details></div>
+    <div class="q"><div class="meta"><span class="t">P3-b · words</span><span>6 marks</span></div>
+      <p>Explain why the stochastic shortest path in Part A gave exactly the same answer as Practical 2, and give one thing the stochastic version tells you that the deterministic one cannot.</p>
+      <details class="ans"><summary>Show answer</summary><div class="body"><p>The noise affects only the stage cost, not the next state, and every edge's mean equals the deterministic cost. By linearity of expectation the DP reduces to deterministic DP on the means (certainty equivalence), giving the same path and cost. What's new: 1063 is now an <i>average</i>; a single trip can cost 430 to 2030, and paths differ in risk (std), which a risk-averse objective could trade off.</p></div></details></div>
+  </article>
+
+  <!-- ============ P4 ============ -->
+  <article class="prac" id="pr4">
+    <h3>P4 · Infinite-horizon DP: value iteration and policy iteration</h3>
+    <p class="stat">Topic tab: 04 Infinite Horizon DP</p>
+
+    <h4>Grid world: VI with rewards (maximise)</h4>
+    <div class="box idea"><span class="tag">Code ↔ equation</span>
+      <p><code>q = grid[ni, nj] - 1 + alpha * values[ni, nj]</code>, then <code>best = max(best, q)</code>:</p>
+      <div class="mjx-wrap">\[V_{k+1}(x)=\max_u\big[\,r(f(x,u))-1+\alpha V_k(f(x,u))\,\big],\qquad \alpha=0.9\]</div>
+      <p>Reward is collected on <i>entering</i> a cell, the move cost is −1, and the goal is terminal (its value is not updated).</p>
+    </div>
+    <div class="box ex"><span class="tag">Hand-sized version · why V(0,0) = −4.0951</span>
+      <p>Entering the goal from (2,3): 1 − 1 + 0.9·0 = <b>0</b>. Then each step further back is −1 + 0.9·(previous): (1,3) = −1; (0,3) or (1,2) = −1 + 0.9(−1) = −1.9; −1 + 0.9(−1.9) = −2.71; −3.439; and (0,0), six moves away, = −1 + 0.9(−3.439) = <b>−4.0951</b>. A 6-move path avoiding the −10 cells exists, so the optimal values are just discounted move costs.</p>
+    </div>
+    <div class="tblwrap"><table>
+      <tr><th class="l">Scenario</th><th class="l">Policy in the bottom-left corner</th><th>V(0,0)</th></tr>
+      <tr><td class="l">penalty 10, reward 1</td><td class="l">go <b>up</b>, around via row 1 and column 3</td><td>−4.095</td></tr>
+      <tr><td class="l">penalty 1, reward 10</td><td class="l">cut <b>through</b> (3,2): a −1 cell is cheaper than a detour</td><td>1.219</td></tr>
+      <tr><td class="l">holes reset to (0,0), penalty 1, reward 10</td><td class="l">go up and around again: falling in loses all progress</td><td>1.219</td></tr>
+    </table></div>
+    <p>A reset is modelled by bootstrapping from the start: <code>q = grid[ni,nj] - 1 + alpha * values[0,0]</code> when (ni, nj) is a hole.</p>
+
+    <h4>Frozen Lake: deterministic vs slippery</h4>
+    <div class="box idea"><span class="tag">Code ↔ equation</span>
+      <p><code>q_value += prob * (reward + alpha * V[next_state])</code> over <code>env.P[s][a]</code>:</p>
+      <div class="mjx-wrap">\[V(s)\leftarrow\max_a\sum_{s'}p(s'\mid s,a)\big[r(s,a,s')+\alpha V(s')\big],\qquad \alpha=0.99\]</div>
+    </div>
+    <p><b>Deterministic lake</b>: VI converged in 7 sweeps; V(start) = 0.99<sup>5</sup> = 0.951 (the reward of 1 arrives on move 6, discounted 5 times). <b>Slippery lake</b>: the agent moves in the intended direction or either perpendicular direction, each with probability ⅓.</p>
+    <div class="tblwrap"><table>
+      <tr><th class="l"></th><th>Deterministic</th><th>Slippery</th></tr>
+      <tr><td class="l">V(start)</td><td>0.951</td><td>0.542</td></tr>
+      <tr><td class="l">Success of the deterministic-optimal policy</td><td>100%</td><td class="bad">4.7%</td></tr>
+      <tr><td class="l">Success of the slippery-optimal policy</td><td>–</td><td class="good">74.7%</td></tr>
+      <tr><td class="l">VI iterations / PI iterations</td><td>7 / 6–7</td><td>180 / 5</td></tr>
+    </table></div>
+    <div class="box ex"><span class="tag">Hand-sized version · one slippery Bellman backup at (3,2)</span>
+      <p>Cell (3,2) sits just left of the goal (3,3). Converged values: V(2,2) = 0.6152, V(3,1) = 0.7417, V(3,2) = 0.8628.</p>
+      <p><b>Right</b> (intended → goal, slips → up (2,2) or down = wall, stay):<br/>\(\tfrac13[1+0]+\tfrac13[0.99(0.6152)]+\tfrac13[0.99(0.8628)]=\tfrac13(1+0.6090+0.8542)=0.821\)</p>
+      <p><b>Down</b> (intended → wall, stay; slips → left (3,1) or right = goal):<br/>\(\tfrac13[0.99(0.8628)]+\tfrac13[0.99(0.7417)]+\tfrac13[1]=\tfrac13(0.8542+0.7343+1)=\mathbf{0.863}\)</p>
+      <p>"Down" wins even though it points into a wall: it can never slip <i>up</i> towards the holes, and one of its slips lands in the goal. This is why slippery-optimal policies <b>hug walls</b>.</p>
+    </div>
+
+    <h4>VI vs PI: what your timing experiments showed</h4>
+    <ul>
+      <li><b>VI</b> = many cheap sweeps (one max per state). It converges only asymptotically, at a rate set by α: 11 iterations at α = 0.5, 180 at α = 0.99, 244 at α = 0.999.</li>
+      <li><b>PI</b> = few expensive iterations (full policy evaluation, then greedy improvement). It terminates in finitely many steps, because there are finitely many policies and each improvement is strict: 3–7 iterations in every test.</li>
+      <li>The <b>policy settles long before the values</b>: the greedy policy was final at VI iteration 45, but the values took 238 to converge.</li>
+      <li><b>Exact policy evaluation</b> solves the linear system \((I-\alpha P_\mu)V=r_\mu\). It was 5–16× faster at small sizes but scales as about |S|<sup>2.1</sup> compared with |S|<sup>1.2</sup> for VI.</li>
+      <li><b>PI tie trap</b>: if two actions have equal Q, tiny evaluation errors make argmax flip and PI never stops (359 iterations on the 32×32 map). Fix: keep the old action unless the new one is strictly better.</li>
+    </ul>
+
+    <h4>Exam questions from P4</h4>
+    <div class="q"><div class="meta"><span class="t">P4-a · words</span><span>8 marks</span></div>
+      <p>The optimal policy for the deterministic Frozen Lake succeeded only 4.7% of the time on the slippery lake. Explain why, and describe how the slippery-optimal policy differs.</p>
+      <details class="ans"><summary>Show answer</summary><div class="body"><p>The deterministic policy assumes every action does what it says, so it follows the shortest path right beside holes. On the slippery lake each move goes sideways with probability ⅔; for example "down" from (1,2) slips into a hole on either side, so it survives with probability only ⅓. These risks multiply along the path. The slippery-optimal policy is computed with the true transition probabilities: it trades path length for safety, chooses actions whose perpendicular slips cannot reach a hole, and often pushes into walls. V(start) drops from 0.951 to 0.542, but success rises to about 75%.</p></div></details></div>
+    <div class="q"><div class="meta"><span class="t">P4-b · words</span><span>6 marks</span></div>
+      <p>For a very large grid, what are the deficiencies of VI and PI and what would you use instead?</p>
+      <details class="ans"><summary>Show answer</summary><div class="body"><p>Both sweep every state and action each iteration (cost ∝ |S||A| per sweep, exact PE ∝ |S|<sup>3</sup>), need the full transition model, and store a table with one value per state. The number of states explodes with the number of state variables (curse of dimensionality). Alternatives: asynchronous or prioritised VI; approximate DP with features or neural networks; state aggregation; online methods like rollout or MPC that plan only from the current state; model-free RL (TD, Q-learning) that learns from samples of the states that actually occur.</p></div></details></div>
+  </article>
+
+  <!-- ============ P5 ============ -->
+  <article class="prac" id="pr5">
+    <h3>P5 · Approximation in value space: heuristics, lookahead and linear features</h3>
+    <p class="stat">Topic tab: 05 Approximate DP</p>
+
+    <h4>Part A: one-step lookahead with a distance heuristic</h4>
+    <p>Grid: goal (3,3) worth +1; −10 cells at (0,2), (2,1) and (3,2); every move −1. Instead of computing V exactly, use a cheap guess \(\tilde J(i,j)=-\sqrt{(3-i)^2+(3-j)^2}\) (minus the straight-line distance) and pick</p>
+    <div class="mjx-wrap">\[\tilde\mu(x)=\arg\max_u\big[r(f(x,u))-1+\tilde J(f(x,u))\big]\]</div>
+    <div class="box ex"><span class="tag">Hand-sized version · the trap in the bottom-left corner</span>
+      <div class="tblwrap"><table>
+        <tr><th>From</th><th class="l">Options: r − 1 + J̃(next)</th><th>Choice</th></tr>
+        <tr><td>(2,0)</td><td class="l">up (1,0): −1 − √13 = −4.61 · <b>down (3,0): −1 − 3 = −4.00</b> · right (2,1): −11 − √5 = −13.24</td><td>down</td></tr>
+        <tr><td>(3,0)</td><td class="l">up (2,0): −1 − √10 = −4.16 · <b>right (3,1): −1 − 2 = −3.00</b></td><td>right</td></tr>
+        <tr><td>(3,1)</td><td class="l">up (2,1): −13.24 · <b>left (3,0): −1 − 3 = −4.00</b> · right (3,2): −11 − 1 = −12.00</td><td>left</td></tr>
+      </table></div>
+      <p>(3,0) → (3,1) → (3,0) → … loops forever. The straight-line distance knows nothing about the −10 cells, so (3,1) "looks close" to the goal, but every way forward from it costs 10. The heuristic policy was optimal from 13 of 16 start cells and <b>failed completely</b> from the other three.</p>
+    </div>
+    <div class="tblwrap"><table>
+      <tr><th>Lookahead ℓ</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>8</th></tr>
+      <tr><td class="l">Cells differing from optimal</td><td>2</td><td>1</td><td class="good">0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td class="l">Start cells reaching goal</td><td>13/16</td><td>13/16</td><td class="good">16/16</td><td>16/16</td><td>16/16</td><td>16/16</td></tr>
+      <tr><td class="l">Time to compute policy</td><td>0.1 ms</td><td>0.3 ms</td><td>0.9 ms</td><td>3.3 ms</td><td>9.6 ms</td><td>310 ms</td></tr>
+    </table></div>
+    <p>ℓ = 3 sees far enough to recognise the dead end, and the policy becomes optimal. Cost grows like b<sup>ℓ</sup> (about 3× per extra step here). The trade-off is computation versus performance, as with MPC's horizon. A better \(\tilde J\) (one that knows about the −10 cells) would fix the problem with ℓ = 1.</p>
+
+    <h4>Part B: linear feature architecture trained by gradient descent</h4>
+    <p>5×5 grid, goal (4,4) worth +10, each move −1. Features \(\phi(x)=\text{normalize}([x_1,\ x_2,\ |x_1-4|+|x_2-4|])\) and \(\tilde J(x,r)=r^\top\phi(x)\).</p>
+    <div class="box idea"><span class="tag">Code ↔ equation</span>
+      <p>Target (Bellman, using the current approximation): \(\beta=\max_u[-1+r^\top\phi(f(x,u))]\), or 10 at the goal.<br/>Gradient of \(\tfrac12(r^\top\phi-\beta)^2\): \(\nabla=\phi(x)\,(r^\top\phi(x)-\beta)\). Update: \(r\leftarrow r-\gamma\nabla\), \(\gamma=0.01\).</p>
+    </div>
+    <div class="box ex"><span class="tag">Hand-sized version · one SGD step</span>
+      <p>r = [0,0,0], sampled state (1,1): raw features [1, 1, 6], sum 8, so φ = [0.125, 0.125, 0.75]. Prediction r<sup>T</sup>φ = 0. Every neighbour also predicts 0, so β = −1 + 0 = −1.</p>
+      <p>∇ = φ·(0 − (−1)) = [0.125, 0.125, 0.75]; r ← r − 0.01∇ = <b>[−0.00125, −0.00125, −0.0075]</b>.</p>
+    </div>
+    <p><b>Result</b>: r → [10, 10, 2] with error ≈ 10<sup>−5</sup>. Why exact? On a 5×5 grid, x<sub>1</sub> + x<sub>2</sub> + |x<sub>1</sub>−4| + |x<sub>2</sub>−4| = 8 for every cell, so the normalisation divides by a constant and \(r^\top\phi=(10x_1+10x_2+2(8-x_1-x_2))/8=x_1+x_2+2=10-\text{distance}\), which is exactly J*. The true value lies in the span of the features. With obstacles it would not, and the architecture would only approximate.</p>
+
+    <h4>Exam questions from P5</h4>
+    <div class="q"><div class="meta"><span class="t">P5-a · words</span><span>6 marks</span></div>
+      <p>Give three limitations of increasing the lookahead horizon ℓ to fix a poor heuristic.</p>
+      <details class="ans"><summary>Show answer</summary><div class="body"><ul><li>Computation grows exponentially (b<sup>ℓ</sup> action sequences), which is a problem when re-planned online at every step or with many actions.</li><li>There is no guarantee for any fixed ℓ: deeper traps need longer horizons, and once ℓ covers the whole path you are just solving the DP exactly.</li><li>It needs a model to simulate ahead and is still limited by \(\tilde J\) at the end; heuristic policies can cycle, so the result must be checked by simulation.</li></ul></div></details></div>
+    <div class="q"><div class="meta"><span class="t">P5-b · calculation</span><span>6 marks</span></div>
+      <p>With r = [10, 10, 2], compute \(\tilde J\) at (2,3) and the greedy action there. Is it optimal?</p>
+      <details class="ans"><summary>Show answer</summary><div class="body"><p>Raw features [2, 3, 2+1 = 3], sum 8: φ = [0.25, 0.375, 0.375]. \(\tilde J\) = 2.5 + 3.75 + 0.75 = 7 = 10 − 3. ✓ Neighbours: (3,3) → 8, (2,4) → 8, (1,3) → 6, (2,2) → 6. Greedy: down or right (−1 + 8 = 7), both shortest-path moves, so yes, optimal.</p></div></details></div>
+  </article>
+
+  <!-- ============ P6 ============ -->
+  <article class="prac" id="pr6">
+    <h3>P6 · Reinforcement learning: Q-learning vs SARSA on Cliff Walking</h3>
+    <p class="stat">Topic tab: 06 Reinforcement Learning · 2024 exam link: Q3 (Sarsa by hand)</p>
+
+    <h4>The environment</h4>
+    <svg class="dia" viewBox="0 0 560 190" role="img" aria-label="Cliff walking grid: Q-learning path along the cliff edge, SARSA path along the top">
+      <g><rect x="40" y="10" width="480" height="160" fill="none" class="edge"/>
+      <rect x="80" y="130" width="400" height="40" class="bar2"/></g>
+      <g class="mutedt" text-anchor="middle"><text x="280" y="155">cliff: −100, back to start</text></g>
+      <g text-anchor="middle"><text x="60" y="155">S</text><text x="500" y="155">G</text></g>
+      <polyline class="edge hot" points="60,145 60,110 500,110 500,145"/>
+      <polyline class="edge" style="stroke:var(--mark);stroke-width:2.5;stroke-dasharray:6 4" points="60,145 60,30 260,30 260,70 500,70 500,145"/>
+      <g class="lab" font-size="12"><text x="300" y="104" style="fill:var(--accent)">Q-learning: 13 steps, −13</text><text x="300" y="25">SARSA: 17 steps, −17 (safe detour)</text></g>
+    </svg>
+    <p>4×12 grid, start bottom-left, goal bottom-right, cliff in between. Every step gives −1; stepping into the cliff gives −100 and sends you back to the start. The optimal path is the 13-step one along the cliff edge (up 1, right 11, down 1).</p>
+
+    <h4>The two update rules, from your code</h4>
+    <div class="grid2">
+      <div class="box idea"><span class="tag">Q-learning (off-policy)</span>
+        <p><code>td_target = r + γ·max(Q[s'])</code></p>
+        <div class="mjx-wrap">\[Q(x,u)\leftarrow Q(x,u)+\delta\big[r+\alpha\max_{u'}Q(x',u')-Q(x,u)\big]\]</div>
+        <p>Target assumes you act <b>greedily</b> from x′ on, whatever action you actually take next.</p></div>
+      <div class="box idea"><span class="tag">SARSA (on-policy)</span>
+        <p><code>td_target = r + γ·Q[s', a']</code></p>
+        <div class="mjx-wrap">\[Q(x,u)\leftarrow Q(x,u)+\delta\big[r+\alpha Q(x',u')-Q(x,u)\big]\]</div>
+        <p>u′ is the action the ε-greedy policy <b>actually</b> picks, including random ones.</p></div>
+    </div>
+    <p>(Notation: the course writes the learning rate as δ and the discount as α; your code used <code>learning_rate</code> and <code>discount_factor</code> = 0.99.) At the goal there is no bootstrap: target = r, which is <code>* (not terminated)</code> in your code.</p>
+
+    <div class="box ex"><span class="tag">Hand-sized version · one transition, two answers</span>
+      <p>The agent is on the cliff edge, Q(edge, right) = −2, takes "right" (r = −1) to the next edge cell x′. There Q(x′, right) = −1 and Q(x′, down) = −100. The ε-greedy policy happens to pick u′ = down (exploration). Learning rate 0.5, discount 0.99.</p>
+      <p><b>SARSA</b>: target = −1 + 0.99(−100) = −100 → Q = −2 + 0.5(−100 + 2) = <b>−51</b>.</p>
+      <p><b>Q-learning</b>: target = −1 + 0.99·max(−1, −100) = −1.99 → Q = −2 + 0.5(−1.99 + 2) = <b>−1.995</b>.</p>
+      <p>SARSA "remembers" that an exploring agent near the cliff sometimes falls, so the edge looks bad. Q-learning ignores the exploratory slip, so the edge looks fine.</p>
+    </div>
+
+    <h4>Your results</h4>
+    <div class="tblwrap"><table>
+      <tr><th class="l">Experiment (10 seeds)</th><th class="l">Greedy path learned</th></tr>
+      <tr><td class="l">Q-learning, 1000 episodes</td><td class="l good">13 steps on all 10 seeds</td></tr>
+      <tr><td class="l">SARSA, 2000 / 5000 / 10000 episodes</td><td class="l">15 or 17 steps; never 13</td></tr>
+      <tr><td class="l">SARSA, constant ε = 0</td><td class="l good">13 steps on all 10 seeds</td></tr>
+      <tr><td class="l">SARSA, ε = 0.05</td><td class="l">15 steps (9/10): one row of margin</td></tr>
+      <tr><td class="l">SARSA, ε = 0.1–0.5</td><td class="l">mostly 17 steps; at 0.3–0.5 some runs never reach the goal</td></tr>
+      <tr><td class="l">Q-learning, ε = 0, 0.1, 0.3</td><td class="l good">13 steps every time (ε changes speed, not the answer)</td></tr>
+    </table></div>
+    <div class="box exam"><span class="tag">Why more SARSA episodes didn't help (your key insight)</span>
+      <p>The template reset k = 1 at the start of <b>every episode</b>, so ε = 1/k was ½, ⅓, … again right beside the cliff each time: exploration never faded. SARSA converges to Q* only if the policy becomes <b>greedy in the limit</b> (ε → 0 over the whole learning process) and the step sizes satisfy Robbins–Monro (Σδ = ∞, Σδ² &lt; ∞). Resetting k breaks both. With ε = 1/episode instead, SARSA found the 13-step path on 5 of 10 seeds. With ε = 0, SARSA's target equals Q-learning's (u′ is the greedy action), so they learn the same path. Exploration still happened through optimistic initialisation: Q starts at 0 and all real rewards are negative.</p>
+    </div>
+
+    <h4>Exam questions from P6</h4>
+    <div class="q"><div class="meta"><span class="t">P6-a · words</span><span>8 marks</span></div>
+      <p>On Cliff Walking, Q-learning learns the path along the cliff edge but SARSA learns a safer, longer path. Explain using the update rules. Which agent earns more reward <i>during training</i>?</p>
+      <details class="ans"><summary>Show answer</summary><div class="body"><p>Q-learning is off-policy: its target uses \(\max_{u'}Q(x',u')\), so it estimates the value of acting greedily, i.e. Q*, and the edge path (−13) is optimal for a greedy agent. SARSA is on-policy: its target uses the action the ε-greedy policy actually takes, so it learns the value of the exploring policy. Next to the cliff, a random "down" costs −100, and SARSA builds that risk into the edge cells' Q-values, so a detour 1–2 rows up (−15 or −17) looks better. During training (while still exploring) SARSA usually earns <b>more</b> reward, because it falls off less often; Q-learning's greedy path is better only once exploration stops.</p></div></details></div>
+    <div class="q"><div class="meta"><span class="t">P6-b · words</span><span>6 marks</span></div>
+      <p>What happens to SARSA's learned path as constant ε increases from 0 to 0.5? What schedule gives both safety while learning and optimality in the end?</p>
+      <details class="ans"><summary>Show answer</summary><div class="body"><p>ε = 0: same as Q-learning, the 13-step edge path. Small ε: one row of margin (15 steps). Larger ε: two rows (17 steps), and at high ε some runs never learn a path to the goal because random actions dominate the data. With constant ε, SARSA converges to the Q-factors of the ε-greedy policy, so its safety margin grows with ε. A decaying schedule (ε<sub>k</sub> → 0 across the whole learning process, e.g. 1/k with k never reset, and Robbins–Monro step sizes) explores early and becomes greedy in the limit, converging to Q*.</p></div></details></div>
+  </article>
+</section>
+
+<!-- ===================== MOCK EXAM ===================== -->
+<section class="panel" id="mock" data-panel="mock" hidden>
+  <h2>Mock exam built from your practicals</h2>
+  <p class="lede">A second full paper in the same shape as 2024 (3 questions, 100 marks): MPC in words, stochastic DP by hand, then a learning algorithm by hand. Every question is a variation on something you did in P1–P6. Sit it in exam time with only the cheatsheet, then open the solutions.</p>
+  <div class="box exam"><span class="tag">Format</span>
+    <p>Q1 MPC (25) · Q2 Stochastic DP (40) · Q3 Q-learning vs SARSA (35). Show the recursion or update for every step; most marks are for the working, not the final number.</p>
+  </div>
+
+  <h3>Question 1 · Model Predictive Control (25 marks)</h3>
+  <p>A gantry crane cart moves along a 12 m track and carries a load modelled as a rigid rod. The state is \(x=[p,\ v,\ \theta,\ \omega]^\top\) and the input is the motor force u. The cart starts at rest at p = 2 m and must stop with no swing at p = 10 m within 10 s. The cart is rated to 3 m/s, the motor gives at most 100 N, and for safety the load must not swing more than 10° or faster than 50°/s. The controller samples at T<sub>s</sub> = 0.1 s.</p>
+  <div class="q"><div class="meta"><span class="t">1(a)</span><span>6 marks</span></div>
+    <p>Write down the initial condition, the target state, and all state and input constraints, in SI units.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>\(x_0=[2,0,0,0]^\top\), \(x^*=[10,0,0,0]^\top\). Constraints: \(0\le p\le12\) m; \(-3\le v\le3\) m/s; \(|\theta|\le10^\circ=0.1745\) rad; \(|\omega|\le50^\circ/\text{s}=0.8727\) rad/s; \(-100\le u\le100\) N. Note that the angle limit also keeps the system where the linearised model is valid.</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">1(b)</span><span>6 marks</span></div>
+    <p>Propose Q and R using Bryson's rule. State the rule and explain what it achieves.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>Rule: \(Q_{ii}=1/(x_i^{\max})^2\), \(R=1/(u^{\max})^2\). It scales each term so that a state at its largest acceptable value costs about 1, which normalises different units (metres vs radians). Q = diag(1/8², 1/3², 1/0.1745², 1/0.8727²) ≈ diag(0.016, 0.11, 32.8, 1.31); R = 1/100² = 10<sup>−4</sup>. It is a starting point; you then tune by simulation (raising the θ, ω weights if the swing is the binding constraint, or the p weight if it is too slow).</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">1(c)</span><span>7 marks</span></div>
+    <p>An LQR design meets every limit but settles in 7.3 s and only reaches 1.8 m/s. Explain why LQR is conservative here and how constrained MPC with the receding-horizon principle improves on it.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>LQR is a fixed linear law \(u=-K(x-x^*)\); its largest push is at t = 0 when the error is largest (8 m). To keep the swing within limits at that worst moment the gains must be small, which slows the whole move. Constraints are met only indirectly through tuning, and the swing scales with the move size, so a longer move would break the limits.</p>
+      <p>MPC writes the limits directly as inequalities on the predicted states and inputs over the horizon N and solves a QP each sample. It applies only the first input, then re-measures and re-solves (receding horizon), giving feedback \(u_k=\kappa(x_k)\). The controller can then run <b>on</b> the limits when that helps (v near 3 m/s, θ at 10°) and back off when needed. In the practical: 5.4 s with no overshoot vs 7.3 s for LQR. Simple weights (Q = I, R = 1) suffice because the constraints, not the weights, enforce safety.</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">1(d)</span><span>6 marks</span></div>
+    <p>For a 3 s horizon, how many decision variables and inequality constraints does the condensed QP have? Discuss the computational implications of the horizon choice.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>N = 3/0.1 = 30. Decision variables: 30 (one scalar input per step). Inequalities: 2·4·30 = 240 state bounds + 2·30 = 60 input bounds = <b>300</b>. The Hessian \(H=2(\Phi^\top\bar Q\Phi+\bar R)\) is 30×30 and constant, but the QP must be solved every sample and finish within 100 ms. Solve time grows roughly as N² to N³. Too short an N (0.5–1 s) is cheap but short-sighted, settles slowly and can become infeasible (no terminal constraint means no recursive-feasibility guarantee). Beyond about 3 s there was no performance gain, only extra computation.</p></div></details></div>
+
+  <h3>Question 2 · Stochastic dynamic programming (40 marks)</h3>
+  <p><b>(a) Parking.</b> A driver passes street parks k = 0, 1, 2. Each is free with probability ρ = 0.5, independently. At a free park the driver may park at cost s(k) = 3 − k or drive on at cost c = 0.4; at a full park the driver must drive on (cost c). If no park has been taken after k = 2, the driver must use the multi-storey car park at cost S = 3, so J<sub>3</sub>(·) = 3.</p>
+  <div class="q"><div class="meta"><span class="t">2(a)(i)</span><span>15 marks</span></div>
+    <p>Write the DP recursion for J<sub>k</sub>(free) and J<sub>k</sub>(full). Compute both for k = 2, 1, 0 and state the optimal policy.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <div class="mjx-wrap">\[J_k(\text{full})=c+\rho J_{k+1}(\text{free})+(1-\rho)J_{k+1}(\text{full}),\qquad J_k(\text{free})=\min\{s(k),\ J_k(\text{full})\}\]</div>
+      <div class="tblwrap"><table>
+        <tr><th>k</th><th class="l">drive on = c + 0.5J<sub>k+1</sub>(free) + 0.5J<sub>k+1</sub>(full)</th><th>park s(k)</th><th>J<sub>k</sub>(free)</th><th>J<sub>k</sub>(full)</th><th>If free</th></tr>
+        <tr><td>3</td><td class="l">terminal</td><td>–</td><td>3</td><td>3</td><td>–</td></tr>
+        <tr><td>2</td><td class="l">0.4 + 0.5·3 + 0.5·3 = 3.4</td><td>1</td><td>1</td><td>3.4</td><td>park</td></tr>
+        <tr><td>1</td><td class="l">0.4 + 0.5·1 + 0.5·3.4 = 2.6</td><td>2</td><td>2</td><td>2.6</td><td>park</td></tr>
+        <tr><td>0</td><td class="l">0.4 + 0.5·2 + 0.5·2.6 = 2.7</td><td>3</td><td>2.7</td><td>2.7</td><td><b>drive</b></td></tr>
+      </table></div>
+      <p>Optimal policy: at k = 0 drive on even if the park is free (2.7 &lt; 3); at k = 1 and 2 park if free; otherwise the multi-storey. This is a <b>threshold rule</b> with threshold k* = 1. Expected cost before seeing park 0: 0.5(2.7) + 0.5(2.7) = <b>2.7</b>.</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">2(a)(ii)</span><span>10 marks</span></div>
+    <p>Keeping ρ = 0.5 and S = 3, find the range of search cost c for which the driver should park at k = 0 when it is free. Interpret the result.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>Work symbolically. k = 2: drive = c + 3, so J<sub>2</sub>(free) = min(1, c+3) = 1 and J<sub>2</sub>(full) = c + 3. k = 1: drive = c + 0.5(1) + 0.5(c+3) = 1.5c + 2, so J<sub>1</sub>(free) = min(2, 1.5c+2) = 2 and J<sub>1</sub>(full) = 1.5c + 2. k = 0: drive = c + 0.5(2) + 0.5(1.5c+2) = <b>1.75c + 2</b>.</p>
+      <p>Park at k = 0 iff 3 ≤ 1.75c + 2 ⇔ <b>c ≥ 4/7 ≈ 0.571</b>. Check: c = 0.4 gives 2.7 &lt; 3 (drive), as in (i). Interpretation: the fee falls by 1 per park, so skipping a park is worth it only while the expected search cost is low enough. Expensive searching makes the driver take the first free spot (like your P3 baseline with c = 1).</p></div></details></div>
+  <p><b>(b) Random road closure.</b> From A, Tom chooses East (reaches B with probability 0.6, otherwise C) or West (reaches D with probability p, otherwise E), learning which only at the fork. Leg costs: A→B 333, A→C 282, A→D 230, A→E 300; B→F 553, B→G 280; C→F 470, C→G 404; D→F 268, D→G 606; E→F 807, E→G 370; F→H 450, G→H 603.</p>
+  <div class="q"><div class="meta"><span class="t">2(b)</span><span>15 marks</span></div>
+    <p>(i) Compute J(B), J(C), J(D), J(E) and the expected cost of East. (ii) For p = 0.5, should Tom go East or West? (iii) Find the value of p below which East is optimal.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>(i) J(F) = 450, J(G) = 603. J(B) = min(553+450, 280+603) = 883 (G); J(C) = min(470+450, 404+603) = 920 (F); J(D) = min(268+450, 606+603) = 718 (F); J(E) = min(807+450, 370+603) = 973 (G). East = 0.6(333+883) + 0.4(282+920) = 729.6 + 480.8 = <b>1210.4</b>.</p>
+      <p>(ii) West = 0.5(230+718) + 0.5(300+973) = 474 + 636.5 = <b>1110.5</b> &lt; 1210.4, so go <b>West</b>.</p>
+      <p>(iii) West = 948p + 1273(1−p) = 1273 − 325p. East is better when 1273 − 325p &gt; 1210.4 ⇔ <b>p &lt; 0.193</b>.</p>
+      <p>The decision at A is made before the closure is revealed, so it uses the expectation. Decisions at B to E are made after, so they are deterministic minimisations. The answer is a policy: West; then D→F→H if at D, or E→G→H if at E.</p></div></details></div>
+
+  <h3>Question 3 · Q-learning vs SARSA (35 marks)</h3>
+  <svg class="dia" viewBox="0 0 520 210" role="img" aria-label="Mock cliff graph: 1 to 2 to G along the edge; 1 to 3 to 4 to G along the safe route; 2 B falls back to 1 with -100">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker></defs>
+    <g class="edge" marker-end="url(#ar)">
+      <line x1="82" y1="160" x2="238" y2="160"/><line x1="282" y1="160" x2="438" y2="160"/>
+      <line x1="70" y1="140" x2="140" y2="62"/><line x1="182" y1="45" x2="318" y2="45"/><line x1="360" y1="62" x2="440" y2="142"/>
+    </g>
+    <path class="edge" style="stroke:var(--mark)" d="M255,180 C200,215 110,215 70,182" marker-end="url(#ar)"/>
+    <g><circle class="nodeA" cx="60" cy="160" r="20"/><circle class="node" cx="260" cy="160" r="20"/><circle class="node" cx="160" cy="45" r="20"/><circle class="node" cx="340" cy="45" r="20"/><circle class="nodeA" cx="460" cy="160" r="20"/></g>
+    <g text-anchor="middle"><text x="60" y="165">1</text><text x="260" y="165">2</text><text x="160" y="50">3</text><text x="340" y="50">4</text><text x="460" y="165">G</text></g>
+    <g class="lab" text-anchor="middle" font-size="12"><text x="160" y="152">1–A (−1)</text><text x="360" y="152">2–A (−1)</text><text x="88" y="95">1–B (−1)</text><text x="250" y="36">3–A (−1)</text><text x="425" y="95">4–A (−1)</text><text x="165" y="206">2–B: fall, −100, back to 1</text></g>
+  </svg>
+  <p>A small cliff problem. States 1 (start), 2 (cliff edge), 3 and 4 (safe route), G (goal, terminal, Q(G,·) = 0). Moves: 1–A→2, 1–B→3, 2–A→G, 2–B→1 (falls off, reward −100), 3–A→4, 3–B→1, 4–A→G, 4–B→3. Every move other than the fall gives reward −1. Use learning rate δ = 0.5, discount α = 0.9, Q-table initialised to 0, and the pre-sampled ε-greedy episodes</p>
+  <p class="mono" style="text-align:center">ep1 = 1 –A→ 2 –B→ 1 –B→ 3 –A→ 4 –A→ G &nbsp;&nbsp; ep2 = 1 –A→ 2 –B→ 1 –A→ 2 –A→ G</p>
+  <div class="q"><div class="meta"><span class="t">3(a)</span><span>20 marks</span></div>
+    <p>Process ep1 then ep2 with (i) SARSA and (ii) Q-learning. Show every update and give both final Q-tables.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>Update: Q ← Q + 0.5(target − Q). SARSA target = r + 0.9·Q(x′,u′) using the next pair in the episode. Q-learning target = r + 0.9·max<sub>u</sub>Q(x′,u). On reaching G, target = r.</p>
+      <div class="tblwrap"><table>
+        <tr><th>step</th><th>(x,u,r,x′)</th><th class="l">SARSA target</th><th>SARSA Q</th><th class="l">Q-learning target</th><th>Q-learn. Q</th></tr>
+        <tr><td colspan="6" class="l"><b>ep1</b></td></tr>
+        <tr><td>1</td><td>(1,A,−1,2)</td><td class="l">−1 + 0.9·Q(2,B)=0 → −1</td><td>−0.5</td><td class="l">−1 + 0.9·0 = −1</td><td>−0.5</td></tr>
+        <tr><td>2</td><td>(2,B,−100,1)</td><td class="l">−100 + 0.9·Q(1,B)=0 → −100</td><td>−50</td><td class="l">−100 + 0.9·max(−0.5, 0) = −100</td><td>−50</td></tr>
+        <tr><td>3</td><td>(1,B,−1,3)</td><td class="l">−1 + 0.9·Q(3,A) = −1</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
+        <tr><td>4</td><td>(3,A,−1,4)</td><td class="l">−1 + 0.9·Q(4,A) = −1</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
+        <tr><td>5</td><td>(4,A,−1,G)</td><td class="l">−1 (terminal)</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
+        <tr><td colspan="6" class="l"><b>ep2</b></td></tr>
+        <tr><td>6</td><td>(1,A,−1,2)</td><td class="l">−1 + 0.9·<b>Q(2,B)</b> = −1 + 0.9(−50) = −46</td><td>−0.5 + 0.5(−45.5) = <b>−23.25</b></td><td class="l">−1 + 0.9·max(Q(2,A)=0, −50) = −1</td><td>−0.75</td></tr>
+        <tr><td>7</td><td>(2,B,−100,1)</td><td class="l">−100 + 0.9·Q(1,A) = −100 + 0.9(−23.25) = −120.925</td><td>−85.4625</td><td class="l">−100 + 0.9·max(−0.75, −0.5) = −100.45</td><td>−75.225</td></tr>
+        <tr><td>8</td><td>(1,A,−1,2)</td><td class="l">−1 + 0.9·Q(2,A) = −1</td><td>−23.25 + 0.5(22.25) = −12.125</td><td class="l">−1 + 0.9·max(0, −75.2) = −1</td><td>−0.875</td></tr>
+        <tr><td>9</td><td>(2,A,−1,G)</td><td class="l">−1 (terminal)</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
+      </table></div>
+      <div class="tblwrap"><table>
+        <tr><th>Final</th><th>Q(1,A)</th><th>Q(1,B)</th><th>Q(2,A)</th><th>Q(2,B)</th><th>Q(3,A)</th><th>Q(4,A)</th><th>others</th></tr>
+        <tr><td class="l">SARSA</td><td><b>−12.125</b></td><td>−0.5</td><td>−0.5</td><td>−85.4625</td><td>−0.5</td><td>−0.5</td><td>0</td></tr>
+        <tr><td class="l">Q-learning</td><td><b>−0.875</b></td><td>−0.5</td><td>−0.5</td><td>−75.225</td><td>−0.5</td><td>−0.5</td><td>0</td></tr>
+      </table></div>
+      <p>The key difference is step 6. SARSA bootstraps from the action actually taken next, (2,B), the exploratory fall, so Q(1,A) is dragged down to −23.25. Q-learning bootstraps from the best action at 2, (2,A), so Q(1,A) is barely affected.</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">3(b)</span><span>7 marks</span></div>
+    <p>Give the greedy route from 1 for each table. Do they agree? Is that the end of the story?</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>Rewards, so take the argmax. SARSA: Q(1,B) = −0.5 &gt; −12.125, so B, then 3–A, 4–A: <b>1→3→4→G</b> (the safe route). Q-learning: Q(1,B) = −0.5 &gt; −0.875, so also B: 1→3→4→G.</p>
+      <p>They agree <i>for now</i>, but for different reasons. Q-learning's preference is only an artefact of too little data: the safe route's values have been updated as if it took one step (−0.5) because the −1s haven't propagated back yet. SARSA's preference is structural: it has learned that, while exploring, stepping onto the edge is dangerous. With more episodes, Q-learning will switch to the edge (see (c)).</p></div></details></div>
+  <div class="q"><div class="meta"><span class="t">3(c)</span><span>8 marks</span></div>
+    <p>Compute the true optimal Q*(1,A) and Q*(1,B) from the Bellman equation. Which route does each algorithm converge to with (i) a constant ε = 0.2, (ii) ε<sub>k</sub> → 0? Explain.</p>
+    <details class="ans"><summary>Show solution</summary><div class="body">
+      <p>Q*(2,A) = −1, Q*(4,A) = −1, Q*(3,A) = −1 + 0.9(−1) = −1.9. <b>Q*(1,A)</b> = −1 + 0.9·max(Q*(2,A), Q*(2,B)) = −1 + 0.9(−1) = <b>−1.9</b>. <b>Q*(1,B)</b> = −1 + 0.9·Q*(3,A) = −1 + 0.9(−1.9) = <b>−2.71</b>. The optimal route is the edge 1→2→G.</p>
+      <p>(i) Constant ε = 0.2: <b>Q-learning</b> is off-policy, so it still converges to Q* and the greedy route is the edge. <b>SARSA</b> converges to the Q-factors of the ε-greedy policy: at state 2 it picks B (the fall) with probability ε/2 = 0.1. Roughly, stepping onto the edge is then worth about 0.9(−1) + 0.1(−100 − …) ≈ −11 or worse, much worse than the safe route (≈ −2.7), so SARSA keeps the safe route.</p>
+      <p>(ii) With ε<sub>k</sub> → 0 (greedy in the limit) and Robbins–Monro step sizes, SARSA's target becomes Q-learning's, and <b>both</b> converge to Q* and the edge route. This matches P6: SARSA with ε = 0 learned the 13-step edge path on every seed.</p></div></details></div>
+</section>
+
+<!-- ===================== EXAM ===================== -->
+<section class="panel" id="exam" data-panel="exam" hidden>
+  <h2>2024 Exam: full worked solutions</h2>
+  <p class="lede">Written as you would answer in the exam, with marks in mind. Read the question, try it yourself, then compare.</p>
+
+  <h3>Question 1 · MPC (25 marks)</h3>
+  <p class="stat">Cost \(J(x_k,\vec u)=\sum_{l=0}^{N-1}(x^\top_{k+l|k}Qx_{k+l|k}+u^\top_{k+l|k}Ru_{k+l|k})+x^\top_{k+N|k}Q_Fx_{k+N|k}\).</p>
+  <h4>(a) Role of Q, Q<sub>F</sub> and R; how they shape control actions and the closed-loop response (10)</h4>
+  <div class="flow">
+    <p><b>Q (≥ 0), stage state weight.</b> Penalises deviation of the predicted states from the origin (the target) at every step of the horizon. Increasing Q makes the optimiser care more about regulation error, so the controller drives the state to zero faster with smaller overshoot or error. The individual entries choose which states matter: e.g. \(Q=\mathrm{diag}(1,0)\) penalises position but not velocity.</p>
+    <p><b>R (&gt; 0), input weight.</b> Penalises control effort (energy, fuel, actuator use). Increasing R gives smaller, smoother inputs and a slower, more conservative state response. R must be positive definite so the cost is strictly convex in \(\vec u\) and the minimiser is unique (Hessian \(\Phi^\top\bar Q\Phi+R\) &gt; 0).</p>
+    <p><b>Q<sub>F</sub> (≥ 0), terminal weight.</b> Penalises the predicted state at the end of the horizon, \(x_{k+N|k}\). It approximates the cost of everything beyond the horizon, so the finite-horizon plan doesn't leave the state somewhere bad. It is the main tool for closed-loop stability: e.g. Q<sub>F</sub> from the Riccati equation (infinite-horizon LQR cost) or from the Lyapunov equation \(A^\top Q_FA+Q=Q_F\) makes the optimal cost decrease along trajectories.</p>
+    <p><b>Trade-off.</b> Only the relative size matters. Large Q relative to R (small ρ in R = ρI) ⇒ aggressive control: fast convergence, large inputs, possibly hitting actuator limits. Small Q relative to R ⇒ gentle inputs, slow convergence. The designer picks a point on the trade-off curve between input energy \(J_{in}\) and output energy \(J_{out}\). For an LTI unconstrained system the resulting law is \(u_k=-Kx_k\), and K (hence the closed-loop poles \(A-BK\)) is set by Q, R, Q<sub>F</sub> and N.</p>
+  </div>
+  <h4>(b) Main idea behind receding horizon optimisation (15)</h4>
+  <div class="flow">
+    <p>At each sampling time k:</p>
+    <ol>
+      <li>Measure (or estimate) the current state \(x_k\).</li>
+      <li>Using the model, predict the state over a finite horizon of N steps and solve \(\vec u^*_k=\arg\min_{\vec u\in\mathbb U^N}J(x_k,\vec u)\) subject to the constraints. This gives an optimal open-loop plan \(u^*_{k|k},\dots,u^*_{k+N-1|k}\).</li>
+      <li>Apply only the first element, \(u_k=u^*_{k|k}\). Discard the rest.</li>
+      <li>At k+1, measure \(x_{k+1}\), shift the horizon forward by one step (now k+1 … k+N), and repeat.</li>
+    </ol>
+    <p>The horizon "recedes" (moves forward) with time. Because the problem is re-solved from the newly measured state, the controller is a <b>feedback law</b> \(u_k=\kappa(x_k)\). It corrects for disturbances and model mismatch, handles constraints explicitly, and needs only finite-horizon optimisations even for a process that runs forever. Generally \(u^*_{k+1|k}\ne u^*_{k+1|k+1}\).</p>
+    <p><b>Example.</b> \(x_{k+1}=x_k+u_k\), N = 2, Q = R = Q<sub>F</sub> = 1, \(x_0=10\). Solving gives \(u_{k|k}=-0.6x_k\), \(u_{k+1|k}=-0.5x_{k+1|k}\).</p>
+    <div class="tblwrap"><table>
+      <tr><th>time</th><th>measured x</th><th class="l">optimal plan over window</th><th>applied u</th></tr>
+      <tr><td>0</td><td>10</td><td class="l">u<sub>0|0</sub> = −6, u<sub>1|0</sub> = −2 (predicts x<sub>1</sub> = 4, x<sub>2</sub> = 2)</td><td>−6</td></tr>
+      <tr><td>1</td><td>5 (gust of +1)</td><td class="l">u<sub>1|1</sub> = −3, u<sub>2|1</sub> = −1</td><td>−3</td></tr>
+      <tr><td>2</td><td>2</td><td class="l">u<sub>2|2</sub> = −1.2, …</td><td>−1.2</td></tr>
+    </table></div>
+    <p>The plan made at time 0 for time 1 (−2) is never used. The controller re-plans with the true state 5 and applies −3. Analogy: a driver looks 100 m ahead, plans the steering for that stretch, turns the wheel slightly, then looks again.</p>
+  </div>
+
+  <h3>Question 2 · Stochastic DP (40 marks)</h3>
+  <p class="stat">\(x_{k+1}=x_k+u_k+w_k\), \(\mathbb E w_k=0\), \(\mathbb E w_k^2=\sigma^2\), \(\mathbb E\{x_kw_k\}=\mathbb E\{u_kw_k\}=0\), N = 3, \(g_N=\beta x_N^2\), \(g_k=\beta x_k^2\), β &gt; 0.</p>
+  <h4>(a) Cost-to-go functions, optimal controls, J<sub>0</sub>(x<sub>0</sub>) (25)</h4>
+  <div class="flow">
+    <p><b>Stage 3 (terminal):</b> \(J_3(x_3)=g_3(x_3)=\beta x_3^2\).</p>
+    <p><b>Stage 2:</b></p>
+    \[\begin{aligned}J_2(x_2)&amp;=\min_{u_2}\mathbb E_{w_2}\{\beta x_2^2+\beta(x_2+u_2+w_2)^2\}\\&amp;=\beta x_2^2+\beta\min_{u_2}\big[(x_2+u_2)^2+2(x_2+u_2)\mathbb E\{w_2\}+\mathbb E\{w_2^2\}\big]\\&amp;=\beta x_2^2+\beta\sigma^2+\beta\min_{u_2}(x_2+u_2)^2\end{aligned}\]
+    <p>\(\frac{d}{du_2}\beta(x_2+u_2)^2=2\beta(x_2+u_2)=0\Rightarrow u_2^*=\mu_2^*(x_2)=-x_2\). Second derivative 2β &gt; 0 ⇒ minimum. So \(J_2(x_2)=\beta x_2^2+\beta\sigma^2\).</p>
+    <p><b>Stage 1:</b></p>
+    \[J_1(x_1)=\min_{u_1}\mathbb E\{\beta x_1^2+\beta(x_1+u_1+w_1)^2+\beta\sigma^2\}=\beta x_1^2+2\beta\sigma^2+\beta\min_{u_1}(x_1+u_1)^2\]
+    <p>⇒ \(u_1^*=-x_1\), \(J_1(x_1)=\beta x_1^2+2\beta\sigma^2\).</p>
+    <p><b>Stage 0:</b> same steps ⇒ \(u_0^*=-x_0\), and</p>
+    \[J_0(x_0)=\beta x_0^2+3\beta\sigma^2=\beta\,(x_0^2+3\sigma^2)\]
+    <p><b>Optimal policy:</b> \(\mu_k^*(x_k)=-x_k\) for k = 0, 1, 2 (a feedback law: cancel the current state). Applied: \(u_0=-x_0\Rightarrow x_1=w_0\), \(u_1=-x_1=-w_0\Rightarrow x_2=w_1\), \(u_2=-w_1\Rightarrow x_3=w_2\). Each stage cost after the first is the variance of one noise sample, which is why \(J_0\) gains one \(\beta\sigma^2\) per stage.</p>
+    <p class="stat">General N: \(J_k(x)=\beta x^2+(N-k)\beta\sigma^2\).</p>
+  </div>
+  <h4>(b) Find β so that J<sub>0</sub>(x<sub>0</sub>) = 1 (15)</h4>
+  <div class="flow">
+    \[\beta(x_0^2+3\sigma^2)=1\quad\Longrightarrow\quad\beta=\frac{1}{x_0^2+3\sigma^2}\]
+    <p>This is valid (β &gt; 0) for every x<sub>0</sub>, since σ &gt; 0 makes the denominator strictly positive. Example: \(x_0=1,\ \sigma=1\Rightarrow\beta=0.25\).</p>
+  </div>
+
+  <h3>Question 3 · Sarsa on the UAV network (35 marks)</h3>
+  <svg class="dia" viewBox="0 0 470 230" role="img" aria-label="UAV network: 1 to 2 A, 1 to 3 B, 3 to 2 A, 2 to 4 A, 3 to 4 B, 4 self loop B">
+    <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" style="fill:var(--accent)"/></marker></defs>
+    <line class="edge hot" x1="82" y1="60" x2="208" y2="60" marker-end="url(#ar3)"/><text class="lab" x="140" y="50">A</text>
+    <line class="edge hot" x1="252" y1="60" x2="378" y2="60" marker-end="url(#ar3)"/><text class="lab" x="310" y="50">A</text>
+    <line class="edge hot" x1="78" y1="76" x2="212" y2="170" marker-end="url(#ar3)"/><text class="lab" x="125" y="140">B</text>
+    <line class="edge hot" x1="230" y1="160" x2="230" y2="82" marker-end="url(#ar3)"/><text class="lab" x="238" y="125">A</text>
+    <line class="edge hot" x1="248" y1="170" x2="382" y2="76" marker-end="url(#ar3)"/><text class="lab" x="320" y="140">B</text>
+    <path class="edge hot" d="M412,46 C440,10 470,50 420,70" marker-end="url(#ar3)"/><text class="lab" x="446" y="22">B</text>
+    <circle class="node" cx="60" cy="60" r="20"/><text x="55" y="65">1</text>
+    <circle class="node" cx="230" cy="60" r="20"/><text x="225" y="65">2</text>
+    <circle class="node" cx="230" cy="182" r="20"/><text x="225" y="187">3</text>
+    <circle class="nodeA" cx="400" cy="60" r="20"/><text x="395" y="65">4</text>
+  </svg>
+  <div class="grid2">
+    <div class="tblwrap"><table><tr><th>x \ u</th><th>A</th><th>B</th></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>2</td><td>100</td><td>−1</td></tr><tr><td>3</td><td>0</td><td>100</td></tr><tr><td>4</td><td>−1</td><td>100</td></tr></table></div>
+    <p class="stat">Rewards g(x,u). δ = 0.1 (learning rate), α = 0.5 (discount), Q initialised to 0. ep1 = 1→2→4→4, ep2 = 1→3→2→4.</p>
+  </div>
+  <h4>(a) Computational process and Q-table (25)</h4>
+  <div class="flow">
+    <p><b>Sarsa update:</b> \(Q(x,u)\leftarrow Q(x,u)+\delta\,[\,g(x,u)+\alpha Q(x',u')-Q(x,u)\,]\), where (x′, u′) is the next state and the next action taken in the episode.</p>
+    <p><b>Read actions off the graph:</b> 1→2 is A, 1→3 is B, 3→2 is A, 2→4 is A, 4→4 is B. So the transitions are:</p>
+    <ul>
+      <li>ep1: (1,A) → (2,A) → (4,B) → (4,B)</li>
+      <li>ep2: (1,B) → (3,A) → (2,A) → (4,B)</li>
+    </ul>
+    <div class="tblwrap"><table>
+      <tr><th>#</th><th>(x,u)</th><th>g</th><th>(x′,u′)</th><th>Q<sub>old</sub></th><th>target g + 0.5·Q(x′,u′)</th><th>Q<sub>new</sub> = Q<sub>old</sub> + 0.1(target − Q<sub>old</sub>)</th></tr>
+      <tr><td colspan="7" class="l"><b>Episode 1</b></td></tr>
+      <tr><td>1</td><td>(1,A)</td><td>0</td><td>(2,A)</td><td>0</td><td>0 + 0.5·0 = 0</td><td>0</td></tr>
+      <tr><td>2</td><td>(2,A)</td><td>100</td><td>(4,B)</td><td>0</td><td>100 + 0.5·0 = 100</td><td><b>10</b></td></tr>
+      <tr><td>3</td><td>(4,B)</td><td>100</td><td>(4,B)</td><td>0</td><td>100 + 0.5·0 = 100</td><td><b>10</b></td></tr>
+      <tr><td colspan="7" class="l"><b>Episode 2</b> (start from the table after ep1)</td></tr>
+      <tr><td>4</td><td>(1,B)</td><td>0</td><td>(3,A)</td><td>0</td><td>0 + 0.5·0 = 0</td><td>0</td></tr>
+      <tr><td>5</td><td>(3,A)</td><td>0</td><td>(2,A)</td><td>0</td><td>0 + 0.5·10 = 5</td><td><b>0.5</b></td></tr>
+      <tr><td>6</td><td>(2,A)</td><td>100</td><td>(4,B)</td><td>10</td><td>100 + 0.5·10 = 105</td><td>10 + 0.1·95 = <b>19.5</b></td></tr>
+    </table></div>
+    <p><b>Final Q-table:</b></p>
+    <div class="tblwrap"><table><tr><th>x \ u</th><th>A</th><th>B</th></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>2</td><td>19.5</td><td>0</td></tr><tr><td>3</td><td>0.5</td><td>0</td></tr><tr><td>4</td><td>0</td><td>10</td></tr></table></div>
+    <p class="stat">Note on step 3: the episode ends with 4→4, so we treat it as a transition under B whose next pair is (4,B) again (B is the only move out of 4). If your lecturer treats 4 as terminal with Q(4,·) fixed at 0, skip step 3. Then step 6 gives 10 + 0.1(100 + 0 − 10) = 19 and Q(4,B) stays 0. State your assumption in the exam.</p>
+  </div>
+  <h4>(b) Optimal sequence from 1 to 4 (10)</h4>
+  <div class="flow">
+    <p>The table holds <b>rewards</b>, so the greedy action maximises Q: \(\mu(x)=\arg\max_uQ(x,u)\).</p>
+    <ul>
+      <li>State 2: Q(2,A) = 19.5 &gt; Q(2,B) = 0 ⇒ A (2→4).</li>
+      <li>State 3: Q(3,A) = 0.5 &gt; Q(3,B) = 0 ⇒ A (3→2).</li>
+      <li>State 4: Q(4,B) = 10 ⇒ B (stay at goal).</li>
+      <li>State 1: Q(1,A) = Q(1,B) = 0, a <b>tie</b>. Break it by one-step lookahead with the learned values: A gives \(0+0.5\max_uQ(2,u)=9.75\), and B gives \(0+0.5\max_uQ(3,u)=0.25\). Choose A.</li>
+    </ul>
+    <p><b>Optimal sequence: 1 —A→ 2 —A→ 4</b> (then B to remain at 4), i.e. actions {A, A}. This is a 2-hop route that collects the reward 100 on arrival.</p>
+    <p><b>Justification and caveats:</b> only two episodes were used, so the table is far from converged (e.g. (3,B), worth 100, was never tried, so Q(3,B) is still 0). With enough exploration, Sarsa converges toward the true values. Treating 4 as an absorbing goal with reward 100 per step, \(Q^*(4,B)=200\), and then \(Q^*(1,A)=Q^*(1,B)=100\). So route 1→3→4 (B, B) is truly just as good. The learned table, however, supports A, A.</p>
+  </div>
+</section>
+
+<!-- ===================== PRACTICE ===================== -->
+<section class="panel" id="practice" data-panel="practice" hidden>
+  <h2>Practice questions with answers</h2>
+  <p class="lede">21 questions covering all six topics, in the style of the 2024 paper. Attempt each on paper first, then open the answer. All numbers have been checked by computer.</p>
+
+  <h3>Model Predictive Control</h3>
+  <div class="q"><div class="meta"><span class="t">Q1 · theory</span><span>8 marks</span></div>
+    <p>Why does MPC apply only the first input of the optimal sequence instead of the whole sequence? What would go wrong if it applied the whole sequence open-loop?</p>
+    <details class="ans"><summary>Show answer</summary><div class="body">
+      <p>Applying only the first input and re-optimising at the next step from the <i>measured</i> state turns MPC into a feedback law \(u_k=\kappa(x_k)\). Disturbances, noise and model errors are corrected because each new plan starts from the true state. Applying the whole sequence open-loop would ignore anything that happens after time k: errors would accumulate with no correction, and once the N steps ran out there would be no plan at all. Re-planning also keeps looking N steps ahead (the window slides), which improves performance and keeps constraints satisfied using fresh information.</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q2 · calculation</span><span>12 marks</span></div>
+    <p>Plant \(x_{k+1}=2x_k+u_k\), cost with Q = Q<sub>F</sub> = 1, R = 1. (a) Find the MPC law and closed-loop dynamics for N = 1. (b) Repeat for N = 2. Comment.</p>
+    <details class="ans"><summary>Show answer</summary><div class="body">
+      <p>(a) N = 1: \(J=x^2+u^2+(2x+u)^2\). \(dJ/du=2u+2(2x+u)=0\Rightarrow u=-x\). Closed loop \(x_{k+1}=2x-x=x_k\): the state never decays (marginally stable). Not acceptable.</p>
+      <p>(b) N = 2: Riccati from \(S_2=1\): \(S_1=1+\frac{4\cdot1\cdot1}{1+1}=3\). \(L_0=-\frac{ab S_1}{r+b^2S_1}=-\frac{2\cdot3}{1+3}=-1.5\). Closed loop \(x_{k+1}=(2-1.5)x_k=0.5x_k\): asymptotically stable. (Batch form gives the same: \(\vec u^*=-[1.5,\ 0.5]^\top x_k\).)</p>
+      <p>Comment: for an unstable plant a too-short horizon with a weak terminal weight can fail to stabilise. Longer N or a larger/better Q<sub>F</sub> fixes it.</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q3 · theory</span><span>6 marks</span></div>
+    <p>In the double-integrator example, designs with ρ = 0.3 and ρ = 10 (R = ρI) were compared. Which converges faster, which uses larger inputs, and why?</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>ρ = 0.3: input cheap relative to state error ⇒ larger inputs, faster convergence of y<sub>k</sub> (larger input energy J<sub>in</sub>, smaller output energy J<sub>out</sub>). ρ = 10: input expensive ⇒ small inputs, slow convergence (small J<sub>in</sub>, large J<sub>out</sub>). Both lie on the J<sub>in</sub>–J<sub>out</sub> trade-off curve. ρ chooses the point.</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q4 · calculation</span><span>6 marks</span></div>
+    <p>For the scalar plant \(x_{k+1}=x_k+u_k\) and N = 3, write Φ and Λ in \(\vec x_k=\Phi\vec u+\Lambda x_k\).</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>A = B = 1, so every \(A^jB=1\): \(\Phi=\begin{bmatrix}1&amp;0&amp;0\\1&amp;1&amp;0\\1&amp;1&amp;1\end{bmatrix}\), \(\Lambda=\begin{bmatrix}1\\1\\1\end{bmatrix}\). Check: \(x_{k+2|k}=x_k+u_k+u_{k+1}\), matching row 2.</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q5 · theory + calc</span><span>8 marks</span></div>
+    <p>MPC with a finite input set uses R = 0 and Q<sub>F</sub> from \(A^\top Q_FA+Q=Q_F\). Compute Q<sub>F</sub> for scalar A = 0.5, Q = 1, and explain why A must be stable.</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>\(0.25Q_F+1=Q_F\Rightarrow Q_F=1/0.75=4/3\). The Lyapunov equation has a positive solution only if A is stable (|a| &lt; 1). It certifies that the "do nothing" controller \(\kappa_f=0\) makes \(F(x)=x^\top Q_Fx\) decrease by exactly \(L(x,0)\), which is Assumption 2 of the stability proof. With |a| ≥ 1, \(q/(1-a^2)\) is negative or undefined.</p></div></details></div>
+
+  <h3>Deterministic DP</h3>
+  <div class="q"><div class="meta"><span class="t">Q6 · calculation</span><span>10 marks</span></div>
+    <p>Directed graph with edge costs: S→A 2, S→B 5, A→B 1, A→C 6, B→C 2, B→E 7, C→E 1. Use DP to find the shortest S→E path and the decision at every node.</p>
+    <details class="ans"><summary>Show answer</summary><div class="body">
+      <p>dist(E) = 0. dist(C) = 1 (→E). dist(B) = min{2 + 1, 7 + 0} = 3 (→C). dist(A) = min{1 + 3, 6 + 1} = 4 (→B). dist(S) = min{2 + 4, 5 + 3} = 6 (→A).</p>
+      <p>Optimal path S→A→B→C→E, cost 6. Note the direct-looking B→E (7) is not used.</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q7 · calculation</span><span>12 marks</span></div>
+    <p>\(x_{k+1}=x_k+u_k\), \(g_k=x_k^2+u_k^2\), \(g_N=0\), N = 2. Find \(J_1,J_0\), the optimal controls, and \(J^*(x_0)\) by DP.</p>
+    <details class="ans"><summary>Show answer</summary><div class="body">
+      <p>\(J_2=0\). \(J_1(x)=\min_u\{x^2+u^2\}=x^2\), \(u_1^*=0\) (no future, so don't spend effort).</p>
+      <p>\(J_0(x)=\min_u\{x^2+u^2+(x+u)^2\}\): \(2u+2(x+u)=0\Rightarrow u_0^*=-x/2\). \(J_0=x^2+x^2/4+x^2/4=1.5x^2\).</p>
+      <p>Riccati check: \(S_2=0\), \(S_1=1\), \(S_0=1+1/(1+1)=1.5\), \(L_0=-1/2\). ✓</p></div></details></div>
+
+  <h3>Stochastic DP</h3>
+  <div class="q"><div class="meta"><span class="t">Q8 · calculation</span><span>20 marks</span></div>
+    <p>\(x_{k+1}=x_k+u_k+w_k\), \(\mathbb E w=0\), \(\mathbb E w^2=\sigma^2\) (independent of x, u). \(g_k=x_k^2+u_k^2\), \(g_2=x_2^2\), N = 2. Find \(J_1, J_0\), the optimal policy and \(J_0(x_0)\).</p>
+    <details class="ans"><summary>Show answer</summary><div class="body">
+      <p>\(J_2=x^2\). \(J_1(x)=\min_u\{x^2+u^2+\mathbb E(x+u+w)^2\}=x^2+\sigma^2+\min_u\{u^2+(x+u)^2\}\). \(u_1^*=-x/2\), \(J_1=1.5x^2+\sigma^2\).</p>
+      <p>\(J_0(x)=\min_u\{x^2+u^2+\mathbb E[1.5(x+u+w)^2+\sigma^2]\}=x^2+2.5\sigma^2+\min_u\{u^2+1.5(x+u)^2\}\).<br>\(2u+3(x+u)=0\Rightarrow u_0^*=-0.6x\). Value \(0.36x^2+1.5(0.16x^2)=0.6x^2\).</p>
+      <p>\(J_0(x_0)=1.6x_0^2+2.5\sigma^2\). Policy \(\mu_0(x)=-0.6x\), \(\mu_1(x)=-0.5x\): the same gains as the noise-free problem (certainty equivalence). Noise only adds \(\sigma^2(S_2+S_1)=\sigma^2(1+1.5)\).</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q9 · exam variant</span><span>10 marks</span></div>
+    <p>Same as 2024 Q2 but with N = 5. Give \(J_0(x_0)\) and find β such that \(J_0=2\) when \(x_0=1,\ \sigma=0.5\).</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>\(J_k(x)=\beta x^2+(5-k)\beta\sigma^2\), so \(J_0=\beta(x_0^2+5\sigma^2)\). With the numbers: \(\beta(1+1.25)=2\Rightarrow\beta=2/2.25=0.889\).</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q10 · MDP calculation</span><span>15 marks</span></div>
+    <p>Machine with states G (good), D (damaged), actions 0 (run), 1 (repair). \(P(0)=\begin{bmatrix}0.7&amp;0.3\\0&amp;1\end{bmatrix}\), \(P(1)=\begin{bmatrix}0.9&amp;0.1\\0.6&amp;0.4\end{bmatrix}\), costs g(G,0) = 0, g(G,1) = 2, g(D,0) = 5, g(D,1) = 7. N = 2, \(g_2=0\). Find the optimal policy and \(J_0\).</p>
+    <details class="ans"><summary>Show answer</summary><div class="body">
+      <p>k = 1: \(J_1(G)=\min\{0,2\}=0\) (run), \(J_1(D)=\min\{5,7\}=5\) (run).</p>
+      <p>k = 0: G: run \(0+0.7\cdot0+0.3\cdot5=1.5\), repair \(2+0.9\cdot0+0.1\cdot5=2.5\) ⇒ run, \(J_0(G)=1.5\).<br>D: run \(5+1\cdot5=10\), repair \(7+0.6\cdot0+0.4\cdot5=9\) ⇒ repair, \(J_0(D)=9\).</p>
+      <p>Policy: μ<sub>0</sub> = (G: run, D: repair), μ<sub>1</sub> = (run, run). At the last step repairing never pays off, because there's no future left to benefit.</p></div></details></div>
+
+  <h3>Infinite Horizon DP</h3>
+  <div class="q"><div class="meta"><span class="t">Q11 · VI</span><span>12 marks</span></div>
+    <p>For the machine in Q10 with α = 0.9 (infinite horizon), perform three iterations of VI from \(V_0=0\). Give the greedy policy after each.</p>
+    <details class="ans"><summary>Show answer</summary><div class="body">
+      <div class="tblwrap"><table><tr><th>k</th><th>V(G): run / repair</th><th>V(D): run / repair</th><th>V<sub>k</sub></th><th>policy</th></tr>
+      <tr><td>1</td><td>0 / 2</td><td>5 / 7</td><td>(0, 5)</td><td>(run, run)</td></tr>
+      <tr><td>2</td><td>1.35 / 2.45</td><td>9.5 / 8.8</td><td>(1.35, 8.8)</td><td>(run, repair)</td></tr>
+      <tr><td>3</td><td>3.2265 / 3.8855</td><td>12.92 / 10.897</td><td>(3.2265, 10.897)</td><td>(run, repair)</td></tr></table></div>
+      <p>Example, k = 2, G run: \(0+0.9(0.7\cdot0+0.3\cdot5)=1.35\). Values keep growing toward J* = (20.77, 28.46), but the policy has already settled.</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q12 · PI</span><span>15 marks</span></div>
+    <p>Same machine, α = 0.9. Run policy iteration from μ<sup>0</sup> = (run, run) until it stops.</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>See the full working in tab 04, section 4.4. Summary: (run, run) J = (36.49, 50) → improve → (repair, repair) J = (26.16, 33.01) → improve → (run, repair) J = (20.77, 28.46) → improve → unchanged. Optimal policy: run when good, repair when damaged. Matches VI in Q11.</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q13 · concept</span><span>6 marks</span></div>
+    <p>(a) A system incurs cost 2 every step forever, α = 0.8. What is the total discounted cost? (b) What is the effect of α on the Rover policy and on VI convergence speed?</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>(a) \(2/(1-0.8)=10\). (b) Larger α weights the future more: at α = 0.96 the Rover drives even from the bottom (μ(B) = 1), at α = 0.9 it doesn't. VI error shrinks like α<sup>k</sup>, so α close to 1 converges more slowly.</p></div></details></div>
+
+  <h3>Approximate DP</h3>
+  <div class="q"><div class="meta"><span class="t">Q14 · rollout</span><span>12 marks</span></div>
+    <p>Using the TSP distances in tab 05 and nearest neighbour as base policy, verify the four stage-1 rollout lengths from A and state the first move. Why is rollout never worse than nearest neighbour?</p>
+    <details class="ans"><summary>Show answer</summary><div class="body">
+      <p>A→B then N.N.: B→C 50, C→D 100, D→E 50, E→A 75: 100 + 50 + 100 + 50 + 75 = 375.<br>A→C: C→B 50, B→D 75, D→E 50, E→A 75: 300 + 250 = 550.<br>A→D: D→E 50, E→B 125 (tie with C, notes pick B), B→C 50, C→A 300: 100 + 525 = 625.<br>A→E: E→D 50, D→B 75, B→C 50, C→A 300: 75 + 475 = 550. First move: B.</p>
+      <p>The base policy's own first choice is among the candidates evaluated, and rollout picks the minimum, so it can only match or beat the base cost. This is the cost improvement property.</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q15 · least squares</span><span>10 marks</span></div>
+    <p>Fit \(\tilde J(x)=r_1+r_2x\) to samples (0, 1), (1, 3), (2, 7). Then do one gradient step from r = 0 with γ = 0.1.</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>\(\hat r=(\sum\phi\phi^\top)^{-1}\sum\beta\phi=\frac16\begin{bmatrix}5&amp;-3\\-3&amp;3\end{bmatrix}\begin{bmatrix}11\\17\end{bmatrix}=\begin{bmatrix}0.667\\3\end{bmatrix}\). GD: \(r^1=0-0.1\sum\phi(0-\beta)=0.1[11,17]^\top=[1.1,1.7]^\top\).</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q16 · CEC</span><span>6 marks</span></div>
+    <p>Explain certainty-equivalent control and when it is optimal.</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>CEC replaces each random disturbance \(w_k\) by a single nominal value \(\bar w_k\) (typically its mean), turning the stochastic DP into a deterministic one that is much cheaper to solve. It removes the expectation operator. It is optimal for linear dynamics with quadratic cost and additive (e.g. Gaussian) noise (LQG), because noise then adds only a constant to the cost-to-go and doesn't change the minimiser. Otherwise it is a suboptimal approximation.</p></div></details></div>
+
+  <h3>Reinforcement Learning</h3>
+  <div class="q"><div class="meta"><span class="t">Q17 · TD(0)</span><span>8 marks</span></div>
+    <p>J = 0 initially, α = 0.9, δ = 0.5. Observed: A (cost 2) → B (cost 0) → A (cost 2) → B. Give J after each update and name the TD target and TD error.</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>J(A) = 1, J(B) = 0.45, J(A) = 1 + 0.5(2 + 0.405 − 1) = 1.7025. TD target = \(g+\alpha J(x_{k+1})\). TD error = target − J(x<sub>k</sub>).</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q18 · Sarsa vs Q-learning</span><span>8 marks</span></div>
+    <p>Costs. Q(s1,a) = 4, Q(s2,a) = 3, Q(s2,b) = 1. Transition (s1, a, g = 2, s2), and the next action chosen ε-greedily is a. δ = 0.5, α = 0.9. Update Q(s1,a) with Sarsa and with Q-learning.</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>Sarsa uses the taken action a: 4 + 0.5(2 + 2.7 − 4) = <b>4.35</b>. Q-learning uses min: 4 + 0.5(2 + 0.9 − 4) = <b>3.45</b>. They differ because the next action was exploratory (not greedy).</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q19 · Q-learning on the 2024 data</span><span>15 marks</span></div>
+    <p>Redo 2024 Q3(a) with Q-learning (rewards ⇒ max) instead of Sarsa. Is the table different?</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>ep1: Q(1,A) = 0.1(0 + 0.5·max Q(2,·) = 0) = 0. Q(2,A) = 0.1(100 + 0) = 10. Q(4,B) = 10. ep2: Q(1,B) = 0. Q(3,A) = 0.1(0 + 0.5·max(10, 0)) = 0.5. Q(2,A) = 10 + 0.1(100 + 0.5·10 − 10) = 19.5. The table is <b>identical</b>, because in every step the action taken next happened to be the greedy (max-Q) one at that moment. Sarsa and Q-learning differ only when the next action is exploratory.</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q20 · concepts</span><span>6 marks</span></div>
+    <p>(a) With ε = 0.3 and 3 actions, what is the probability of choosing the greedy action? (b) Which learning rates satisfy the convergence conditions: δ = 0.1, \(\delta_k=1/k\), \(\delta_k=1/k^2\)?</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>(a) 1 − 0.3 + 0.3/3 = 0.8. (b) Need Σδ = ∞ and Σδ² &lt; ∞. Only 1/k works. Constant 0.1 has Σδ² = ∞, and 1/k² has Σδ &lt; ∞.</p></div></details></div>
+
+  <div class="q"><div class="meta"><span class="t">Q21 · theory</span><span>8 marks</span></div>
+    <p>Explain on-policy vs off-policy with Sarsa and Q-learning, and the exploration–exploitation trade-off.</p>
+    <details class="ans"><summary>Show answer</summary><div class="body"><p>Sarsa updates with \(Q(x',u')\) for the action it actually executes (ε-greedy), so it evaluates and improves the same policy it follows: <b>on-policy</b>. Q-learning updates with \(\min_{u'}Q(x',u')\), learning the greedy policy's values while executing a different (ε-greedy) behaviour policy: <b>off-policy</b>. Exploitation picks the action that currently looks best. Exploration tries other actions to discover better ones and to keep every (x,u) visited, which convergence requires. ε-greedy balances the two, usually decreasing ε over time.</p></div></details></div>
+</section>
+
+<!-- ===================== CHEATSHEET ===================== -->
+<section class="panel" id="cheatsheet" data-panel="cheatsheet" hidden>
+  <h2>Exam cheatsheet</h2>
+  <p class="lede">Every formula, algorithm, key number and answer recipe from the six topics, plus the key results from your six practicals (section 9), on two A4 pages.</p>
+  <div class="dlrow">
+    <button class="btn" id="dlbtn" type="button" disabled>Download PDF</button>
+    <span class="stat" id="dlstat">Checking whether downloads are available here…</span>
+  </div>
+  <div class="paper nomath">
+<div class="cs">
+<h1>ENN582 Exam Cheatsheet v1: RL &amp; Optimal Control</h1>
+
+<h2>1 · MPC (Model Predictive Control)</h2>
+<p><b>Model</b> x<sub>k+1</sub> = f(x<sub>k</sub>, u<sub>k</sub>), x ∈ X ⊆ ℝ<sup>n</sup>, u ∈ U ⊆ ℝ<sup>m</sup>, f(0,0)=0. Prediction x<sub>k+ℓ+1|k</sub> = f(x<sub>k+ℓ|k</sub>, u<sub>k+ℓ|k</sub>), x<sub>k|k</sub> = x<sub>k</sub> (measured).</p>
+<p><b>Cost</b> J(x<sub>k</sub>, u⃗) = Σ<sub>ℓ=0</sub><sup>N−1</sup> [x<sup>T</sup>Qx + u<sup>T</sup>Ru]<sub>k+ℓ|k</sub> + x<sup>T</sup><sub>k+N|k</sub> Q<sub>F</sub> x<sub>k+N|k</sub>, with Q ≥ 0, Q<sub>F</sub> ≥ 0, R &gt; 0. Design knobs: L, F, N.</p>
+<p><b>Q</b> = weight on state error → how hard we push x to 0 (speed/accuracy). <b>R</b> = weight on input → control effort/energy, actuator wear. <b>Q<sub>F</sub></b> = terminal weight → stands in for cost after the horizon; key to <i>stability</i>. Large Q/R ⇒ fast convergence, big inputs. Small Q/R ⇒ slow, gentle inputs. Diagonal entries weight individual states (e.g. Q = diag(1,0) penalises position only). R = ρI: ρ trades input energy J<sub>in</sub> vs output energy J<sub>out</sub>.</p>
+<p><b>Receding horizon</b>: (1) measure x<sub>k</sub>; (2) solve u⃗*<sub>k</sub> = argmin<sub>u⃗∈U<sup>N</sup></sub> J(x<sub>k</sub>, u⃗); (3) apply only the first element u<sub>k</sub> = u*<sub>k|k</sub> = [I<sub>m</sub> 0 … 0] u⃗*<sub>k</sub>; (4) k ← k+1, shift window, repeat. Gives implicit feedback law u<sub>k</sub> = κ(x<sub>k</sub>). Usually u*<sub>k+1|k</sub> ≠ u*<sub>k+1|k+1</sub>. Why: feedback corrects disturbances/model errors, handles constraints, looks ahead, finite computation. Longer N ⇒ better but more computation; moderate N ≈ infinite-horizon performance.</p>
+<p><b>Batch form (LTI)</b> x<sub>k+ℓ|k</sub> = A<sup>ℓ</sup>x<sub>k</sub> + Σ<sub>j=0</sub><sup>ℓ−1</sup> A<sup>ℓ−j−1</sup>Bu<sub>k+j|k</sub>; x⃗<sub>k</sub> = Φu⃗ + Λx<sub>k</sub>, Φ = [B 0 … 0; AB B … 0; …; A<sup>N−1</sup>B … AB B], Λ = [A; A<sup>2</sup>; …; A<sup>N</sup>], Q̄ = diag(Q,…,Q,Q<sub>F</sub>).<br/>
+J = x<sub>k</sub><sup>T</sup>(Λ<sup>T</sup>Q̄Λ+Q)x<sub>k</sub> + u⃗<sup>T</sup>(Φ<sup>T</sup>Q̄Φ+ρI)u⃗ + 2u⃗<sup>T</sup>Φ<sup>T</sup>Q̄Λx<sub>k</sub><br/>
+<b>u⃗* = −(Φ<sup>T</sup>Q̄Φ + ρI)<sup>−1</sup>Φ<sup>T</sup>Q̄Λ x<sub>k</sub></b>; u<sub>k</sub> = −Kx<sub>k</sub>, K = [I 0…0](Φ<sup>T</sup>Q̄Φ+ρI)<sup>−1</sup>Φ<sup>T</sup>Q̄Λ = finite-horizon LQR. ∂(u<sup>T</sup>Xu)/∂u = 2Xu, ∂(a<sup>T</sup>u)/∂u = a.</p>
+<p><b>Constraints</b> → QP: min u⃗<sup>T</sup>Hu⃗ + u⃗<sup>T</sup>f s.t. A<sub>in</sub>u⃗ ≤ B<sub>in</sub> (may be infeasible). Integral action: penalise Δu = u<sub>k+ℓ+1</sub> − u<sub>k+ℓ</sub>. Double integrator: A = [1 Δt; 0 1], B = [Δt²/2; Δt]. ZOH: [A B; 0 I] = exp([A<sub>c</sub> B<sub>c</sub>; 0 0]T<sub>s</sub>).</p>
+<p><b>Stability (opt.)</b> A1: F(0)=0, F≥0, L(0,0)=0, L(x,u) ≥ α(‖x‖). A2: ∃κ<sub>f</sub>: F(f(x,κ<sub>f</sub>(x))) ≤ F(x) − L(x,κ<sub>f</sub>(x)). Shifted sequence [u*<sub>k+1|k</sub>,…,κ<sub>f</sub>(x*<sub>k+N|k</sub>)] ⇒ 0 ≤ V<sub>k+1</sub> ≤ V<sub>k</sub> − α(‖x<sub>k</sub>‖) ⇒ x<sub>k</sub> → 0. Finite input set: R=0, κ<sub>f</sub>=0, Q<sub>F</sub> from Lyapunov A<sup>T</sup>Q<sub>F</sub>A + Q = Q<sub>F</sub> (A stable; scalar Q<sub>F</sub> = q/(1−a²)).</p>
+<p><b>Platoon</b> e<sub>i,k</sub> = x<sub>i−1,k</sub> − x<sub>i,k</sub>, e<sub>k+1</sub> = Ae<sub>k</sub> + Bū<sub>k</sub> + w<sub>k</sub>, u<sub>i</sub> = u<sub>i−1</sub> − ū<sub>i</sub>. DARE: S = A<sup>T</sup>SA − A<sup>T</sup>SB(R+B<sup>T</sup>SB)<sup>−1</sup>B<sup>T</sup>SA + Q, K = (R+B<sup>T</sup>SB)<sup>−1</sup>B<sup>T</sup>SA. LQR ignores constraints (crash, 288 km/h); MPC adds p<sub>min</sub>, v<sub>max</sub>, a, u limits.</p>
+
+<h2>2 · Finite-horizon DP (deterministic)</h2>
+<p><b>Principle of optimality</b>: the tail of an optimal trajectory is optimal for the tail subproblem starting from that point, no matter how it was reached.</p>
+<p>J(x<sub>0</sub>,u⃗) = g<sub>N</sub>(x<sub>N</sub>) + Σ<sub>k=0</sub><sup>N−1</sup> g<sub>k</sub>(x<sub>k</sub>,u<sub>k</sub>). <b>DP</b>: J<sub>N</sub>(x) = g<sub>N</sub>(x); J<sub>k</sub>(x) = min<sub>u∈U</sub>{g<sub>k</sub>(x,u) + J<sub>k+1</sub>(f<sub>k</sub>(x,u))}, k = N−1…0 (backward, all states). J* = J<sub>0</sub>(x<sub>0</sub>). Forward pass: u*<sub>k</sub> = argmin{…}, x*<sub>k+1</sub> = f(x*<sub>k</sub>,u*<sub>k</sub>). Curse of dimensionality: needs every state ⇒ discretise.</p>
+<p><b>Shortest path</b>: dist(E)=0, dist(X)=min over edges {c(X→Y)+dist(Y)}. Notes: S→C→D→E, cost 6.</p>
+<p><b>LQR by DP</b>: S<sub>N</sub> = Q<sub>F</sub>; S<sub>k</sub> = A<sup>T</sup>S<sub>k+1</sub>A + Q − A<sup>T</sup>S<sub>k+1</sub>B(R+B<sup>T</sup>S<sub>k+1</sub>B)<sup>−1</sup>B<sup>T</sup>S<sub>k+1</sub>A; L<sub>k</sub> = −(R+B<sup>T</sup>S<sub>k+1</sub>B)<sup>−1</sup>B<sup>T</sup>S<sub>k+1</sub>A; u*<sub>k</sub> = L<sub>k</sub>x<sub>k</sub>; J* = x<sub>0</sub><sup>T</sup>S<sub>0</sub>x<sub>0</sub>, J<sub>k</sub>(x) = x<sup>T</sup>S<sub>k</sub>x.<br/>
+<b>Scalar</b> (a,b,q,r): S<sub>k</sub> = q + a²rS<sub>k+1</sub>/(r + b²S<sub>k+1</sub>), L<sub>k</sub> = −abS<sub>k+1</sub>/(r + b²S<sub>k+1</sub>).</p>
+
+<h2>3 · Stochastic DP &amp; MDPs</h2>
+<p>x<sub>k+1</sub> = f<sub>k</sub>(x<sub>k</sub>,u<sub>k</sub>,w<sub>k</sub>). Optimise over <b>policies</b> π = {μ<sub>0</sub>,…,μ<sub>N−1</sub>}, u<sub>k</sub> = μ<sub>k</sub>(x<sub>k</sub>) (use future state info ⇒ beat open-loop sequences). J<sub>π</sub>(x<sub>0</sub>) = E{g<sub>N</sub>(x<sub>N</sub>) + Σ g<sub>k</sub>(x<sub>k</sub>,μ<sub>k</sub>(x<sub>k</sub>),w<sub>k</sub>)}.<br/>
+<b>DP</b>: J<sub>k</sub>(x) = min<sub>u</sub> E<sub>w</sub>{g<sub>k</sub>(x,u,w) + J<sub>k+1</sub>(f<sub>k</sub>(x,u,w))}.</p>
+<p><b>Expectation tricks</b> (E w=0, E w²=σ², E[xw]=E[uw]=0): E[(a+w)²] = a² + σ²; E[c]=c; E[βw]=0. Vector: E[w<sup>T</sup>Sw] = tr(SΣ).</p>
+<p><b>Exam-style template</b> x<sub>k+1</sub> = x+u+w, g<sub>k</sub> = g<sub>N</sub> = βx²: J<sub>k</sub>(x) = βx² + (N−k)βσ², μ<sub>k</sub>(x) = −x, J<sub>0</sub> = β(x<sub>0</sub>² + Nσ²). N=3: J<sub>2</sub> = βx²+βσ², J<sub>1</sub> = βx²+2βσ², J<sub>0</sub> = βx²+3βσ²; J<sub>0</sub>=1 ⇔ β = 1/(x<sub>0</sub>²+3σ²).</p>
+<p><b>LQR + additive noise</b>: same gains L<sub>k</sub> (certainty equivalence); J<sub>0</sub> = x<sub>0</sub><sup>T</sup>S<sub>0</sub>x<sub>0</sub> + Σ<sub>k=0</sub><sup>N−1</sup> E[w<sub>k</sub><sup>T</sup>S<sub>k+1</sub>w<sub>k</sub>].<br/>
+<b>Dropouts</b> B<sub>k</sub> = B w.p. Γ, 0 w.p. 1−Γ: L<sub>k</sub> = −(R+ΓB<sup>T</sup>S<sub>k+1</sub>B)<sup>−1</sup>ΓB<sup>T</sup>S<sub>k+1</sub>A; S<sub>k</sub> = A<sup>T</sup>S<sub>k+1</sub>A + Q − A<sup>T</sup>S<sub>k+1</sub>ΓB(R+ΓB<sup>T</sup>S<sub>k+1</sub>B)<sup>−1</sup>ΓB<sup>T</sup>S<sub>k+1</sub>A.</p>
+<p><b>MDP</b>: p<sub>ij</sub>(u) = P(x<sub>k+1</sub>=j | x<sub>k</sub>=i, u<sub>k</sub>=u), rows sum to 1. J<sub>k</sub>(i) = min<sub>u</sub>{g(i,u) + Σ<sub>j</sub> p<sub>ij</sub>(u)J<sub>k+1</sub>(j)}. Equivalent to x<sub>k+1</sub> = w<sub>k</sub>.</p>
+<p><b>Rover</b> X={T,R,B}, U={0 idle, 1 drive}. P(0) = [.75 .25 0; 0 0 1; 0 0 1], P(1) = [.8 .2 0; .9 0 .1; 0 .1 .9]. g(T,0)=−3, g(T,1)=−1, g(R,0)=g(B,0)=0, g(R,1)=g(B,1)=2. N=3, g<sub>3</sub>=0: J<sub>2</sub>=(−3,0,0); J<sub>1</sub>=(−5.25,−0.7,0); J<sub>0</sub>=(−7.1125,−2.725,0). Policy: T→0 always; R→1 at k=0,1, 0 at k=2; B→0.</p>
+
+<h2>4 · Infinite horizon: VI &amp; PI</h2>
+<p>J<sub>π</sub>(x) = lim E{Σ<sub>k</sub> α<sup>k</sup>g(x<sub>k</sub>,μ<sub>k</sub>(x<sub>k</sub>),w<sub>k</sub>)}, α ∈ [0,1). α=0 myopic; α→1 far-sighted (slower convergence). Stationary policies. J<sub>π</sub>(x<sub>0</sub>) = E{g(x<sub>0</sub>,…)} + αJ<sub>π</sub>(x<sub>1</sub>). Σ<sub>k≥0</sub>α<sup>k</sup> = 1/(1−α); Σ<sub>k≥K</sub>α<sup>k</sup> = α<sup>K</sup>/(1−α).</p>
+<p><b>Bellman</b>: J*(x) = min<sub>u</sub> E{g(x,u,w) + αJ*(f(x,u,w))}; finite: J*(i) = min<sub>u</sub>{g(i,u) + αΣ<sub>j</sub>p<sub>ij</sub>(u)J*(j)}. Operator TJ = min<sub>u</sub>E{g+αJ(f)}; J* = lim T<sup>k</sup>J, error ≤ α<sup>K</sup>M/(1−α).</p>
+<p><b>VI</b>: V<sub>0</sub> = any bounded (0); V<sub>k+1</sub>(i) = min<sub>u</sub>{g(i,u) + αΣ<sub>j</sub>p<sub>ij</sub>(u)V<sub>k</sub>(j)}. Matrix: V<sub>k+1</sub> = min{G(0)+αP(0)V<sub>k</sub>, G(1)+αP(1)V<sub>k</sub>} (componentwise). V<sub>k</sub> = optimal k-stage cost; policy = argmin. Policy often settles before values (not guaranteed).</p>
+<p><b>PI</b>: start μ<sup>0</sup>. (1) <i>Evaluate</i>: J<sub>μ</sub> = g<sub>μ</sub> + αP<sub>μ</sub>J<sub>μ</sub> ⇒ J<sub>μ</sub> = (I − αP<sub>μ</sub>)<sup>−1</sup>g<sub>μ</sub>, or iterate J<sub>μ,k+1</sub> = g<sub>μ</sub> + αP<sub>μ</sub>J<sub>μ,k</sub>. (2) <i>Improve</i>: μ<sup>ℓ+1</sup>(i) = argmin<sub>u</sub>{g(i,u) + αΣp<sub>ij</sub>(u)J<sub>μ<sup>ℓ</sup></sub>(j)}. Stop when μ unchanged. Finite #policies ⇒ finite steps. Actor (improve) – critic (evaluate).<br/>
+2×2 inverse: [a b; c d]<sup>−1</sup> = (1/(ad−bc))[d −b; −c a].</p>
+<p><b>VI vs PI</b>: VI cheap per iteration, many iterations, values converge asymptotically. PI: expensive evaluation (linear solve), few iterations, exact policy in finite steps. Variants: truncated evaluation (optimistic PI), asynchronous updates (only visited states). Rover: α=0.9 ⇒ μ=(0,1,0); α=0.96 ⇒ μ=(0,1,1) (drive at bottom too). Average cost: lim (1/N)E Σg.</p>
+
+<h2>5 · Approximate DP</h2>
+<p><b>Value-space approx.</b>: ũ<sub>k</sub> ∈ argmin<sub>u</sub>{g<sub>k</sub>(x<sub>k</sub>,u) + J̃<sub>k+1</sub>(f<sub>k</sub>(x<sub>k</sub>,u))}, forward only, no backward pass. J̃ = J ⇒ optimal.</p>
+<p><b>Rollout</b>: J̃<sub>k+1</sub> = cost of running a <i>base (heuristic) policy</i> from x<sub>k+1</sub> to the end. Policy improvement property: rollout cost ≤ base cost. TSP (A start): AB100 AC300 AD100 AE75 BC50 BD75 BE125 CD100 CE125 DE50. Nearest neighbour gives AEDBCA = 550; rollout with N.N. base: stage 1 B(375) C(550) D(625) E(550) → B; stage 2 C375 D650 E675 → C; stage 3 D375 E425 → D ⇒ ABCDEA = 375 (optimal here, not always).</p>
+<p><b>Stochastic</b>: J̃ approx + approximate E. <b>Certainty-equivalent control</b>: replace w<sub>k</sub> by a single w̄<sub>k</sub> (usually E w<sub>k</sub>) ⇒ deterministic problem; optimal for LQG.<br/>
+<b>ℓ-step lookahead</b>: min over u<sub>k</sub>, μ<sub>k+1</sub>…μ<sub>k+ℓ−1</sub> of E{Σ g + J̃<sub>k+ℓ</sub>}; apply first control only (like MPC). Larger ℓ compensates poor J̃, costs more. <b>Truncated rollout</b>: base policy for ℓ−1 steps + terminal J̃ (often J̃=0 fine if ℓ large). Infinite: μ̃(x) ∈ argmin E{g + αJ̃(f)}.</p>
+<p><b>Parametric</b> J̃(x,r); features φ(x) (handcrafted, aggregation); linear J̃ = r<sup>T</sup>φ(x) (r = weights). Train on (x<sup>s</sup>, β<sup>s</sup>): min Φ(r) = ½Σ<sub>s</sub>(J̃(x<sup>s</sup>,r) − β<sup>s</sup>)². Linear ⇒ convex: <b>r̂ = (Σφφ<sup>T</sup>)<sup>−1</sup>Σβ<sup>s</sup>φ</b> (least squares). GD: r<sup>ℓ+1</sup> = r<sup>ℓ</sup> − γ<sup>ℓ</sup>Σ<sub>s</sub>φ(x<sup>s</sup>)(r<sup>ℓT</sup>φ(x<sup>s</sup>) − β<sup>s</sup>); step γ decreasing; SGD = one random sample per step. Finite horizon: fit r<sub>k</sub> backwards for each k.</p>
+
+<h2>6 · Reinforcement learning (model-free, tabular)</h2>
+<p>Agent applies u, observes cost g and next state x′; no model f. Alternative: system ID then MPC/DP.</p>
+<p><b>TD(0) prediction</b> of J<sub>μ</sub>: J(x<sub>k</sub>) ← J(x<sub>k</sub>) + δ<sub>k</sub>[g + αJ(x<sub>k+1</sub>) − J(x<sub>k</sub>)]. TD target = g + αJ(x<sub>k+1</sub>); TD error = target − J(x<sub>k</sub>). Robbins–Monro stochastic approximation.</p>
+<p><b>Q-factors</b>: Q<sub>μ</sub>(x,u) = E{g(x,u,w) + αJ<sub>μ</sub>(f(x,u,w))}; J*(x) = min<sub>u</sub>Q*(x,u); μ*(x) = argmin<sub>u</sub>Q*(x,u). Q-Bellman: Q*(x,u) = E{g + α min<sub>u′</sub>Q*(f(x,u,w),u′)}.</p>
+<p><b>Sarsa (on-policy)</b>: Q(x,u) ← Q(x,u) + δ[g + αQ(x′,u′) − Q(x,u)], u′ = action actually taken next (ε-greedy). Data (x,u,g,x′,u′) = S,A,R,S,A.<br/>
+<b>Q-learning (off-policy)</b>: Q(x,u) ← Q(x,u) + δ[g + α min<sub>u′</sub>Q(x′,u′) − Q(x,u)]. Learns greedy Q* while acting ε-greedy.<br/>
+<b>ε-greedy</b>: greedy argmin Q w.p. 1−ε, random u ∈ U w.p. ε ⇒ P(greedy) = 1−ε+ε/|U|. Exploration vs exploitation. ε<sub>k</sub> decreasing, e.g. 1/k or max(1/k, 0.01).<br/>
+<b>Convergence</b>: all (x,u) visited infinitely often, δ<sub>k</sub>&gt;0, Σδ<sub>k</sub>=∞, Σδ<sub>k</sub>²&lt;∞ (δ<sub>k</sub>=1/k ✓, constant δ ✗, 1/k² ✗), ε → 0 (greedy in limit). Constant ε ⇒ Sarsa converges to Q of the ε-greedy policy. Terminal-state Q = 0 initially.<br/>
+<b>Rewards instead of costs</b>: maximise (use max, argmax), or cost = −reward. Deep RL: Q̂(x,u;r), minimise E[(g + α min Q(x′,·;r) − Q(x,u;r))²] by GD. Learning ≠ guaranteed closed-loop stability.</p>
+<p><b>Hand-calc table</b>: step | (x,u) | g | (x′,u′) | Q<sub>old</sub> | target g+αQ(x′,u′) | Q<sub>new</sub> = Q<sub>old</sub> + δ(target − Q<sub>old</sub>). Always use the <i>current</i> table value (updates from earlier steps/episodes carry forward).</p>
+
+<h2>7 · Answer recipes</h2>
+<p><b>Stochastic DP by hand</b>: (1) J<sub>N</sub> = g<sub>N</sub>. (2) Substitute x′ = f(x,u,w) into J<sub>k+1</sub>. (3) Expand squares, take E (w-terms: E w = 0, E w² = σ²). (4) d/du = 0 → u*; check 2nd derivative &gt; 0. (5) Plug u* back → J<sub>k</sub>. (6) Repeat to k=0. State policy μ<sub>k</sub>(x) and J<sub>0</sub>(x<sub>0</sub>).</p>
+<p><b>Finite MDP DP / VI step</b>: for each state i and each u: g(i,u) + αΣ<sub>j</sub>p<sub>ij</sub>(u)V(j) (α=1 for finite-horizon DP). Take min, record argmin. Show a table: state | u=0 value | u=1 value | min | policy.</p>
+<p><b>PI step</b>: write linear eqs J(i) = g(i,μ(i)) + αΣp<sub>ij</sub>(μ(i))J(j); solve; then improvement table as above; stop when policy repeats.</p>
+<p><b>Sarsa / Q-learning by hand</b>: list transitions from episodes (x,u,r,x′,u′); table of all Q = 0; update one transition at a time in order; carry the table into the next episode; final table; greedy policy (min for cost, max for reward); explain ties (one-step lookahead r + α·best Q(next), or note more episodes needed).</p>
+<p><b>MPC by hand (scalar)</b>: N=1: J = qx² + ru² + q<sub>F</sub>(ax+bu)², u* = −abq<sub>F</sub>x/(r + b²q<sub>F</sub>). N≥2: Riccati backwards from S<sub>N</sub> = q<sub>F</sub>, use L<sub>0</sub> only (receding horizon); closed loop x<sub>k+1</sub> = (a + bL<sub>0</sub>)x<sub>k</sub>, stable iff |a + bL<sub>0</sub>| &lt; 1.</p>
+<p><b>Key words to use</b>: principle of optimality, cost-to-go, tail subproblem, Bellman equation, stationary policy, contraction, policy evaluation/improvement, base policy, cost improvement, certainty equivalence, features/weights, TD target/error, on/off-policy, exploration–exploitation, implicit feedback law κ(x), constraints, QP, feasibility, terminal cost, Lyapunov.</p>
+
+<h2>8 · 2024 exam answers (quick)</h2>
+<p><b>Q1</b>: (a) Q state penalty → speed of regulation; R input penalty → effort; Q<sub>F</sub> terminal → tail cost/stability; ratio Q:R sets aggressiveness. (b) Plan N steps, apply first, re-measure, re-plan (moving window).</p>
+<p><b>Q2</b>: μ<sub>k</sub>(x) = −x (k=0,1,2); J<sub>0</sub> = βx<sub>0</sub>² + 3βσ²; β = 1/(x<sub>0</sub>² + 3σ²).<br/>
+<b>Q3</b> (δ=0.1, α=0.5, Sarsa): ep1: Q(1,A)=0, Q(2,A)=0.1·(100+0)=10, Q(4,B)=0.1·(100+0.5·0)=10. ep2: Q(1,B)=0, Q(3,A)=0.1·(0+0.5·10)=0.5, Q(2,A)=10+0.1(100+0.5·10−10)=19.5. Final: Q(1,A)=0, Q(1,B)=0, Q(2,A)=19.5, Q(3,A)=0.5, Q(4,B)=10, rest 0. Rewards ⇒ argmax. Tie at 1: break by r + α·max Q(next): A → 0.5·19.5 = 9.75 &gt; B → 0.5·0.5 = 0.25 ⇒ 1 —A→ 2 —A→ 4 (then B self-loop).</p>
+
+<h2>9 · Practicals P1–P6: results &amp; lessons</h2>
+<p><b>P1 crane</b> x=[p v θ ω], x<sub>0</sub>=[2;0;0;0], x*=[10;0;0;0]; 0≤p≤12, |v|≤3, |θ|≤10°=0.1745, |ω|≤50°/s=0.8727, |u|≤100 N, T<sub>s</sub>=0.1, ZOH [A B;0 I]=e<sup>[A<sub>c</sub> B<sub>c</sub>;0 0]T<sub>s</sub></sup>. Bryson Q<sub>ii</sub>=1/x<sub>max</sub>², R=1/u<sub>max</sub>² → diag(.016,.11,32.8,1.31), 10<sup>−4</sup>. LQR diag(.5,1,500,50), R=1: 7.3 s (conservative: biggest push at t=0; limits met only by tuning). MPC Q=I, R=1, N=30: 5.4 s on limits. QP: H=2(Φ<sup>T</sup>Q̄Φ+R̄), f=2Φ<sup>T</sup>Q̄(Λx<sub>k</sub>−x̄*), A<sub>in</sub>=[−Φ;Φ;−I;I], b<sub>in</sub>=[Λx<sub>k</sub>−x<sub>min</sub>; x<sub>max</sub>−Λx<sub>k</sub>; −u<sub>min</sub>; u<sub>max</sub>]; N vars, 10N rows. Short N → infeasible; limits only at samples.</p>
+<p><b>P2</b> J(E,F,G)=807,450,603; J(B,C,D)=730,854,1056; J(A)=1063 A-B-F-H; greedy A-D-E-H=1305. TSP: 13 (A-B-D-C-A); state=(city, unvisited set); (n−1)!/2 tours vs n²2<sup>n</sup>. NN = 1-step lookahead, J̃=0. AB=50: NN 58, opt 40 (A-C-B-D-A), rollout(NN) finds 40, never worse than base.</p>
+<p><b>P3</b> E{g} per edge = P2 costs ⇒ same 1063 (noise only in cost ⇒ certainty equivalence exact). Fork: J(B,C,D,E)=883,920,718,973; East .6(333+883)+.4(282+920)=1210.4; West .8(230+718)+.2(300+973)=1013 ⇒ West. Parking: J<sub>N</sub>=S; J<sub>k</sub>(full)=c+ρJ<sub>k+1</sub>(free)+(1−ρ)J<sub>k+1</sub>(full); J<sub>k</sub>(free)=min(s(k), J<sub>k</sub>(full)). c ≥ fee drop ⇒ park at first free; else threshold rule.</p>
+<p><b>P4</b> Grid VI: q=r(next)−1+αV(next), α=.9, V(0,0)=−4.0951; hole reset ⇒ bootstrap αV(start). Frozen lake (slip: intended or ⊥, ⅓ each): det V(0)=.99<sup>5</sup>=.951; slippery V(0)=.542; det policy on ice 4.7% vs 74.7%; walls used as protection. VI 180 its vs PI 5; policy final at VI it 45. PI: keep old action on ties. Exact PE (I−αP<sub>μ</sub>)V=r<sub>μ</sub>.</p>
+<p><b>P5</b> μ̃(x)=argmax[r−1+J̃(f(x,u))], J̃=−Euclid ⇒ loop (3,0)↔(3,1); ℓ=3 optimal; cost ∝ b<sup>ℓ</sup>. φ=normalize[x<sub>1</sub>,x<sub>2</sub>,|x<sub>1</sub>−4|+|x<sub>2</sub>−4|] (sum ≡ 8), r=[10,10,2] exact. SGD r←r−γφ(r<sup>T</sup>φ−β), β=max<sub>u</sub>[−1+r<sup>T</sup>φ(next)]; e.g. (1,1): φ=[.125,.125,.75], β=−1 ⇒ r=−.01φ.</p>
+<p><b>P6</b> Cliff 4×12, −1/step, −100 fall. Q-learning (max) ⇒ 13-step edge path −13. SARSA (Q(x′,u′), ε-moves included) ⇒ 15/17-step safe detour; ε=0 ⇒ same as Q-learning. Resetting k each episode ⇒ ε never → 0, Robbins–Monro broken. Edge example: Q=−2, r=−1, Q(x′,·)={−1, −100}, u′=down, δ=.5: SARSA −51, QL −1.995.</p>
+
+</div>
+
+  </div>
+</section>
+
+</div></main>
+
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('nav.tabs button'));
+  var panels={};[].forEach.call(document.querySelectorAll('[data-panel]'),function(p){panels[p.dataset.panel]=p});
+  var typeset={};
+  function tset(id){
+    if(typeset[id]||id==='cheatsheet')return;
+    if(window.MathJax&&MathJax.typesetPromise){typeset[id]=true;MathJax.typesetPromise([panels[id]]).catch(function(){typeset[id]=false});}
+  }
+  function show(id,scroll){
+    if(!panels[id])id='plan';
+    tabs.forEach(function(b){var on=b.dataset.tab===id;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;if(on&&b.scrollIntoView)b.scrollIntoView({block:'nearest',inline:'nearest'})});
+    Object.keys(panels).forEach(function(k){panels[k].hidden=k!==id});
+    tset(id);
+    try{localStorage.setItem('enn582v1tab',id)}catch(e){}
+    if(scroll)window.scrollTo({top:0});
+  }
+  tabs.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.tab,true)})});
+  var start=(location.hash||'').slice(1);
+  if(!panels[start]){try{start=localStorage.getItem('enn582v1tab')||'plan'}catch(e){start='plan'}}
+  show(start,false);
+  window.addEventListener('load',function(){
+    var t=setInterval(function(){if(window.MathJax&&MathJax.typesetPromise){clearInterval(t);Object.keys(panels).forEach(function(k){if(!panels[k].hidden){typeset[k]=false;tset(k)}})}},150);
+    setTimeout(function(){clearInterval(t)},15000);
+  });
+
+
+  // practicals: jump links and cross-tab buttons
+  function jump(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
+  [].forEach.call(document.querySelectorAll('[data-scroll]'),function(b){b.addEventListener('click',function(){jump(b.dataset.scroll)})});
+  [].forEach.call(document.querySelectorAll('[data-goto]'),function(b){b.addEventListener('click',function(){show(b.dataset.goto,true);if(b.dataset.anchor)setTimeout(function(){jump(b.dataset.anchor)},60)})});
+
+  // plan checkboxes
+  [].forEach.call(document.querySelectorAll('#planlist input'),function(cb){
+    try{cb.checked=localStorage.getItem('enn582v1-'+cb.id)==='1'}catch(e){}
+    cb.closest('label').classList.toggle('done',cb.checked);
+    cb.addEventListener('change',function(){cb.closest('label').classList.toggle('done',cb.checked);try{localStorage.setItem('enn582v1-'+cb.id,cb.checked?'1':'0')}catch(e){}});
+  });
+
+  // MPC tuner
+  var a=1.2,b=1,q=1,qf=1;
+  function chart(svg,xs,us){
+    var W=640,H=230,l=40,r=12,t=12,bt=26,n=xs.length;
+    var all=xs.concat(us),mx=Math.max.apply(null,all.map(Math.abs).concat([1]));
+    mx=Math.min(mx,8);
+    function X(i){return l+(W-l-r)*i/(n-1)}
+    function Y(v){v=Math.max(-mx,Math.min(mx,v));return t+(H-t-bt)*(1-(v+mx)/(2*mx))}
+    var s='<line class="ax" x1="'+l+'" y1="'+t+'" x2="'+l+'" y2="'+(H-bt)+'"/>';
+    s+='<line class="z" x1="'+l+'" y1="'+Y(0)+'" x2="'+(W-r)+'" y2="'+Y(0)+'"/>';
+    [mx,-mx].forEach(function(v){s+='<text x="'+(l-6)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+v.toFixed(1)+'</text>'});
+    s+='<text x="'+(l-6)+'" y="'+(Y(0)+4)+'" text-anchor="end">0</text>';
+    for(var i=0;i<n;i+=5)s+='<text x="'+X(i)+'" y="'+(H-8)+'" text-anchor="middle">k='+i+'</text>';
+    function pl(arr,c){return '<polyline class="'+c+'" points="'+arr.map(function(v,i){return X(i).toFixed(1)+','+Y(v).toFixed(1)}).join(' ')+'"/>'}
+    s+=pl(us,'s2')+pl(xs,'s1');
+    svg.innerHTML=s;
+  }
+  function mpc(){
+    var rho=Math.pow(10,+document.getElementById('rho').value),N=+document.getElementById('hor').value;
+    document.getElementById('rhov').textContent=rho<1?rho.toFixed(2):rho.toFixed(1);
+    document.getElementById('horv').textContent=N;
+    var S=qf,L=0;
+    for(var k=N-1;k>=0;k--){L=-a*b*S/(rho+b*b*S);S=q+a*a*rho*S/(rho+b*b*S)}
+    var pole=a+b*L,x=1,xs=[],us=[];
+    for(var i=0;i<=20;i++){xs.push(x);var u=L*x;us.push(u);x=a*x+b*u}
+    var st=document.getElementById('mpcstat');
+    st.innerHTML='MPC gain L<sub>0</sub> = <b>'+L.toFixed(3)+'</b> · closed-loop pole a + bL<sub>0</sub> = <b class="'+(Math.abs(pole)<1?'good':'bad')+'">'+pole.toFixed(3)+'</b> · '+(Math.abs(pole)<1?'<span class="good">stable</span>':'<span class="bad">not stable (|pole| ≥ 1)</span>');
+    chart(document.getElementById('mpcchart'),xs,us);
+  }
+  ['rho','hor'].forEach(function(id){document.getElementById(id).addEventListener('input',mpc)});mpc();
+
+  // VI rover
+  var P0=[[.75,.25,0],[0,0,1],[0,0,1]],P1=[[.8,.2,0],[.9,0,.1],[0,.1,.9]],G0=[-3,0,0],G1=[-1,2,2],names=['T (top)','R (rolling)','B (bottom)'];
+  function vi(){
+    var al=+document.getElementById('alpha').value,K=+document.getElementById('iters').value;
+    document.getElementById('alphav').textContent=al.toFixed(2);document.getElementById('itersv').textContent=K;
+    var V=[0,0,0],c0=[0,0,0],c1=[0,0,0],pol=['–','–','–'];
+    for(var k=0;k<K;k++){
+      for(var i=0;i<3;i++){c0[i]=G0[i]+al*(P0[i][0]*V[0]+P0[i][1]*V[1]+P0[i][2]*V[2]);c1[i]=G1[i]+al*(P1[i][0]*V[0]+P1[i][1]*V[1]+P1[i][2]*V[2])}
+      V=[0,1,2].map(function(i){return Math.min(c0[i],c1[i])});pol=[0,1,2].map(function(i){return c1[i]<c0[i]?'1 drive':'0 idle'});
+    }
+    var Vs=[0,0,0];for(var j=0;j<3000;j++){var nv=[0,1,2].map(function(i){return Math.min(G0[i]+al*(P0[i][0]*Vs[0]+P0[i][1]*Vs[1]+P0[i][2]*Vs[2]),G1[i]+al*(P1[i][0]*Vs[0]+P1[i][1]*Vs[1]+P1[i][2]*Vs[2]))});Vs=nv}
+    var h='<tr><th class="l">state</th><th>u=0 value</th><th>u=1 value</th><th>V<sub>'+K+'</sub></th><th>greedy policy</th><th>converged J*</th></tr>';
+    for(var i=0;i<3;i++)h+='<tr><td class="l">'+names[i]+'</td><td>'+(K?c0[i].toFixed(3):'–')+'</td><td>'+(K?c1[i].toFixed(3):'–')+'</td><td><b>'+V[i].toFixed(3)+'</b></td><td>'+pol[i]+'</td><td>'+Vs[i].toFixed(2)+'</td></tr>';
+    document.getElementById('vitab').innerHTML=h;
+    var maxerr=Math.max.apply(null,[0,1,2].map(function(i){return Math.abs(V[i]-Vs[i])}));
+    document.getElementById('vistat').textContent='Max distance from J*: '+maxerr.toFixed(3)+'. Try α = 0.90 vs 0.96 and watch the policy at B change; notice how many more iterations α near 1 needs.';
+  }
+  ['alpha','iters'].forEach(function(id){document.getElementById(id).addEventListener('input',vi)});vi();
+
+  // download
+  var btn=document.getElementById('dlbtn'),st=document.getElementById('dlstat'),dl=null;
+  if(window.claude&&window.claude.use){
+    window.claude.use('downloads').then(function(d){dl=d;if(d){btn.disabled=false;st.textContent='Two-page A4 PDF, ready to print.'}else{st.textContent='Downloads are not available in this view. Open the page in claude.ai to save the PDF.'}}).catch(function(){st.textContent='Downloads are not available in this view.'});
+  }else{st.textContent='Downloads are not available in this view. Open the page in claude.ai to save the PDF.'}
+  btn.addEventListener('click',function(){
+    if(!dl)return;btn.disabled=true;st.textContent='Preparing…';
+    fetch('cheatsheet.pdf').then(function(r){if(!r.ok)throw new Error('fetch');return r.blob()}).then(function(blob){
+      return dl.save({filename:'ENN582_Exam_Cheatsheet_v1.pdf',data:blob});
+    }).then(function(){st.textContent='Saved.'}).catch(function(e){
+      var c=e&&e.code;st.textContent=c==='declined'?'Download cancelled.':c==='rate_limited'?'A save prompt is already open. Try again in a moment.':'Could not save the file here.';
+    }).then(function(){btn.disabled=false});
+  });
+})();
+</script>
