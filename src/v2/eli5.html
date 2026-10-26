@@ -22,9 +22,8 @@
     <div class="eli-card"><h4>🚧 Constraints: rules, not wishes</h4><p>LQR can only be <i>persuaded</i> to stay safe by changing weights. MPC treats the limits as hard rules (≤ 3 m/s, ≤ 10° swing), so it can drive right up to them and no further.</p><p class="eli-prac"><b>In your P1:</b> LQR played safe and took 7.3 s; MPC rode exactly on the 10° and 50°/s limits and took 5.4 s.</p></div>
   </div>
   <div class="vids">
-    <div class="vid" data-yt="8U0xiOkDcmw"><span class="vsrc">MATLAB · Understanding MPC, part 1</span><b>Why Use Model Predictive Control?</b></div>
-    <div class="vid" data-yt="9OYWiuefK14"><span class="vsrc">YouTube lecture</span><b>MPC, The Complete Story: Part 1, The Receding Horizon</b></div>
-    <div class="vid" data-list="PLn8PRpmsu08ozoeoXgxPSBKLyd4YEHww8"><span class="vsrc">MATLAB · playlist</span><b>Understanding Model Predictive Control (full series)</b></div>
+    <div class="vid" data-yt="8U0xiOkDcmw"><span class="vsrc">4:50 · <b class="vlen">MATLAB · Understanding MPC, part 1</b></span><b>Why use Model Predictive Control?</b></div>
+    <div class="vid" data-yt="9OYWiuefK14"><span class="vsrc">7:13 · <b class="vlen">The Control Eng GEEK</b></span><b>MPC part 1: the receding horizon</b></div>
   </div>
 </div>
 <!--/ELI-->
@@ -48,9 +47,8 @@
     <div class="eli-card"><h4>💥 Curse of dimensionality</h4><p>DP is exact, but the number of price tags can explode. A salesperson visiting 20 cities has about 6×10<sup>16</sup> possible tours; DP needs about 4×10<sup>8</sup> steps. At 50 cities even DP gives up, so we approximate (tab 05).</p><p class="eli-prac"><b>In your P2:</b> the TSP DP state was (where am I, which cities are left).</p></div>
   </div>
   <div class="vids">
-    <div class="vid" data-yt="M1q_k8rkrfo"><span class="vsrc">Operations research lecture</span><b>Bellman's Principle of Optimality: Dynamic Programming Concept</b></div>
-    <div class="vid" data-yt="NbsnlRMrOOw"><span class="vsrc">University lecture</span><b>Dynamic programming for the shortest path problem</b></div>
-    <div class="vid" data-yt="aNL4Uz3_jPM"><span class="vsrc">Worked numerical</span><b>Dynamic Programming: Shortest Path Problem, numerical example</b></div>
+    <div class="vid" data-yt="_zE5z-KZGRw"><span class="vsrc">9:25 · <b class="vlen">CSBreakdown</b></span><b>Principle of optimality</b></div>
+    <div class="vid" data-yt="eGNRlhSIeWM"><span class="vsrc">11:26 · <b class="vlen">Worked example</b></span><b>Multi-stage shortest path, backward approach (like Tom's journey)</b></div>
   </div>
 </div>
 <!--/ELI-->
@@ -75,8 +73,8 @@
     <div class="eli-card"><h4>🅿️ Stopping problems: take it or keep looking</h4><p>Parking: take this spot, or gamble that a better one is ahead? Compare "stop now" with "the average cost of carrying on". The answer is usually a threshold: keep looking until about here, then take the first one you see.</p><p class="eli-prac"><b>In your P3:</b> with c = 1 it was "take the first free spot"; with cheap search the threshold moved later (k* = 1, 5, 7, 8).</p></div>
   </div>
   <div class="vids">
-    <div class="vid" data-yt="Nd1-UUMVfz4"><span class="vsrc">David Silver · UCL RL course, Lecture 3</span><b>Planning by Dynamic Programming (MDPs, Bellman expectation)</b></div>
-    <div class="vid" data-list="PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ"><span class="vsrc">DeepMind × UCL · playlist</span><b>Reinforcement learning lecture series</b></div>
+    <div class="vid" data-yt="4Fqt2Nk2lhY"><span class="vsrc">3:36 · <b class="vlen">Cyrill Stachniss · 5 Minutes with Cyrill</b></span><b>Markov Decision Process (MDP)</b></div>
+    <div class="vid" data-yt="XKZIsODur_g"><span class="vsrc">7:44 · <b class="vlen">SmartSlides</b></span><b>MDPs: expected return, policy and value functions</b></div>
   </div>
 </div>
 <!--/ELI-->
@@ -100,8 +98,8 @@
     <div class="eli-card"><h4>🧊 Plan for the slip</h4><p>On ice you don't always go where you aim. The smart move next to a hole is the one whose <i>accidental</i> slides are safe, even if that means pushing into a wall.</p><p class="eli-prac"><b>In your P4:</b> the "walk straight" policy reached the goal 4.7% of the time on ice; the ice-aware one reached it 74.7% of the time.</p></div>
   </div>
   <div class="vids">
-    <div class="vid" data-yt="Nd1-UUMVfz4"><span class="vsrc">David Silver · UCL RL course, Lecture 3</span><b>Planning by DP: policy evaluation, policy iteration, value iteration</b></div>
-    <div class="vid" data-yt="NFo9v_yKQXA"><span class="vsrc">Mutual Information</span><b>Reinforcement Learning, by the Book (MDPs and the Bellman equations)</b></div>
+    <div class="vid" data-yt="raSia5MpwUQ"><span class="vsrc">4:58 · <b class="vlen">DRL course 4.6</b></span><b>Generalized policy iteration: evaluate ↔ improve</b></div>
+    <div class="vid" data-yt="gThGerajccM"><span class="vsrc">0:33 · <b class="vlen">Aaron Becker · demo</b></span><b>Value iteration solving a robot grid world (watch the values spread)</b></div>
   </div>
 </div>
 <!--/ELI-->
@@ -127,9 +125,8 @@
     <div class="eli-card"><h4>🎯 Certainty equivalence: pretend the dice show their average</h4><p>Replace each random thing by its average, solve the easy deterministic problem, and apply the first move. It's cheap and often very good. It is exact when the noise only affects the cost.</p><p class="eli-prac"><b>In your P3:</b> mean edge costs gave the exact stochastic answer, 1063.</p></div>
   </div>
   <div class="vids">
-    <div class="vid" data-yt="k-r2el7rW7I"><span class="vsrc">Dimitri Bertsekas · ASU 2021, Lecture 4</span><b>Approximation in value and policy space; rollout</b></div>
-    <div class="vid" data-yt="xdI52Mjivv0"><span class="vsrc">Dimitri Bertsekas · ASU 2021, Lecture 5</span><b>Deterministic and stochastic rollout</b></div>
-    <div class="vid" data-yt="g5hG5GvZpM0"><span class="vsrc">Dimitri Bertsekas · talk</span><b>Lessons from AlphaZero for Optimal, Model Predictive, and Adaptive Control</b></div>
+    <div class="vid" data-yt="Ru-9pJJyggo"><span class="vsrc">4:27 · <b class="vlen">Standarity</b></span><b>Monte Carlo tree search: lookahead + rollouts (how AlphaGo plans)</b></div>
+    <div class="vid" data-yt="g6EBIr0uRr0"><span class="vsrc">13:14 · <b class="vlen">Gerstner Lab (EPFL) · RL3.1</b></span><b>Too many states? Why we approximate the value function</b></div>
   </div>
 </div>
 <!--/ELI-->
@@ -158,9 +155,8 @@
     <div class="eli-card"><h4>📉 Calm down over time</h4><p>Early on, big nudges and lots of exploring. Later, small nudges and mostly the best move, or you'll never settle (Robbins–Monro: Σδ = ∞, Σδ² &lt; ∞; ε → 0).</p><p class="eli-prac"><b>In your P6:</b> resetting k each episode kept ε high forever, so SARSA never found the 13-step path.</p></div>
   </div>
   <div class="vids">
-    <div class="vid" data-yt="0iqz4tcKN58"><span class="vsrc">Steve Brunton · University of Washington</span><b>Q-Learning: Model-Free RL and Temporal Difference Learning</b></div>
-    <div class="vid" data-yt="0g4j2k_Ggc4"><span class="vsrc">David Silver · UCL RL course, Lecture 5</span><b>Model-Free Control (SARSA, Q-learning)</b></div>
-    <div class="vid" data-yt="AJiG3ykOxmY"><span class="vsrc">YouTube explainer</span><b>Temporal Difference Learning (including Q-Learning)</b></div>
+    <div class="vid" data-yt="UWiIxWy5kD8"><span class="vsrc">4:05 · <b class="vlen">Gerstner Lab (EPFL) · RL2.2</b></span><b>Q-learning and variations of SARSA</b></div>
+    <div class="vid" data-yt="Ii7GJDB3r0Q"><span class="vsrc">7:16 · <b class="vlen">Gerstner Lab (EPFL) · RL2.3</b></span><b>TD learning (temporal difference)</b></div>
   </div>
 </div>
 <!--/ELI-->

@@ -45,6 +45,8 @@ h = h.replace('--ok:#6BC48F; --ok-soft:#173326;', '--ok:#6BC48F; --ok-soft:#1733
 assert h.count('--eli:#C8A8F2') == 2
 
 css = '''/* v2: all tabs visible (wrap), theme switch, ELI5 blocks, video cards */
+[hidden]{display:none!important}
+.vid .vlen{color:var(--ink);font-weight:600}
 nav.tabs .wrap{flex-wrap:wrap;overflow:visible;gap:4px 2px;padding-block:6px}
 nav.tabs button{padding:9px 10px 8px;border-radius:5px 5px 0 0}
 nav.tabs button[aria-selected="true"]{background:var(--accent-soft)}
@@ -98,7 +100,7 @@ js = '''
     b.addEventListener('click',function(){
       var grid=v.parentNode,old=grid.querySelector('.vframe');if(old)old.remove();
       var f=document.createElement('div');f.className='vframe';
-      var ifr=document.createElement('iframe');ifr.src=emb+(id?'?autoplay=1':'&autoplay=1');ifr.title=v.querySelector('b').textContent;
+      var ifr=document.createElement('iframe');ifr.src=emb+(id?'?autoplay=1':'&autoplay=1');ifr.title=v.querySelector(':scope > b').textContent;
       ifr.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';ifr.allowFullscreen=true;
       var p=document.createElement('p');p.className='stat';p.innerHTML='If the player stays blank, this viewer blocks embedded video. Use <b>Open on YouTube ↗</b> instead.';
       f.appendChild(ifr);f.appendChild(p);grid.appendChild(f);f.scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -106,6 +108,8 @@ js = '''
   });
 '''
 sub1('  // plan checkboxes', js + '\n  // plan checkboxes')
+sub1("try{localStorage.setItem('enn582v1tab',id)}catch(e){}", "try{localStorage.setItem('enn582v1tab',id)}catch(e){}\n    if(location.hash.slice(1)!==id&&history.replaceState)history.replaceState(null,'','#'+id);")
+sub1("  // plan checkboxes", "  window.addEventListener('hashchange',function(){var t=location.hash.slice(1);if(panels[t])show(t,true)});\n  // plan checkboxes")
 h = h.replace("'enn582v1tab'", "'enn582v2tab'").replace("'enn582v1-'", "'enn582v2-'")
 open(os.path.join(D, 'enn582-v2.html'), 'w').write(h)
 print('ok', len(h))
