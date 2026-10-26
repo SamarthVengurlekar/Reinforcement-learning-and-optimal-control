@@ -154,6 +154,14 @@ h3.eli-title{margin:0;padding:0;border:0;font-size:20px;color:var(--eli)}
 .vid .vact a{color:var(--accent);border:1px solid var(--accent)}
 .vframe{grid-column:1/-1;display:flex;flex-direction:column;gap:6px}
 .vframe iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:6px;background:#000}
+.notes{background:var(--surface);border:1px solid var(--line)} .notes>.tag{color:var(--accent)}
+.nact{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.nopen{font:500 14px/1 var(--f-body);color:var(--accent);padding:10px 4px}
+.nviewer{max-height:80vh;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px;display:flex;flex-direction:column;gap:8px}
+.nviewer[hidden]{display:none!important}
+.npage{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);position:relative;width:100%}
+.npage canvas{display:block;width:100%;height:auto}
+.npage .pn{position:absolute;right:6px;bottom:4px;font:11px var(--f-mono);color:#555;background:rgba(255,255,255,.8);padding:1px 4px;border-radius:3px}
 /* cheatsheet paper */
 .paper{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:20px 22px;font-size:13.5px;line-height:1.45}
 .paper .cs h1{font-size:20px;margin-bottom:8px}
@@ -244,6 +252,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <section class="panel" id="mpc" data-panel="mpc" hidden>
   <h2>01 · Model Predictive Control</h2>
   <p class="lede">MPC is a feedback controller that, at every time step, solves a small optimisation problem: "given where I am now, what is the best plan for the next N steps?" It applies only the first move of that plan, then measures again and re-plans.</p>
+  <div class="box notes" data-pdf="notes/Week_1_MPC_notes.pdf" data-file="Week_1_MPC_notes.pdf"><span class="tag">Lecture notes</span><p><b>Week 1 · Model Predictive Control</b> · PDF, 24 pages</p><div class="nact"><button type="button" class="btn nview">📖 View notes here</button><button type="button" class="btn ghost ndl">⬇ Download PDF</button><a class="nopen" href="notes/Week_1_MPC_notes.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div><p class="stat nstat"></p><div class="nviewer" hidden></div></div>
   <div class="box pracbox"><span class="tag">Your practical · P1</span><p>Gantry crane: you designed Q and R (Bryson's rule), saw LQR be conservative (7.3 s), then built the batch QP and got 5.4 s with MPC running on the swing limits.</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr1">Open the P1 lesson →</button></p></div>
 
 <div class="eli5">
@@ -372,6 +381,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <section class="panel" id="ddp" data-panel="ddp" hidden>
   <h2>02 · Deterministic Dynamic Programming</h2>
   <p class="lede">DP solves a multi-stage decision problem by solving it backwards from the end. The best decision at every state and every time comes out of one backward sweep.</p>
+  <div class="box notes" data-pdf="notes/Week_2_and_3_DP_notes.pdf" data-file="Week_2_and_3_DP_notes.pdf"><span class="tag">Lecture notes</span><p><b>Weeks 2 &amp; 3 · Dynamic Programming (deterministic and stochastic)</b> · PDF, 15 pages</p><div class="nact"><button type="button" class="btn nview">📖 View notes here</button><button type="button" class="btn ghost ndl">⬇ Download PDF</button><a class="nopen" href="notes/Week_2_and_3_DP_notes.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div><p class="stat nstat"></p><div class="nviewer" hidden></div></div>
   <div class="box pracbox"><span class="tag">Your practical · P2</span><p>Tom's journey A→H by backward DP (1063, A-B-F-H; the greedy route costs 1305) and the 4-city TSP, nearest neighbour and rollout.</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr2">Open the P2 lesson →</button></p></div>
 
 <div class="eli5">
@@ -460,6 +470,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <section class="panel" id="sdp" data-panel="sdp" hidden>
   <h2>03 · Stochastic Dynamic Programming</h2>
   <p class="lede">Now the next state depends on a random disturbance: \(x_{k+1}=f_k(x_k,u_k,w_k)\). We can't control exactly where we go, so we minimise the <b>expected</b> cost and choose a <b>policy</b> (a rule) instead of a fixed list of actions.</p>
+  <div class="box notes" data-pdf="notes/Week_2_and_3_DP_notes.pdf" data-file="Week_2_and_3_DP_notes.pdf"><span class="tag">Lecture notes</span><p><b>Weeks 2 &amp; 3 · Dynamic Programming (deterministic and stochastic)</b> · PDF, 15 pages</p><div class="nact"><button type="button" class="btn nview">📖 View notes here</button><button type="button" class="btn ghost ndl">⬇ Download PDF</button><a class="nopen" href="notes/Week_2_and_3_DP_notes.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div><p class="stat nstat"></p><div class="nviewer" hidden></div></div>
   <div class="box pracbox"><span class="tag">Your practical · P3</span><p>Random leg costs (certainty equivalence gives 1063 again), a random road closure (go West, 1013) and the parking stopping problem (threshold rules).</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr3">Open the P3 lesson →</button></p></div>
 
 <div class="eli5">
@@ -547,6 +558,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <section class="panel" id="ihdp" data-panel="ihdp" hidden>
   <h2>04 · Infinite Horizon Dynamic Programming</h2>
   <p class="lede">For systems that run "forever" (continuing tasks), we discount future costs. The optimal policy then stops depending on time: one rule for all k. Two algorithms find it: Value Iteration and Policy Iteration.</p>
+  <div class="box notes" data-pdf="notes/Week_4_Inf_DP.pdf" data-file="Week_4_Inf_DP.pdf"><span class="tag">Lecture notes</span><p><b>Week 4 · Infinite Horizon DP</b> · PDF, 11 pages</p><div class="nact"><button type="button" class="btn nview">📖 View notes here</button><button type="button" class="btn ghost ndl">⬇ Download PDF</button><a class="nopen" href="notes/Week_4_Inf_DP.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div><p class="stat nstat"></p><div class="nviewer" hidden></div></div>
   <div class="box pracbox"><span class="tag">Your practical · P4</span><p>Grid world VI with resets, and Frozen Lake deterministic vs slippery: VI took 180 iterations, PI 5, and the slippery-optimal policy hugs walls.</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr4">Open the P4 lesson →</button></p></div>
 
 <div class="eli5">
@@ -637,6 +649,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <section class="panel" id="adp" data-panel="adp" hidden>
   <h2>05 · Approximate Dynamic Programming</h2>
   <p class="lede">Exact DP needs \(J_k\) for every state, which is impossible for big problems. Instead, use an approximation \(\tilde J\) of the cost-to-go and choose actions by a one-step (or multi-step) lookahead. This loses guaranteed optimality but gains speed.</p>
+  <div class="box notes" data-pdf="notes/Week_5_ApproxDP.pdf" data-file="Week_5_ApproxDP.pdf"><span class="tag">Lecture notes</span><p><b>Week 5 · Approximate DP</b> · PDF, 9 pages</p><div class="nact"><button type="button" class="btn nview">📖 View notes here</button><button type="button" class="btn ghost ndl">⬇ Download PDF</button><a class="nopen" href="notes/Week_5_ApproxDP.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div><p class="stat nstat"></p><div class="nviewer" hidden></div></div>
   <div class="box pracbox"><span class="tag">Your practical · P5</span><p>Distance heuristic + one-step lookahead loops in a dead end; ℓ = 3 fixes it. Linear features learn r = [10, 10, 2] exactly by SGD.</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr5">Open the P5 lesson →</button></p></div>
 
 <div class="eli5">
@@ -725,6 +738,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <section class="panel" id="rl" data-panel="rl" hidden>
   <h2>06 · Reinforcement Learning</h2>
   <p class="lede">Everything so far needed a model (f or p<sub>ij</sub>). RL learns good actions directly from experience: try an action, see the cost and the next state, and nudge a table of estimates. These are tabular methods for finite states and actions.</p>
+  <div class="box notes" data-pdf="notes/Week_6_RL.pdf" data-file="Week_6_RL.pdf"><span class="tag">Lecture notes</span><p><b>Week 6 · Reinforcement Learning</b> · PDF, 9 pages</p><div class="nact"><button type="button" class="btn nview">📖 View notes here</button><button type="button" class="btn ghost ndl">⬇ Download PDF</button><a class="nopen" href="notes/Week_6_RL.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div><p class="stat nstat"></p><div class="nviewer" hidden></div></div>
   <div class="box pracbox"><span class="tag">Your practical · P6</span><p>Cliff Walking: Q-learning takes the 13-step edge path, SARSA a 15/17-step safe detour, because SARSA learns the value of the exploring policy.</p><p><button type="button" class="btn ghost" data-goto="prac" data-anchor="pr6">Open the P6 lesson →</button></p></div>
 
 <div class="eli5">
@@ -1349,6 +1363,8 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <section class="panel" id="exam" data-panel="exam" hidden>
   <h2>2024 Exam: full worked solutions</h2>
   <p class="lede">Written as you would answer in the exam, with marks in mind. Read the question, try it yourself, then compare.</p>
+  <div class="box notes" data-pdf="notes/ENN582_EXAM_2024_questions.pdf" data-file="ENN582_EXAM_2024_questions.pdf"><span class="tag">Question paper</span><p><b>ENN582 Exam 2024 · question paper</b> · PDF, 2 pages</p><div class="nact"><button type="button" class="btn nview">📖 View notes here</button><button type="button" class="btn ghost ndl">⬇ Download PDF</button><a class="nopen" href="notes/ENN582_EXAM_2024_questions.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div><p class="stat nstat"></p><div class="nviewer" hidden></div></div>
+
 
   <h3>Question 1 · MPC (25 marks)</h3>
   <p class="stat">Cost \(J(x_k,\vec u)=\sum_{l=0}^{N-1}(x^\top_{k+l|k}Qx_{k+l|k}+u^\top_{k+l|k}Ru_{k+l|k})+x^\top_{k+N|k}Q_Fx_{k+N|k}\).</p>
@@ -1732,6 +1748,45 @@ J = x<sub>k</sub><sup>T</sup>(Λ<sup>T</sup>Q̄Λ+Q)x<sub>k</sub> + u⃗<sup>T</
   });
 
   window.addEventListener('hashchange',function(){var t=location.hash.slice(1);if(panels[t])show(t,true)});
+
+  // lecture notes: render in the page with PDF.js, or download
+  var PDFJS='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',pdfjsP=null,dlP=null;
+  function loadPdfjs(){
+    if(pdfjsP)return pdfjsP;
+    pdfjsP=new Promise(function(res,rej){var s=document.createElement('script');s.src=PDFJS;
+      s.onload=function(){var l=window['pdfjs-dist/build/pdf'];if(!l)return rej(new Error('pdfjs'));l.GlobalWorkerOptions.workerSrc=PDFJS.replace('pdf.min.js','pdf.worker.min.js');res(l)};
+      s.onerror=function(){pdfjsP=null;rej(new Error('pdfjs'))};document.head.appendChild(s)});
+    return pdfjsP;
+  }
+  function getDl(){if(!dlP)dlP=(window.claude&&window.claude.use)?window.claude.use('downloads').catch(function(){return null}):Promise.resolve(null);return dlP}
+  [].forEach.call(document.querySelectorAll('.notes'),function(nb){
+    var url=nb.dataset.pdf,file=nb.dataset.file,viewer=nb.querySelector('.nviewer'),st=nb.querySelector('.nstat'),vb=nb.querySelector('.nview'),db=nb.querySelector('.ndl'),loaded=false;
+    function render(){
+      st.textContent='Loading notes…';
+      loadPdfjs().then(function(lib){return lib.getDocument(url).promise}).then(function(doc){
+        loaded=true;st.textContent=doc.numPages+' pages. Scroll inside the frame; pages render as they come into view.';
+        var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting||e.target.dataset.done)return;e.target.dataset.done='1';obs.unobserve(e.target);
+          var n=+e.target.dataset.n;doc.getPage(n).then(function(pg){
+            var w=Math.max(280,viewer.clientWidth-18),v1=pg.getViewport({scale:1}),sc=w/v1.width,dpr=Math.min(window.devicePixelRatio||1,2),vp=pg.getViewport({scale:sc*dpr});
+            var c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;e.target.style.minHeight='';e.target.insertBefore(c,e.target.firstChild);
+            return pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;})})},{root:viewer,rootMargin:'600px 0px'});
+        for(var i=1;i<=doc.numPages;i++){var d=document.createElement('div');d.className='npage';d.dataset.n=i;d.style.minHeight=Math.round((viewer.clientWidth-18)*1.3)+'px';
+          var pn=document.createElement('span');pn.className='pn';pn.textContent=i+' / '+doc.numPages;d.appendChild(pn);viewer.appendChild(d);obs.observe(d)}
+      }).catch(function(){viewer.hidden=true;vb.textContent='📖 View notes here';st.textContent='The notes could not be displayed in this view. Use Download PDF or Open in new tab.'});
+    }
+    vb.addEventListener('click',function(){
+      if(viewer.hidden){viewer.hidden=false;vb.textContent='✕ Hide notes';if(!loaded&&!viewer.childNodes.length)render();}
+      else{viewer.hidden=true;vb.textContent='📖 View notes here';}
+    });
+    db.addEventListener('click',function(){
+      db.disabled=true;st.textContent='Preparing download…';
+      getDl().then(function(dl){
+        if(!dl){window.open(url,'_blank','noopener');st.textContent='Opened the PDF in a new tab; save it from there.';return}
+        return fetch(url).then(function(r){if(!r.ok)throw new Error('fetch');return r.blob()}).then(function(b){return dl.save({filename:file,data:b})}).then(function(){st.textContent='Saved '+file+'.'});
+      }).catch(function(e){var c=e&&e.code;st.textContent=c==='declined'?'Download cancelled.':c==='rate_limited'?'A save prompt is already open.':'Could not save the file here. Try Open in new tab.'}).then(function(){db.disabled=false});
+    });
+  });
+
   // plan checkboxes
   [].forEach.call(document.querySelectorAll('#planlist input'),function(cb){
     try{cb.checked=localStorage.getItem('enn582v2-'+cb.id)==='1'}catch(e){}

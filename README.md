@@ -16,6 +16,7 @@ A single-page study site for ENN582 (QUT). It covers MPC, deterministic and stoc
 | Path | What it is |
 | --- | --- |
 | `index.html` | The site (served by GitHub Pages) |
+| `notes/` | Course lecture notes (Weeks 1–6) and the 2024 question paper, shown in each topic tab's notes viewer |
 | `cheatsheet.pdf` | Two-page A4 exam cheatsheet (downloaded by the Cheatsheet tab) |
 | `src/v1/` | v1 sources: base page (`main_base.html`), practical lessons (`prac.html`), mock exam (`mock.html`), cheatsheet HTML (`cs.html`, `cs9.html`), `build.py`, `mkpdf_v1.py` |
 | `src/v2/` | v2 additions: ELI5 blocks (`eli5.html`) and `build_v2.py` |
@@ -28,8 +29,8 @@ Requires Python 3 with `pymupdf` and `numpy`. The cheatsheet PDF uses macOS syst
 
 ```sh
 cd src/v1 && python build.py . && python mkpdf_v1.py .   # -> enn582-v1.html, cheatsheet.pdf
-cd ../v2 && python build_v2.py .                         # -> enn582-v2.html (reads ../v1/enn582-v1.html)
+cd ../v2 && python build_v2.py . && python notes.py .    # -> enn582-v2.html (reads ../v1/enn582-v1.html)
 cd .. && python make_index.py v2/enn582-v2.html ../index.html
 ```
 
-Course lecture notes, past exam papers and practical submissions are not included in this repository.
+Practical submissions are not included in this repository. The lecture notes and 2024 question paper in `notes/` are QUT course material.
