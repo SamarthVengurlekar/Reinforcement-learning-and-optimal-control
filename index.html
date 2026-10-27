@@ -1806,7 +1806,12 @@ J = x<sub>k</sub><sup>T</sup>(Λ<sup>T</sup>Q̄Λ+Q)x<sub>k</sub> + u⃗<sup>T</
   var ZOOMS=[0.25,0.5,0.75,1,1.25,1.5,2,2.5,3];
   function annKey(){return 'enn582v2ann:'+N.url}
   function loadAnn(){try{return JSON.parse(localStorage.getItem(annKey())||'{}')||{}}catch(e){return {}}}
-  function saveAnn(){try{localStorage.setItem(annKey(),JSON.stringify(N.ann))}catch(e){pst.textContent='Marks could not be saved in this browser (storage unavailable).'}}
+  // marks live in this browser's storage: kept across reloads and restarts, private to each visitor
+  var persistAsked=false;
+  function saveAnn(){
+    try{localStorage.setItem(annKey(),JSON.stringify(N.ann))}catch(e){pst.textContent='Marks could not be saved in this browser (storage is full or blocked, e.g. private browsing).';return}
+    if(!persistAsked){persistAsked=true;try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){})}catch(e){}}
+  }
   function pages(){return [].slice.call(pview.querySelectorAll('.npage'))}
   function sizePage(w){var px=Math.round(N.base*N.zoom);w.style.width=px+'px';w.style.height=Math.round(px*(+w.dataset.r))+'px'}
   function drawAnn(w,cur){
@@ -1845,7 +1850,8 @@ J = x<sub>k</sub><sup>T</sup>(Λ<sup>T</sup>Q̄Λ+Q)x<sub>k</sub> + u⃗<sup>T</
         N.obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)renderPage(e.target)})},{root:pview,rootMargin:'800px 0px'});
         for(var i=1;i<=doc.numPages;i++){var d=document.createElement('div');d.className='npage';d.dataset.n=i;d.dataset.r=r;sizePage(d);
           var pn=document.createElement('span');pn.className='pn';pn.textContent=i+' / '+doc.numPages;d.appendChild(pn);pview.appendChild(d);N.obs.observe(d)}
-        pst.textContent=doc.numPages+' pages · Ctrl/⌘ + scroll or pinch to zoom · marks are saved in this browser.';
+        var nm=Object.keys(N.ann).reduce(function(a,k){return a+(N.ann[k]||[]).length},0);
+        pst.textContent=doc.numPages+' pages · Ctrl/⌘ + scroll or pinch to zoom · your marks are saved in this browser'+(nm?' ('+nm+' restored)':'')+'.';
       });
     }).catch(function(){if(tok===N.tok)pst.textContent='The notes could not be displayed in this view. Use ⬇ PDF or the "Open in new tab" link.'});
   }
@@ -1876,7 +1882,7 @@ J = x<sub>k</sub><sup>T</sup>(Λ<sup>T</sup>Q̄Λ+Q)x<sub>k</sub> + u⃗<sup>T</
   function setTool(t){N.tool=t;[].forEach.call(pane.querySelectorAll('[data-tool]'),function(b){b.setAttribute('aria-pressed',b.dataset.tool===t)});pview.classList.toggle('drawing',t!=='hand')}
   [].forEach.call(pane.querySelectorAll('[data-tool]'),function(b){b.addEventListener('click',function(){setTool(b.dataset.tool)})});
   [].forEach.call(pane.querySelectorAll('.sw'),function(b){b.addEventListener('click',function(){N.color=b.dataset.c;[].forEach.call(pane.querySelectorAll('.sw'),function(x){x.setAttribute('aria-pressed',x===b)});if(N.tool==='hand'||N.tool==='erase')setTool('pen')})});
-  function pt(c,e){var r=c.getBoundingClientRect();return [(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]}
+  function pt(c,e){var r=c.getBoundingClientRect();return [Math.round((e.clientX-r.left)/r.width*1e4)/1e4,Math.round((e.clientY-r.top)/r.height*1e4)/1e4]}
   function eraseAt(w,c,p){
     var list=N.ann[w.dataset.n]||[],r=c.getBoundingClientRect(),tol=14/r.width,ar=r.height/r.width,hit=false;
     for(var i=list.length-1;i>=0;i--){if(list[i].p.some(function(q){var dx=q[0]-p[0],dy=(q[1]-p[1])*ar;return dx*dx+dy*dy<tol*tol})){N.undo.push({n:w.dataset.n,s:list[i],erased:true});list.splice(i,1);hit=true}}
