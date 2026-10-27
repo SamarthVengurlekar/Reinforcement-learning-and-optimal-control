@@ -165,6 +165,7 @@ h3.eli-title{margin:0;padding:0;border:0;font-size:20px;color:var(--eli)}
 .npage .pn{position:absolute;right:6px;bottom:4px;z-index:3;font:11px var(--f-mono);color:#555;background:rgba(255,255,255,.8);padding:1px 4px;border-radius:3px;pointer-events:none}
 #npane{position:fixed;top:0;right:0;bottom:0;width:46vw;z-index:20;background:var(--surface);border-left:1px solid var(--line);display:flex;flex-direction:column;gap:6px;padding:10px 12px;box-shadow:-4px 0 14px rgba(0,0,0,.12)}
 #npane[hidden]{display:none!important}
+#npane.full,#npane:fullscreen{width:100vw;left:0;border-left:0}
 #npane .nviewer{flex:1 1 auto;min-height:0}
 .nphead{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .nptitle{display:flex;flex-direction:column;gap:3px;min-width:0}
@@ -1707,9 +1708,9 @@ J = x<sub>k</sub><sup>T</sup>(Λ<sup>T</sup>Q̄Λ+Q)x<sub>k</sub> + u⃗<sup>T</
 </div></main>
 <aside id="npane" aria-label="Lecture notes panel" hidden>
   <div class="nphead"><div class="nptitle"><span class="tag">Notes</span><b id="nplabel"></b></div>
-    <div class="npbtns"><button type="button" class="btn ghost" id="npdl" title="Download PDF">⬇ PDF</button><button type="button" class="btn ghost" id="npclose" aria-label="Close notes">✕ Close</button></div></div>
+    <div class="npbtns"><button type="button" class="btn ghost" id="npfull" title="Full screen notes">⛶ Full screen</button><button type="button" class="btn ghost" id="npdl" title="Download PDF">⬇ PDF</button><button type="button" class="btn ghost" id="npclose" aria-label="Close notes">✕ Close</button></div></div>
   <div class="nptools" role="toolbar" aria-label="Zoom and marking tools">
-    <div class="tg"><button type="button" data-z="-" title="Zoom out" aria-label="Zoom out">−</button><span id="npzoom" class="zl">100%</span><button type="button" data-z="+" title="Zoom in" aria-label="Zoom in">+</button><button type="button" data-z="fit" title="Fit to width">Fit</button></div>
+    <div class="tg"><button type="button" data-z="-" title="Zoom out" aria-label="Zoom out">−</button><span id="npzoom" class="zl">100%</span><button type="button" data-z="+" title="Zoom in" aria-label="Zoom in">+</button><button type="button" data-z="fit" title="Fit page width">↔ Width</button><button type="button" data-z="page" title="Fit the entire page in view">↕ Page</button></div>
     <div class="tg"><button type="button" data-tool="hand" title="Scroll / select nothing" aria-pressed="true">✋</button><button type="button" data-tool="pen" title="Pen" aria-pressed="false">✏️</button><button type="button" data-tool="hl" title="Highlighter" aria-pressed="false">🖍</button><button type="button" data-tool="erase" title="Eraser (removes a whole stroke)" aria-pressed="false">⌫</button></div>
     <div class="tg" id="npcolors"><button type="button" class="sw" data-c="#d62828" title="Red" aria-pressed="true" style="--c:#d62828"></button><button type="button" class="sw" data-c="#1d4ed8" title="Blue" aria-pressed="false" style="--c:#1d4ed8"></button><button type="button" class="sw" data-c="#15803d" title="Green" aria-pressed="false" style="--c:#15803d"></button><button type="button" class="sw" data-c="#facc15" title="Yellow" aria-pressed="false" style="--c:#facc15"></button><button type="button" class="sw" data-c="#111111" title="Black" aria-pressed="false" style="--c:#111111"></button></div>
     <div class="tg"><button type="button" id="npundo" title="Undo last mark">↶ Undo</button><button type="button" id="npclear" title="Clear all marks in this PDF">🗑 Clear</button></div>
@@ -1802,7 +1803,7 @@ J = x<sub>k</sub><sup>T</sup>(Λ<sup>T</sup>Q̄Λ+Q)x<sub>k</sub> + u⃗<sup>T</
 
   var pane=document.getElementById('npane'),pview=document.getElementById('npview'),pst=document.getElementById('npstat'),plabel=document.getElementById('nplabel'),pzoom=document.getElementById('npzoom');
   var N={doc:null,url:null,file:null,zoom:1,base:600,tool:'hand',color:'#d62828',ann:{},undo:[],obs:null,tok:null};
-  var ZOOMS=[0.5,0.75,1,1.25,1.5,2,2.5,3];
+  var ZOOMS=[0.25,0.5,0.75,1,1.25,1.5,2,2.5,3];
   function annKey(){return 'enn582v2ann:'+N.url}
   function loadAnn(){try{return JSON.parse(localStorage.getItem(annKey())||'{}')||{}}catch(e){return {}}}
   function saveAnn(){try{localStorage.setItem(annKey(),JSON.stringify(N.ann))}catch(e){pst.textContent='Marks could not be saved in this browser (storage unavailable).'}}
@@ -1833,7 +1834,7 @@ J = x<sub>k</sub><sup>T</sup>(Λ<sup>T</sup>Q̄Λ+Q)x<sub>k</sub> + u⃗<sup>T</
     });
   }
   function openDoc(url,file,label){
-    N.url=url;N.file=file;N.tok={};N.ann=loadAnn();N.undo=[];N.zoom=1;N.doc=null;
+    N.url=url;N.file=file;N.tok={};N.mode='width';N.ann=loadAnn();N.undo=[];N.zoom=1;N.doc=null;
     plabel.innerHTML=label;pview.innerHTML='';pst.textContent='Loading notes…';updZoom();
     if(N.obs)N.obs.disconnect();
     var tok=N.tok;
@@ -1849,18 +1850,28 @@ J = x<sub>k</sub><sup>T</sup>(Λ<sup>T</sup>Q̄Λ+Q)x<sub>k</sub> + u⃗<sup>T</
     }).catch(function(){if(tok===N.tok)pst.textContent='The notes could not be displayed in this view. Use ⬇ PDF or the "Open in new tab" link.'});
   }
   function updZoom(){pzoom.textContent=Math.round(N.zoom*100)+'%'}
-  function setZoom(z){
-    z=Math.min(3,Math.max(0.5,z));if(!N.doc||z===N.zoom)return;
+  function setZoom(z,force){
+    z=Math.min(3,Math.max(0.25,z));if(!N.doc||(z===N.zoom&&!force))return;
     var fy=pview.scrollTop/(pview.scrollHeight||1),fx=pview.scrollLeft/(pview.scrollWidth||1);
     N.zoom=z;updZoom();
     pages().forEach(function(w){sizePage(w);w.dataset.done='';N.obs.unobserve(w);N.obs.observe(w)});
     pview.scrollTop=fy*pview.scrollHeight;pview.scrollLeft=fx*pview.scrollWidth;
   }
+  // fit the whole current page inside the frame, keeping that page in view
+  function fitPage(){
+    var p1=pview.querySelector('.npage');if(!p1)return;
+    var top=pview.getBoundingClientRect().top,cur=p1,bt=1e9;
+    pages().forEach(function(w){var d=Math.abs(w.getBoundingClientRect().top-top);if(d<bt){bt=d;cur=w}});
+    var z=(pview.clientHeight-22)/(N.base*(+cur.dataset.r));setZoom(Math.round(z*100)/100,true);
+    pview.scrollTop=cur.offsetTop-pview.offsetTop-8;
+  }
   [].forEach.call(pane.querySelectorAll('[data-z]'),function(b){b.addEventListener('click',function(){
-    var k=b.dataset.z;if(k==='fit')return setZoom(1);
+    var k=b.dataset.z;if(k==='fit'){N.mode='width';return setZoom(1)}
+    if(k==='page'){N.mode='page';return fitPage()}
+    N.mode=null;
     var nz=k==='+'?ZOOMS.filter(function(z){return z>N.zoom+0.001})[0]:ZOOMS.filter(function(z){return z<N.zoom-0.001}).pop();if(nz)setZoom(nz);
   })});
-  pview.addEventListener('wheel',function(e){if(!e.ctrlKey&&!e.metaKey)return;e.preventDefault();setZoom(Math.round((N.zoom*Math.exp(-e.deltaY*0.0025))*100)/100)},{passive:false});
+  pview.addEventListener('wheel',function(e){if(!e.ctrlKey&&!e.metaKey)return;e.preventDefault();N.mode=null;setZoom(Math.round((N.zoom*Math.exp(-e.deltaY*0.0025))*100)/100)},{passive:false});
   // tools
   function setTool(t){N.tool=t;[].forEach.call(pane.querySelectorAll('[data-tool]'),function(b){b.setAttribute('aria-pressed',b.dataset.tool===t)});pview.classList.toggle('drawing',t!=='hand')}
   [].forEach.call(pane.querySelectorAll('[data-tool]'),function(b){b.addEventListener('click',function(){setTool(b.dataset.tool)})});
@@ -1895,7 +1906,17 @@ J = x<sub>k</sub><sup>T</sup>(Λ<sup>T</sup>Q̄Λ+Q)x<sub>k</sub> + u⃗<sup>T</
     document.body.classList.add('split');pane.hidden=false;
     if(N.url!==nb.dataset.pdf)openDoc(nb.dataset.pdf,nb.dataset.file,nb.dataset.label);
   }
-  function closePane(){document.body.classList.remove('split');pane.hidden=true;try{localStorage.setItem('enn582v2split','0')}catch(e){}}
+  // full screen and re-layout when the panel changes size
+  var fb=document.getElementById('npfull');
+  function relayout(){if(!N.doc)return;N.base=Math.max(260,pview.clientWidth-18);if(N.mode==='page')fitPage();else setZoom(N.zoom,true)}
+  function setFull(on){pane.classList.toggle('full',on);fb.textContent=on?'⛶ Exit full screen':'⛶ Full screen';setTimeout(relayout,60)}
+  fb.addEventListener('click',function(){
+    var on=!pane.classList.contains('full');setFull(on);
+    try{if(on&&pane.requestFullscreen)pane.requestFullscreen().catch(function(){});else if(!on&&document.fullscreenElement)document.exitFullscreen().catch(function(){})}catch(e){}
+  });
+  document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement&&pane.classList.contains('full'))setFull(false);else setTimeout(relayout,60)});
+  var rz=null;window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(relayout,200)});
+  function closePane(){if(pane.classList.contains('full')){setFull(false);try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}}document.body.classList.remove('split');pane.hidden=true;try{localStorage.setItem('enn582v2split','0')}catch(e){}}
   document.getElementById('npclose').addEventListener('click',closePane);
   document.getElementById('npdl').addEventListener('click',function(){if(N.url)download(N.url,N.file,pst,this)});
   function follow(){if(pane.hidden)return;var p=[].filter.call(document.querySelectorAll('[data-panel]'),function(x){return !x.hidden})[0];var nb=p&&p.querySelector('.notes');if(nb)openPane(nb)}
