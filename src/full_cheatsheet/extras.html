@@ -1,0 +1,25 @@
+<!--X1-->
+<h2>7 · Notation</h2>
+<table>
+<tr><td><b>x<sub>k</sub>, u<sub>k</sub>, w<sub>k</sub></b></td><td>state, control, disturbance at k</td></tr>
+<tr><td><b>f(x,u,w)</b></td><td>system model → next state</td></tr>
+<tr><td><b>g<sub>k</sub>, g<sub>N</sub></b></td><td>stage cost, terminal cost (reward = −cost)</td></tr>
+<tr><td><b>N, ℓ</b></td><td>horizon length; lookahead steps</td></tr>
+<tr><td><b>x<sub>k+ℓ|k</sub></b></td><td>prediction of time k+ℓ made at k</td></tr>
+<tr><td><b>Q, R, Q<sub>F</sub></b></td><td>state, input, terminal weights</td></tr>
+<tr><td><b>Φ, Λ, Q<sub>blk</sub></b></td><td>batch input map, free response, blkdiag(Q,…,Q,Q<sub>F</sub>)</td></tr>
+<tr><td><b>S<sub>k</sub>, L<sub>k</sub>, K</b></td><td>Riccati matrix, feedback gain (u = L<sub>k</sub>x = −Kx)</td></tr>
+<tr><td><b>J<sub>k</sub>(x), J*</b></td><td>cost-to-go, optimal cost</td></tr>
+<tr><td><b>μ<sub>k</sub>, π, μ*</b></td><td>policy (state→action), sequence of policies, optimal</td></tr>
+<tr><td><b>p<sub>ij</sub>(u), P(u), G(u)</b></td><td>transition prob., matrix, cost vector</td></tr>
+<tr><td><b>α</b></td><td>discount factor ∈ [0,1)</td></tr>
+<tr><td><b>T, T<sub>μ</sub></b></td><td>Bellman operator (optimal / fixed policy)</td></tr>
+<tr><td><b>V<sub>k</sub></b></td><td>value-iteration iterate</td></tr>
+<tr><td><b>J~, φ(x), r</b></td><td>approx. cost-to-go (J-tilde), features, weights</td></tr>
+<tr><td><b>β<sup>s</sup>, γ</b></td><td>training target, gradient step size</td></tr>
+<tr><td><b>Q(x,u)</b></td><td>Q-factor (action value)</td></tr>
+<tr><td><b>δ, ε</b></td><td>learning rate, exploration probability</td></tr>
+<tr><td><b>Γ, σ², Σ</b></td><td>delivery prob., noise variance, covariance</td></tr>
+<tr><td><b>κ(x), κ<sub>f</sub></b></td><td>MPC implicit law, terminal controller</td></tr>
+</table>
+<!--/X1-->

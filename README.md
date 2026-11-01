@@ -18,6 +18,9 @@ A single-page study site for ENN582 (QUT). It covers MPC, deterministic and stoc
 | `index.html` | The site (served by GitHub Pages) |
 | `notes/` | Course lecture notes (Weeks 1–6) and the 2024 question paper, shown in each topic tab's notes viewer |
 | `cheatsheet.pdf` | Two-page A4 exam cheatsheet (downloaded by the Cheatsheet tab) |
+| `ENN582_Full_Cheatsheet.pdf`, `full_cheatsheet_side*.png` | Full double-sided cheatsheet (every subsection 1.1–6.7 + symbols) and its previews, shown in the Full cheatsheet tab |
+| `src/full_cheatsheet/` | Full cheatsheet sources: `cs_full.html`, `notation.html`, `make_pdf.py` (3 columns, largest font that fits two sides) |
+| `src/add_fullcs_tab.py` | Adds the Full cheatsheet tab to `index.html` |
 | `src/v1/` | v1 sources: base page (`main_base.html`), practical lessons (`prac.html`), mock exam (`mock.html`), cheatsheet HTML (`cs.html`, `cs9.html`), `build.py`, `mkpdf_v1.py` |
 | `src/v2/` | v2 additions: ELI5 blocks (`eli5.html`) and `build_v2.py` |
 | `src/make_index.py` | Wraps the built page into a standalone `index.html` |
@@ -30,7 +33,8 @@ Requires Python 3 with `pymupdf` and `numpy`. The cheatsheet PDF uses macOS syst
 ```sh
 cd src/v1 && python build.py . && python mkpdf_v1.py .   # -> enn582-v1.html, cheatsheet.pdf
 cd ../v2 && python build_v2.py . && python notes.py .    # -> enn582-v2.html (reads ../v1/enn582-v1.html)
-cd .. && python make_index.py v2/enn582-v2.html ../index.html
+cd .. && python make_index.py v2/enn582-v2.html ../index.html && python add_fullcs_tab.py ../index.html
+python full_cheatsheet/make_pdf.py ../ENN582_Full_Cheatsheet.pdf      # full cheatsheet PDF
 ```
 
 Practical submissions are not included in this repository. The lecture notes and 2024 question paper in `notes/` are QUT course material.

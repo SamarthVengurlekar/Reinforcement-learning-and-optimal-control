@@ -1,0 +1,185 @@
+<h2>1 · Model Predictive Control</h2>
+<h3>1.1 Setup</h3>
+<ul>
+<li>Model x<sub>k+1</sub> = f(x<sub>k</sub>,u<sub>k</sub>), f(0,0) = 0, constraints x ∈ 𝕏, u ∈ 𝕌.</li>
+<li>x<sub>k+ℓ|k</sub> = state at k+ℓ predicted at time k (x<sub>k|k</sub> = measured x<sub>k</sub>); U = [u<sub>k|k</sub>; …; u<sub>k+N−1|k</sub>] (stacked future inputs).</li>
+</ul>
+<p class="f">J(x<sub>k</sub>,U) = Σ<sub>ℓ=0</sub><sup>N−1</sup> (x<sup>T</sup>Qx + u<sup>T</sup>Ru)<sub>k+ℓ|k</sub> + x<sup>T</sup><sub>k+N|k</sub> Q<sub>F</sub> x<sub>k+N|k</sub></p>
+<ul><li>General form ΣL(x,u) + F(x<sub>k+N|k</sub>); design knobs L, F, N.</li></ul>
+<h3>1.2 What Q, R, Q<sub>F</sub> do</h3>
+<ul>
+<li><b>Q ≥ 0</b> (state weight): penalises distance from target. Bigger ⇒ drives x → 0 faster. Diagonal entries pick which states matter (diag(1,0) = position only).</li>
+<li><b>R &gt; 0</b> (input weight): penalises effort, fuel, actuator wear. Bigger ⇒ smaller, gentler inputs, slower response. R ≻ 0 ⇒ unique minimiser.</li>
+<li><b>Q<sub>F</sub> ≥ 0</b> (terminal weight): penalises where the plan ends; stands in for all cost after the horizon. Chosen from Lyapunov/Riccati ⇒ closed-loop stability.</li>
+<li>Only the <b>ratio</b> matters (R = ρI): small ρ ⇒ fast convergence, large inputs; large ρ ⇒ slow, small inputs (input energy J<sub>in</sub> vs output energy J<sub>out</sub> trade-off; double integrator ρ = 0.3 vs 10).</li>
+<li>Unstable plant with N = 1 and large ρ can be unstable in closed loop; a longer N or good Q<sub>F</sub> fixes it.</li>
+</ul>
+<h3>1.3 Receding horizon optimisation</h3>
+<ul>
+<li>(1) Measure x<sub>k</sub>. (2) Solve U* = argmin<sub>U∈𝕌<sup>N</sup></sub> J(x<sub>k</sub>,U). (3) Apply only the first input u<sub>k</sub> = u*<sub>k|k</sub> = [I 0 … 0]U*. (4) k+1: measure, shift window, solve again.</li>
+<li>Result is a feedback law <b>u<sub>k</sub> = κ(x<sub>k</sub>)</b>; in general u*<sub>k+1|k</sub> ≠ u*<sub>k+1|k+1</sub>.</li>
+<li>Why: corrects disturbances and model error, handles constraints, looks ahead, finite computation.</li>
+<li>Longer N: better (long-term impact) but more computation; moderate N ≈ infinite horizon. Nonlinear models need numerical optimisation. Integral action: penalise u<sub>k+ℓ+1|k</sub> − u<sub>k+ℓ|k</sub>. State + input constraints may make it <b>infeasible</b>.</li>
+</ul>
+<p class="ex"><b>Example:</b> x<sub>k+1</sub> = x+u, N=2, Q=R=Q<sub>F</sub>=1, x<sub>0</sub>=10. Plan rule u<sub>k|k</sub> = −0.6x<sub>k</sub>, u<sub>k+1|k</sub> = −0.5x<sub>k+1|k</sub>. k=0: plan −6 (x<sub>1|0</sub>=4), −2 (x<sub>2|0</sub>=2); apply −6 only. Wind ⇒ x<sub>1</sub>=5 ⇒ re-plan u=−3. Even if x<sub>1</sub>=4: u<sub>1|1</sub> = −2.4 ≠ u<sub>1|0</sub> = −2.</p>
+<h3>1.4 LTI, quadratic cost: explicit solution</h3>
+<ul>
+<li>x<sub>k+ℓ|k</sub> = A<sup>ℓ</sup>x<sub>k</sub> + Σ<sub>j=0</sub><sup>ℓ−1</sup>A<sup>ℓ−j−1</sup>Bu<sub>k+j|k</sub> ⇒ <b>X = ΦU + Λx<sub>k</sub></b> (X = stacked predictions x<sub>k+1|k</sub> … x<sub>k+N|k</sub>).</li>
+<li>Φ = [B 0 … 0; AB B … 0; … ; A<sup>N−1</sup>B … AB B], Λ = [A; A²; …; A<sup>N</sup>], Q<sub>blk</sub> = diag(Q,…,Q,Q<sub>F</sub>), R = ρI.</li>
+</ul>
+<p class="f">J = x<sub>k</sub><sup>T</sup>(Λ<sup>T</sup>Q<sub>blk</sub>Λ+Q)x<sub>k</sub> + U<sup>T</sup>(Φ<sup>T</sup>Q<sub>blk</sub>Φ+ρI)U + 2U<sup>T</sup>Φ<sup>T</sup>Q<sub>blk</sub>Λx<sub>k</sub></p>
+<p class="f">U* = −(Φ<sup>T</sup>Q<sub>blk</sub>Φ + ρI)<sup>−1</sup>Φ<sup>T</sup>Q<sub>blk</sub>Λ x<sub>k</sub></p>
+<p class="f">u<sub>k</sub> = −Kx<sub>k</sub>,  K = first row block of (Φ<sup>T</sup>Q<sub>blk</sub>Φ+ρI)<sup>−1</sup>Φ<sup>T</sup>Q<sub>blk</sub>Λ</p>
+<ul>
+<li>Uses ∂(u<sup>T</sup>Xu)/∂u = 2Xu, ∂(a<sup>T</sup>u)/∂u = a. Constant gain = finite-horizon LQR; Hessian ≻ 0 (ρ &gt; 0) ⇒ unique minimum.</li>
+</ul>
+<p class="ex"><b>Example:</b> a=2, b=1, N=2, Q=Q<sub>F</sub>=ρ=1: Φ = [1 0; 2 1], Λ = [2; 4], H = Φ<sup>T</sup>Φ+I = [6 2; 2 2], Φ<sup>T</sup>Λ = [10; 4], H<sup>−1</sup> = ⅛[2 −2; −2 6] ⇒ U* = −[1.5; 0.5]x<sub>k</sub>; apply −1.5x ⇒ x<sub>k+1</sub> = 0.5x<sub>k</sub> (stable).</p>
+<ul>
+<li><b>Constraints ⇒ QP</b>: min U<sup>T</sup>HU + U<sup>T</sup>f s.t. A<sub>in</sub>U ≤ b<sub>in</sub>, A<sub>eq</sub>U = b<sub>eq</sub>; state limits become input limits via X = ΦU + Λx<sub>k</sub> (Kronecker 1<sub>N</sub>⊗[1 0 0] picks positions).</li>
+<li>Discretise: double integrator A = [1 Δt; 0 1], B = [Δt²/2; Δt]; ZOH [A B; 0 I] = exp([A<sub>c</sub> B<sub>c</sub>; 0 0]T<sub>s</sub>).</li>
+</ul>
+<h3>1.5 Stability</h3>
+<ul>
+<li><b>A1</b>: F(0)=0, F ≥ 0, L(0,0)=0, L(x,u) ≥ α(‖x‖) (α increasing, α(0)=0). <b>A2</b>: local κ<sub>f</sub> with F(f(x,κ<sub>f</sub>(x))) ≤ F(x) − L(x,κ<sub>f</sub>(x)) (terminal cost = Lyapunov function).</li>
+<li>Proof: V<sub>k</sub> = optimal cost. Shifted old plan + κ<sub>f</sub> at the end is feasible with cost ≤ V<sub>k</sub> − L ⇒ 0 ≤ V<sub>k+1</sub> ≤ V<sub>k</sub> − α(‖x<sub>k</sub>‖) ⇒ V converges ⇒ x<sub>k</sub> → 0.</li>
+<li>Finite input set: R = 0, κ<sub>f</sub> = 0, Q<sub>F</sub> from <b>A<sup>T</sup>Q<sub>F</sub>A + Q = Q<sub>F</sub></b> (A stable; scalar Q<sub>F</sub> = q/(1−a²)).</li>
+</ul>
+<h3>1.6 Vehicle platooning</h3>
+<ul>
+<li>Car: ṗ = v, v̇ = a, ȧ = −a/τ + u/τ (τ ≈ 1.5). Gap error e<sub>i,k</sub> = x<sub>i−1,k</sub> − x<sub>i,k</sub>, e<sub>k+1</sub> = Ae<sub>k</sub> + Bū<sub>k</sub>, u<sub>i</sub> = u<sub>i−1</sub> − ū<sub>i</sub>.</li>
+<li>LQR (DARE) ignores limits ⇒ car 3 hits car 2, 288 km/h. MPC adds p<sub>min</sub> = 3 m, 0 ≤ v ≤ 25 m/s, −6 ≤ a ≤ 3 m/s² ⇒ QP keeps gaps and limits.</li>
+</ul>
+
+<h2>2 · Deterministic DP</h2>
+<h3>2.1 Principle of optimality</h3>
+<ul><li>"The rest of an optimal trajectory, from any intermediate point (however it was reached), is optimal from that point." ⇒ solve the short tail problems first and build longer ones from them.</li></ul>
+<h3>2.2 Shortest path</h3>
+<ul><li>dist(goal) = 0; dist(X) = min<sub>Y</sub>[cost(X→Y) + dist(Y)], working backwards from the goal.</li></ul>
+<p class="ex"><b>Example:</b> E 0; B 2+0 = 2; D min{1+0, 1+2} = 1; A 6+2 = 8; C min{3+1, 4+8} = 4; S min{2+4, 1+8} = 6 ⇒ <b>S→C→D→E, cost 6</b>. Greedy S→A (cost 1) is wrong. DP is optimal with no heuristic (unlike A*).</p>
+<h3>2.3 The DP algorithm</h3>
+<p class="f">J<sub>N</sub>(x) = g<sub>N</sub>(x);  J<sub>k</sub>(x) = min<sub>u∈𝕌</sub> [ g<sub>k</sub>(x,u) + J<sub>k+1</sub>(f<sub>k</sub>(x,u)) ],  k = N−1 … 0</p>
+<ul>
+<li>Cost J(x<sub>0</sub>,U) = g<sub>N</sub>(x<sub>N</sub>) + Σg<sub>k</sub>(x<sub>k</sub>,u<sub>k</sub>); J* = J<sub>0</sub>(x<sub>0</sub>).</li>
+<li>Forward pass for actions: u*<sub>0</sub> = argmin[g<sub>0</sub> + J<sub>1</sub>(f<sub>0</sub>)], x*<sub>1</sub> = f<sub>0</sub>(x<sub>0</sub>,u*<sub>0</sub>), …</li>
+<li>J<sub>k</sub> needed for <b>every</b> state ⇒ discretise; curse of dimensionality ⇒ topics 5 and 6.</li>
+</ul>
+<h3>2.4 LQR solved by DP</h3>
+<p class="f">S<sub>N</sub> = Q<sub>F</sub>;  S<sub>k</sub> = A<sup>T</sup>S<sub>k+1</sub>A + Q − A<sup>T</sup>S<sub>k+1</sub>B(R+B<sup>T</sup>S<sub>k+1</sub>B)<sup>−1</sup>B<sup>T</sup>S<sub>k+1</sub>A</p>
+<p class="f">u*<sub>k</sub> = L<sub>k</sub>x<sub>k</sub>,  L<sub>k</sub> = −(R+B<sup>T</sup>S<sub>k+1</sub>B)<sup>−1</sup>B<sup>T</sup>S<sub>k+1</sub>A,  J<sub>k</sub>(x) = x<sup>T</sup>S<sub>k</sub>x,  J* = x<sub>0</sub><sup>T</sup>S<sub>0</sub>x<sub>0</sub></p>
+<ul>
+<li>Why: J<sub>N−1</sub> = min<sub>u</sub>[x<sup>T</sup>Qx + u<sup>T</sup>Ru + (Ax+Bu)<sup>T</sup>S<sub>N</sub>(Ax+Bu)] is quadratic in u; set d/du = 0, substitute back, repeat by induction.</li>
+<li>Scalar (a,b,q,r): S<sub>k</sub> = q + a²rS<sub>k+1</sub>/(r + b²S<sub>k+1</sub>),  L<sub>k</sub> = −abS<sub>k+1</sub>/(r + b²S<sub>k+1</sub>).</li>
+</ul>
+<p class="ex"><b>Example:</b> a=b=q=r=Q<sub>F</sub>=1, N=2: S<sub>2</sub>=1, S<sub>1</sub> = 1 + 1/2 = 1.5, S<sub>0</sub> = 1 + 1.5/2.5 = 1.6; L<sub>1</sub> = −0.5, L<sub>0</sub> = −0.6; J* = 1.6x<sub>0</sub>². (MPC with N=2 applies L<sub>0</sub> = −0.6 every step.)</p>
+
+<h2>3 · Stochastic DP &amp; MDPs</h2>
+<h3>3.1 Policies, not sequences</h3>
+<ul>
+<li>x<sub>k+1</sub> = f<sub>k</sub>(x<sub>k</sub>,u<sub>k</sub>,w<sub>k</sub>). Policy π = {μ<sub>0</sub>,…,μ<sub>N−1</sub>}, u<sub>k</sub> = μ<sub>k</sub>(x<sub>k</sub>): reacts to the noise that actually happened ⇒ beats fixed sequences (equal when deterministic).</li>
+<li>J<sub>π</sub>(x<sub>0</sub>) = E[g<sub>N</sub>(x<sub>N</sub>) + Σg<sub>k</sub>(x<sub>k</sub>,μ<sub>k</sub>(x<sub>k</sub>),w<sub>k</sub>)]; w<sub>k</sub> may depend on x<sub>k</sub>,u<sub>k</sub>, not on earlier w's.</li>
+</ul>
+<h3>3.2 The stochastic DP algorithm</h3>
+<p class="f">J<sub>N</sub>(x) = g<sub>N</sub>(x);  J<sub>k</sub>(x) = min<sub>u</sub> E<sub>w</sub>[ g<sub>k</sub>(x,u,w) + J<sub>k+1</sub>(f<sub>k</sub>(x,u,w)) ]</p>
+<ul>
+<li>Minimiser μ*<sub>k</sub>(x) for every x, k ⇒ optimal policy; store it offline, or store J<sub>k</sub> and minimise online.</li>
+<li><b>Expectation trick</b> (E w = 0, E w² = σ², w uncorrelated with x, u): <b>E[(a+w)²] = a² + σ²</b>. σ² doesn't depend on u ⇒ same best u, higher cost. Vector: E[w<sup>T</sup>Sw] = tr(SΣ).</li>
+</ul>
+<p class="ex"><b>Example (2024 Q2):</b> x<sub>k+1</sub> = x+u+w, g<sub>k</sub> = g<sub>N</sub> = βx², N=3. J<sub>3</sub> = βx². J<sub>2</sub> = βx² + βmin<sub>u</sub>(x+u)² + βσ² ⇒ u = −x, J<sub>2</sub> = βx² + βσ². J<sub>1</sub> = βx² + 2βσ². J<sub>0</sub> = βx² + 3βσ². Pattern J<sub>k</sub> = βx² + (N−k)βσ², μ<sub>k</sub>(x) = −x. J<sub>0</sub>(x<sub>0</sub>) = 1 ⇔ β = 1/(x<sub>0</sub>² + 3σ²).</p>
+<h3>3.3 LQR with noise and packet dropouts</h3>
+<ul>
+<li>Additive noise x<sub>k+1</sub> = Ax+Bu+w: <b>same gains L<sub>k</sub></b> (certainty equivalence); cost increases by Σ<sub>k</sub>E[w<sub>k</sub><sup>T</sup>S<sub>k+1</sub>w<sub>k</sub>].</li>
+<li>Dropouts: B<sub>k</sub> = B with prob. Γ, 0 with prob. 1−Γ ⇒ E B<sub>k</sub> = ΓB, E[B<sub>k</sub><sup>T</sup>SB<sub>k</sub>] = ΓB<sup>T</sup>SB:<br/><b>L<sub>k</sub> = −(R + ΓB<sup>T</sup>S<sub>k+1</sub>B)<sup>−1</sup>ΓB<sup>T</sup>S<sub>k+1</sub>A</b>, S<sub>k</sub> = A<sup>T</sup>S<sub>k+1</sub>A + Q − A<sup>T</sup>S<sub>k+1</sub>ΓB(R+ΓB<sup>T</sup>S<sub>k+1</sub>B)<sup>−1</sup>ΓB<sup>T</sup>S<sub>k+1</sub>A. Γ = 1 ⇒ ordinary LQR.</li>
+</ul>
+<h3>3.4 Markov Decision Processes</h3>
+<ul><li>p<sub>ij</sub>(u) = P(x<sub>k+1</sub> = j | x<sub>k</sub> = i, u<sub>k</sub> = u), Σ<sub>j</sub>p<sub>ij</sub> = 1. Any MDP ⇔ x<sub>k+1</sub> = w<sub>k</sub>.</li></ul>
+<p class="f">J<sub>k</sub>(i) = min<sub>u</sub> [ g(i,u) + Σ<sub>j</sub> p<sub>ij</sub>(u) J<sub>k+1</sub>(j) ]</p>
+<p class="ex"><b>Example (Rover):</b> T, R, B; 0 idle, 1 drive. g(T,0)=−3, g(T,1)=−1, g(R/B,0)=0, g(R/B,1)=2. P(0) = [.75 .25 0; 0 0 1; 0 0 1], P(1) = [.8 .2 0; .9 0 .1; 0 .1 .9]. N=3: J<sub>2</sub> = (−3, 0, 0). J<sub>1</sub>(T) = min{−3+.75(−3), −1+.8(−3)} = −5.25 (idle); J<sub>1</sub>(R) = min{0, 2+.9(−3)} = −0.7 (drive); J<sub>1</sub>(B) = 0. J<sub>0</sub> = (−7.1125, −2.725, 0). Policy: T idle; R drive at k=0,1, idle at k=2; B idle (driving at the last step isn't worth it).</p>
+
+<h2>4 · Infinite-horizon DP</h2>
+<h3>4.1 Discounted cost</h3>
+<ul>
+<li>J<sub>π</sub>(x) = lim<sub>N→∞</sub> E[Σ α<sup>k</sup>g(x<sub>k</sub>,μ<sub>k</sub>(x<sub>k</sub>),w<sub>k</sub>)], α ∈ [0,1). α = 0 myopic; α → 1 far-sighted, slower convergence.</li>
+<li>|g| ≤ M ⇒ |J| ≤ M/(1−α); Σα<sup>k</sup> = 1/(1−α) (cost 1 per step, α = 0.9 ⇒ 10); Σ<sub>k≥K</sub>α<sup>k</sup> = α<sup>K</sup>/(1−α).</li>
+<li>J<sub>π</sub>(x<sub>0</sub>) = E[g(x<sub>0</sub>,μ(x<sub>0</sub>),w<sub>0</sub>)] + αJ<sub>π</sub>(x<sub>1</sub>). Optimal policy is stationary. Terminating shortest path: α = 1 allowed.</li>
+</ul>
+<h3>4.2 Bellman's equation</h3>
+<p class="f">J*(x) = min<sub>u</sub> E[ g(x,u,w) + αJ*(f(x,u,w)) ];   J*(i) = min<sub>u</sub> [ g(i,u) + α Σ<sub>j</sub> p<sub>ij</sub>(u) J*(j) ]</p>
+<ul><li>J* = fixed point of the Bellman operator TJ = min<sub>u</sub>E[g + αJ(f)]; the minimiser is μ*. Fixed μ: J<sub>μ</sub>(i) = g(i,μ(i)) + αΣ<sub>j</sub>p<sub>ij</sub>(μ(i))J<sub>μ</sub>(j).</li></ul>
+<h3>4.3 Value iteration (VI)</h3>
+<ul>
+<li><b>V<sub>k+1</sub>(i) = min<sub>u</sub>[g(i,u) + αΣ<sub>j</sub>p<sub>ij</sub>(u)V<sub>k</sub>(j)]</b>, V<sub>0</sub> = 0; matrix V<sub>k+1</sub> = min{G(0)+αP(0)V<sub>k</sub>, G(1)+αP(1)V<sub>k</sub>} row by row.</li>
+<li>V<sub>k</sub> = optimal k-stage cost; contraction ⇒ V<sub>k</sub> → J*, error ≤ α<sup>K</sup>M/(1−α). The greedy policy often settles before the values (not guaranteed).</li>
+</ul>
+<h3>4.4 Policy iteration (PI)</h3>
+<ul>
+<li>(1) <b>Evaluate</b> (critic): J<sub>μ</sub> = g<sub>μ</sub> + αP<sub>μ</sub>J<sub>μ</sub> ⇒ <b>J<sub>μ</sub> = (I − αP<sub>μ</sub>)<sup>−1</sup>g<sub>μ</sub></b> (or iterate).</li>
+<li>(2) <b>Improve</b> (actor): μ<sup>new</sup>(i) = argmin<sub>u</sub>[g(i,u) + αΣ<sub>j</sub>p<sub>ij</sub>(u)J<sub>μ</sub>(j)]. (3) Policy unchanged ⇒ optimal. Finitely many policies ⇒ finite steps. Rover α=0.96: (0,0,0) → (0,1,0) → (0,1,1).</li>
+</ul>
+<p class="ex"><b>Example (machine repair):</b> G/D, 0 run, 1 repair; g(G,0)=0, g(G,1)=2, g(D,0)=5, g(D,1)=7; α=0.9; P(0) = [.7 .3; 0 1], P(1) = [.9 .1; .6 .4]. Evaluate (0,0): J(D) = 5 + .9J(D) ⇒ 50; .37J(G) = 13.5 ⇒ 36.49. Improve: G 36.49 vs 36.05 ⇒ repair; D 50 vs 44.70 ⇒ repair. Evaluate (1,1): (26.16, 33.01); improve ⇒ (0,1). Evaluate (0,1): <b>J* = (20.77, 28.46)</b>, unchanged ⇒ μ* = (run when good, repair when damaged). VI from 0: V<sub>1</sub> = (0, 5), V<sub>2</sub> = (1.35, 8.8), V<sub>3</sub> = (3.2265, 10.897).</p>
+<h3>4.5 VI vs PI</h3>
+<ul>
+<li>VI: cheap iteration (one Bellman update), many iterations, values converge only in the limit; gives approx J*, then extract policy.</li>
+<li>PI: expensive iteration (linear solve), few iterations, exact in finite steps; gives the policy directly (actor–critic).</li>
+<li>Variants: truncated/optimistic PI, asynchronous updates (visited states only), average cost lim(1/N)EΣg. Rover: α = 0.9 ⇒ μ = (0,1,0); α = 0.96 ⇒ (0,1,1).</li>
+<li>2×2 inverse: [a b; c d]<sup>−1</sup> = [d −b; −c a]/(ad − bc).</li>
+</ul>
+
+<h2>5 · Approximate DP</h2>
+<h3>5.1 Approximation in value space</h3>
+<p class="f">ũ<sub>k</sub> ∈ argmin<sub>u</sub> [ g<sub>k</sub>(x<sub>k</sub>,u) + J~<sub>k+1</sub>(f<sub>k</sub>(x<sub>k</sub>,u)) ]   (J~ = approximate cost-to-go)</p>
+<ul><li>No backward pass: computed forward. J~ = J ⇒ optimal; better J~ ⇒ better policy. J~ from a heuristic, rollout, or a trained model. Loses guaranteed optimality, gains speed.</li></ul>
+<h3>5.2 Rollout</h3>
+<ul>
+<li>For each candidate action: apply it, then run a simple <b>base (heuristic) policy</b> to the end; J~ = that total. Pick the cheapest, move one step, repeat.</li>
+<li><b>Cost improvement</b>: rollout is never worse than the base policy (usually better). Name from Tesauro's backgammon.</li>
+</ul>
+<p class="ex"><b>Example (TSP):</b> from A: AB100 AC300 AD100 AE75 BC50 BD75 BE125 CD100 CE125 DE50. Nearest neighbour: A-E-D-B-C-A = 550. Rollout: stage 1 B 375, C 550, D 625, E 550 ⇒ B; stage 2 C 375, D 650, E 675 ⇒ C; stage 3 D 375, E 425 ⇒ D ⇒ <b>A-B-C-D-E-A = 375</b> (optimal here, not always).</p>
+<h3>5.3 Stochastic problems and certainty-equivalent control</h3>
+<ul><li>Approximate both J~ and the expectation. <b>CEC</b>: replace w<sub>k</sub> by one typical value w<sub>nom</sub> (usually E w<sub>k</sub>) ⇒ deterministic problem min<sub>u</sub>[g(x,u,w<sub>nom</sub>) + J~(f(x,u,w<sub>nom</sub>))]. Exactly optimal for LQG.</li></ul>
+<p class="ex"><b>Example:</b> x<sub>1</sub> = x+u+w, E w = 1, cost u² + x<sub>1</sub>². CEC (w = 1): min u² + (x+u+1)² ⇒ u = −(x+1)/2. True expected cost only adds Var(w) ⇒ same minimiser.</p>
+<h3>5.4 Multistep lookahead and truncated rollout</h3>
+<ul>
+<li>ℓ-step lookahead: optimise u<sub>k</sub>, μ<sub>k+1</sub>…μ<sub>k+ℓ−1</sub> for E[Σ<sub>j=k</sub><sup>k+ℓ−1</sup>g<sub>j</sub> + J~<sub>k+ℓ</sub>(x<sub>k+ℓ</sub>)], apply only the first control (= MPC idea). Larger ℓ compensates a poor J~ but costs more.</li>
+<li>Truncated rollout: base policy for ℓ−1 steps + terminal J~ (J~ = 0 often fine if ℓ large). Infinite horizon: μ~(x) ∈ argmin<sub>u</sub>E[g + αJ~(f)].</li>
+</ul>
+<h3>5.5 Parametric approximation</h3>
+<ul>
+<li>J~(x,r) with tunable r (polynomials, Gaussian bases, neural nets). Linear: features φ(x) = [φ<sub>1</sub>…φ<sub>m</sub>]<sup>T</sup> (handcrafted, aggregation), <b>J~ = r<sup>T</sup>φ(x)</b>.</li>
+<li>Train on samples (x<sup>s</sup>, β<sup>s</sup>): min ½Σ<sub>s</sub>(J~(x<sup>s</sup>,r) − β<sup>s</sup>)² (convex if linear). <b>Least squares: r = (Σφφ<sup>T</sup>)<sup>−1</sup>Σβ<sup>s</sup>φ(x<sup>s</sup>)</b>.</li>
+<li>GD: r ← r − γΣ<sub>s</sub>φ(x<sup>s</sup>)(r<sup>T</sup>φ(x<sup>s</sup>) − β<sup>s</sup>), γ decreasing; SGD uses one random sample per step. Finite horizon: fit r<sub>k</sub> backwards per stage; infinite: one r.</li>
+</ul>
+<p class="ex"><b>Example:</b> φ = [1, x], (x,β) = (0,1), (1,3), (2,7): Σφφ<sup>T</sup> = [3 3; 3 5], Σβφ = [11; 17], inverse ⅙[5 −3; −3 3] ⇒ r = [0.667; 3], J~ = 0.667 + 3x. One GD step from 0, γ = 0.1: gradient −[11; 17] ⇒ r = [1.1; 1.7].</p>
+
+<h2>6 · Reinforcement Learning (tabular, model-free)</h2>
+<ul><li>Learn from experience (apply u, observe cost g and next state x′) with no model f or p<sub>ij</sub>. Alternative: identify a model, then use MPC/DP. Also called neuro-dynamic programming.</li></ul>
+<h3>6.1 Temporal-difference (TD) prediction</h3>
+<p class="f">J(x<sub>k</sub>) ← J(x<sub>k</sub>) + δ<sub>k</sub> [ g(x<sub>k</sub>,μ(x<sub>k</sub>),w<sub>k</sub>) + αJ(x<sub>k+1</sub>) − J(x<sub>k</sub>) ]</p>
+<ul><li>TD target g + αJ(x′) is an unbiased sample of J<sub>μ</sub>(x); the bracket is the <b>TD error</b>; δ = learning rate (Robbins–Monro).</li></ul>
+<p class="ex"><b>Example:</b> J = 0, α = 0.9, δ = 0.5; A (cost 2) → B (cost 0) → A (cost 2) → B: J(A) = 0.5·2 = 1; J(B) = 0.5(0 + 0.9·1) = 0.45; J(A) = 1 + 0.5(2 + 0.9·0.45 − 1) = 1.7025.</p>
+<h3>6.2 Q-factors</h3>
+<ul>
+<li>Q<sub>μ</sub>(x,u) = E[g(x,u,w) + αJ<sub>μ</sub>(f(x,u,w))]: cost of doing u now, then following μ.</li>
+<li><b>J*(x) = min<sub>u</sub>Q*(x,u), μ*(x) = argmin<sub>u</sub>Q*(x,u)</b> (no model needed). Q-Bellman: Q*(x,u) = E[g + α min<sub>u′</sub>Q*(f(x,u,w),u′)].</li>
+</ul>
+<h3>6.3 Sarsa (on-policy)</h3>
+<p class="f">Q(x,u) ← Q(x,u) + δ [ g + αQ(x′,u′) − Q(x,u) ]</p>
+<ul><li>Uses (x,u,g,x′,u′) = S,A,R,S,A; u′ = action actually taken next. Loop: pick u (ε-greedy); apply, observe g, x′; pick u′; update; x ← x′, u ← u′. Only the visited entry changes; terminal Q = 0 (target = g).</li></ul>
+<h3>6.4 Exploration: ε-greedy</h3>
+<ul><li>Greedy argmin Q with prob. 1−ε (exploit); random action with prob. ε (explore) ⇒ P(greedy) = 1 − ε + ε/|𝕌|. Decrease ε, e.g. 1/k or max(1/k, 0.01). No exploration ⇒ untried Q stays wrong.</li></ul>
+<h3>6.5 Q-learning (off-policy)</h3>
+<p class="f">Q(x,u) ← Q(x,u) + δ [ g + α min<sub>u′</sub>Q(x′,u′) − Q(x,u) ]</p>
+<ul><li>Target uses the best next action ⇒ learns Q* while behaving ε-greedily (off-policy). Sarsa learns the values of the policy it follows, exploration included (on-policy) ⇒ more cautious.</li></ul>
+<p class="ex"><b>Example:</b> Q(s1,a) = 4, Q(s2,a) = 3, Q(s2,b) = 1; observe (s1, a, g=2, s2), exploration picks a; δ = 0.5, α = 0.9. Sarsa: 4 + 0.5(2 + 0.9·3 − 4) = 4.35. Q-learning: 4 + 0.5(2 + 0.9·1 − 4) = 3.45.</p>
+<h3>6.6 Convergence conditions</h3>
+<ul>
+<li>Every (x,u) visited infinitely often; δ<sub>k</sub> &gt; 0, <b>Σδ<sub>k</sub> = ∞, Σδ<sub>k</sub>² &lt; ∞</b> (1/k ✓, constant ✗, 1/k² ✗).</li>
+<li>Sarsa reaches Q* only if ε → 0 (greedy in the limit); constant ε ⇒ Q of the ε-greedy policy. Rover runs: δ = 0.1, ε<sub>k</sub> = max(1/k, 0.01), 500 episodes × 1000 steps.</li>
+</ul>
+<h3>6.7 Bigger problems and caveats</h3>
+<ul>
+<li>Use Q(x,u;r) (e.g. a neural net), minimise E[(g + α min<sub>u</sub>Q(x′,u;r) − Q(x,u;r))²] by GD (deep RL, DQN). Learning convergence ≠ closed-loop stability; use known structure.</li>
+<li><b>Rewards instead of costs</b>: best action = max Q (or cost = −reward); Sarsa update unchanged; Q-learning uses max.</li>
+</ul>
+<p class="ex"><b>Example (2024 Q3):</b> (Sarsa δ = 0.1, α = 0.5; ep1 1A, 2A, 4B, 4B; ep2 1B, 3A, 2A, 4B): Q(2,A) = 0.1·100 = 10; Q(4,B) = 0.1(100 + 0) = 10; Q(3,A) = 0.1(0 + 0.5·10) = 0.5; Q(2,A) = 10 + 0.1(100 + 0.5·10 − 10) = 19.5; rest 0. Tie at 1 ⇒ r + α·max Q(next): A 9.75 &gt; B 0.25 ⇒ <b>1→A→2→A→4</b>.</p>
+
+<!--EXTRAS-->
