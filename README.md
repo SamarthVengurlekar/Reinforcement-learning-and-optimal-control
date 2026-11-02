@@ -4,7 +4,7 @@ A single-page study site for ENN582 (QUT). It covers MPC, deterministic and stoc
 
 - ELI5 explanations with diagrams and YouTube videos
 - a lesson for each practical (P1–P6)
-- a mock exam
+- three mock exam papers (A, B, C) in the 2024 format, with worked solutions
 - a worked 2024 paper
 - practice questions
 - a two-page cheatsheet you can print
