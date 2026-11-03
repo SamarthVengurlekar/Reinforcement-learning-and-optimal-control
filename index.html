@@ -1355,27 +1355,69 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   <div class="q"><div class="meta"><span class="t">3(a)</span><span>20 marks</span></div>
     <p>Process ep1 then ep2 with (i) SARSA and (ii) Q-learning. Show every update and give both final Q-tables.</p>
     <details class="ans"><summary>Show solution</summary><div class="body">
-      <p>Update: Q ← Q + 0.5(target − Q). SARSA target = r + 0.9·Q(x′,u′) using the next pair in the episode. Q-learning target = r + 0.9·max<sub>u</sub>Q(x′,u). On reaching G, target = r.</p>
+      <div class="grid2">
+        <div class="box idea"><span class="tag">SARSA · on-policy</span>
+          <p>Target = r + 0.9·Q(x′, <b>u′</b>), where u′ is the action the episode <b>actually takes next</b>. To find u′, look one arrow further along the episode string.</p>
+          <p>Each update uses (x, u, r, x′, u′), which is where the name S-A-R-S-A comes from.</p></div>
+        <div class="box exam"><span class="tag">Q-learning · off-policy</span>
+          <p>Target = r + 0.9·<b>max</b><sub>u</sub> Q(x′, u). Look at <b>every</b> action at x′ in the current table and take the best one (max for rewards, min for costs). The action actually taken next is ignored.</p>
+          <p>Each update uses only (x, u, r, x′).</p></div>
+      </div>
+      <p>The rest is the same for both methods. Both use the update Q(x,u) ← Q(x,u) + 0.5·(target − Q(x,u)). Both use target = r when x′ = G, because Q(G,·) = 0. Both always read the <b>current</b> table, including changes made earlier in the same episode. So the only thing that differs is <b>which Q(x′,·) value goes into the target</b>.</p>
+
+      <p><b>Step 1: split the episodes into transitions.</b> Each arrow is one update. For SARSA, also write down u′, the next arrow in the same episode.</p>
       <div class="tblwrap"><table>
-        <tr><th>step</th><th>(x,u,r,x′)</th><th class="l">SARSA target</th><th>SARSA Q</th><th class="l">Q-learning target</th><th>Q-learn. Q</th></tr>
-        <tr><td colspan="6" class="l"><b>ep1</b></td></tr>
-        <tr><td>1</td><td>(1,A,−1,2)</td><td class="l">−1 + 0.9·Q(2,B)=0 → −1</td><td>−0.5</td><td class="l">−1 + 0.9·0 = −1</td><td>−0.5</td></tr>
-        <tr><td>2</td><td>(2,B,−100,1)</td><td class="l">−100 + 0.9·Q(1,B)=0 → −100</td><td>−50</td><td class="l">−100 + 0.9·max(−0.5, 0) = −100</td><td>−50</td></tr>
-        <tr><td>3</td><td>(1,B,−1,3)</td><td class="l">−1 + 0.9·Q(3,A) = −1</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
-        <tr><td>4</td><td>(3,A,−1,4)</td><td class="l">−1 + 0.9·Q(4,A) = −1</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
-        <tr><td>5</td><td>(4,A,−1,G)</td><td class="l">−1 (terminal)</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
-        <tr><td colspan="6" class="l"><b>ep2</b></td></tr>
-        <tr><td>6</td><td>(1,A,−1,2)</td><td class="l">−1 + 0.9·<b>Q(2,B)</b> = −1 + 0.9(−50) = −46</td><td>−0.5 + 0.5(−45.5) = <b>−23.25</b></td><td class="l">−1 + 0.9·max(Q(2,A)=0, −50) = −1</td><td>−0.75</td></tr>
-        <tr><td>7</td><td>(2,B,−100,1)</td><td class="l">−100 + 0.9·Q(1,A) = −100 + 0.9(−23.25) = −120.925</td><td>−85.4625</td><td class="l">−100 + 0.9·max(−0.75, −0.5) = −100.45</td><td>−75.225</td></tr>
-        <tr><td>8</td><td>(1,A,−1,2)</td><td class="l">−1 + 0.9·Q(2,A) = −1</td><td>−23.25 + 0.5(22.25) = −12.125</td><td class="l">−1 + 0.9·max(0, −75.2) = −1</td><td>−0.875</td></tr>
-        <tr><td>9</td><td>(2,A,−1,G)</td><td class="l">−1 (terminal)</td><td>−0.5</td><td class="l">−1</td><td>−0.5</td></tr>
+        <tr><th>step</th><th>(x, u, r, x′)</th><th>SARSA's next pair (x′, u′)</th><th class="l">Q-learning looks at</th></tr>
+        <tr><td colspan="4" class="l"><b>ep1</b> = 1 –A→ 2 –B→ 1 –B→ 3 –A→ 4 –A→ G</td></tr>
+        <tr><td>1</td><td>(1, A, −1, 2)</td><td>(2, B)</td><td class="l">Q(2,A), Q(2,B)</td></tr>
+        <tr><td>2</td><td>(2, B, −100, 1)</td><td>(1, B)</td><td class="l">Q(1,A), Q(1,B)</td></tr>
+        <tr><td>3</td><td>(1, B, −1, 3)</td><td>(3, A)</td><td class="l">Q(3,A), Q(3,B)</td></tr>
+        <tr><td>4</td><td>(3, A, −1, 4)</td><td>(4, A)</td><td class="l">Q(4,A), Q(4,B)</td></tr>
+        <tr><td>5</td><td>(4, A, −1, G)</td><td>none (terminal)</td><td class="l">none (terminal)</td></tr>
+        <tr><td colspan="4" class="l"><b>ep2</b> = 1 –A→ 2 –B→ 1 –A→ 2 –A→ G</td></tr>
+        <tr><td>6</td><td>(1, A, −1, 2)</td><td><b class="bad">(2, B)</b>, the fall</td><td class="l">Q(2,A), Q(2,B)</td></tr>
+        <tr><td>7</td><td>(2, B, −100, 1)</td><td>(1, A)</td><td class="l">Q(1,A), Q(1,B)</td></tr>
+        <tr><td>8</td><td>(1, A, −1, 2)</td><td><b class="good">(2, A)</b>, the safe step</td><td class="l">Q(2,A), Q(2,B)</td></tr>
+        <tr><td>9</td><td>(2, A, −1, G)</td><td>none (terminal)</td><td class="l">none (terminal)</td></tr>
       </table></div>
+      <p>Steps 6 and 8 are the <i>same</i> transition (1, A, −1, 2), but SARSA bootstraps from a different u′ each time: B at step 6 and A at step 8. Q-learning handles both the same way, because it always takes the max over state 2.</p>
+
+      <p><b>Step 2: ep1 gives the same result for both methods.</b> Every value bootstrapped from is still 0, or is beaten by a 0 in the max, so both targets are equal at every step.</p>
+      <div class="tblwrap"><table>
+        <tr><th>step</th><th class="l">SARSA target</th><th class="l">Q-learning target</th><th>new Q (both)</th></tr>
+        <tr><td>1</td><td class="l">−1 + 0.9·Q(2,B) = −1 + 0 = −1</td><td class="l">−1 + 0.9·max(0, 0) = −1</td><td>Q(1,A) = 0 + 0.5(−1) = −0.5</td></tr>
+        <tr><td>2</td><td class="l">−100 + 0.9·Q(1,B) = −100 + 0 = −100</td><td class="l">−100 + 0.9·max(Q(1,A)=−0.5, Q(1,B)=0) = −100</td><td>Q(2,B) = 0 + 0.5(−100) = −50</td></tr>
+        <tr><td>3</td><td class="l">−1 + 0.9·Q(3,A) = −1</td><td class="l">−1 + 0.9·max(0, 0) = −1</td><td>Q(1,B) = −0.5</td></tr>
+        <tr><td>4</td><td class="l">−1 + 0.9·Q(4,A) = −1</td><td class="l">−1 + 0.9·max(0, 0) = −1</td><td>Q(3,A) = −0.5</td></tr>
+        <tr><td>5</td><td class="l">−1 (terminal)</td><td class="l">−1 (terminal)</td><td>Q(4,A) = −0.5</td></tr>
+      </table></div>
+      <p>After ep1 both tables are: Q(1,A) = −0.5, Q(1,B) = −0.5, Q(2,B) = −50, Q(3,A) = −0.5, Q(4,A) = −0.5, and every other entry is 0. Note step 2: Q-learning's max already uses the Q(1,A) = −0.5 written at step 1, but still picks Q(1,B) = 0.</p>
+
+      <p><b>Step 3: ep2 is where the two methods split.</b></p>
+      <div class="grid2">
+        <div class="box idea"><span class="tag">SARSA · ep2</span>
+          <p><b>6</b> (1,A,−1,2), next pair (2,B). Target = −1 + 0.9·Q(2,B) = −1 + 0.9(−50) = −46.<br>Q(1,A) = −0.5 + 0.5(−46 + 0.5) = <b>−23.25</b></p>
+          <p><b>7</b> (2,B,−100,1), next pair (1,A). Q(1,A) is −23.25, from step 6. Target = −100 + 0.9(−23.25) = −120.925.<br>Q(2,B) = −50 + 0.5(−120.925 + 50) = <b>−85.4625</b></p>
+          <p><b>8</b> (1,A,−1,2), next pair (2,A), with Q(2,A) = 0. Target = −1 + 0.9·0 = −1.<br>Q(1,A) = −23.25 + 0.5(−1 + 23.25) = <b>−12.125</b></p>
+          <p><b>9</b> (2,A,−1,G), terminal. Target = −1.<br>Q(2,A) = 0 + 0.5(−1) = <b>−0.5</b></p></div>
+        <div class="box exam"><span class="tag">Q-learning · ep2</span>
+          <p><b>6</b> (1,A,−1,2). At state 2: max(Q(2,A) = 0, Q(2,B) = −50) = 0. Target = −1 + 0.9·0 = −1.<br>Q(1,A) = −0.5 + 0.5(−1 + 0.5) = <b>−0.75</b></p>
+          <p><b>7</b> (2,B,−100,1). At state 1: max(Q(1,A) = −0.75, Q(1,B) = −0.5) = −0.5. Target = −100 + 0.9(−0.5) = −100.45.<br>Q(2,B) = −50 + 0.5(−100.45 + 50) = <b>−75.225</b></p>
+          <p><b>8</b> (1,A,−1,2). At state 2: max(Q(2,A) = 0, Q(2,B) = −75.225) = 0. Target = −1.<br>Q(1,A) = −0.75 + 0.5(−1 + 0.75) = <b>−0.875</b></p>
+          <p><b>9</b> (2,A,−1,G), terminal. Target = −1.<br>Q(2,A) = 0 + 0.5(−1) = <b>−0.5</b></p></div>
+      </div>
       <div class="tblwrap"><table>
         <tr><th>Final</th><th>Q(1,A)</th><th>Q(1,B)</th><th>Q(2,A)</th><th>Q(2,B)</th><th>Q(3,A)</th><th>Q(4,A)</th><th>others</th></tr>
-        <tr><td class="l">SARSA</td><td><b>−12.125</b></td><td>−0.5</td><td>−0.5</td><td>−85.4625</td><td>−0.5</td><td>−0.5</td><td>0</td></tr>
-        <tr><td class="l">Q-learning</td><td><b>−0.875</b></td><td>−0.5</td><td>−0.5</td><td>−75.225</td><td>−0.5</td><td>−0.5</td><td>0</td></tr>
+        <tr><td class="l">SARSA</td><td><b>−12.125</b></td><td>−0.5</td><td>−0.5</td><td><b>−85.4625</b></td><td>−0.5</td><td>−0.5</td><td>0</td></tr>
+        <tr><td class="l">Q-learning</td><td><b>−0.875</b></td><td>−0.5</td><td>−0.5</td><td><b>−75.225</b></td><td>−0.5</td><td>−0.5</td><td>0</td></tr>
       </table></div>
-      <p>The key difference is step 6. SARSA bootstraps from the action actually taken next, (2,B), the exploratory fall, so Q(1,A) is dragged down to −23.25. Q-learning bootstraps from the best action at 2, (2,A), so Q(1,A) is barely affected.</p></div></details></div>
+      <p><b>Why they differ.</b> At step 6 the agent stands at the cliff edge, and the episode shows it then <i>fell</i> (an exploratory move). SARSA learns from that real next move, so Q(1,A) means "going to the edge is bad, because <i>I</i> sometimes fall off". Q-learning bootstraps from the best move at the edge, (2,A), so Q(1,A) means "going to the edge is fine, provided I act optimally afterwards". The −50 is still in the table for Q-learning, but the max never picks it.</p>
+      <div class="box exam"><span class="tag">Exam traps</span>
+        <p>1. Using the max in SARSA, or the next action in Q-learning. Write "SARSA uses u′ =" or "max over x′ =" before every target.</p>
+        <p>2. Using a stale value. Step 7 must use the Q(1,A) just updated at step 6. Update the table in place, in episode order.</p>
+        <p>3. Max or min. These are rewards, so take the max. If the question gives costs, take the min.</p>
+        <p>4. The terminal step. There is no bootstrap term (target = r), in both methods.</p></div>
+    </div></details></div>
   <div class="q"><div class="meta"><span class="t">3(b)</span><span>7 marks</span></div>
     <p>Give the greedy route from 1 for each table. Do they agree? Is that the end of the story?</p>
     <details class="ans"><summary>Show solution</summary><div class="body">
