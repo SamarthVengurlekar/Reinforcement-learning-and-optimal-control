@@ -98,16 +98,16 @@
       <div class="tblwrap"><table>
         <tr><th>#</th><th>(x,u)</th><th>g</th><th>(x′,u′)</th><th>Q<sub>old</sub></th><th>target g + 0.9·Q(x′,u′)</th><th>Q<sub>new</sub> = Q<sub>old</sub> + 0.5(target − Q<sub>old</sub>)</th></tr>
         <tr><td colspan="7" class="l"><b>Episode 1</b></td></tr>
-        <tr><td>1</td><td>(1,A)</td><td>−1</td><td>(2,B)</td><td>0</td><td>−1 + 0.9·0 = −1</td><td><b>−0.5</b></td></tr>
-        <tr><td>2</td><td>(2,B)</td><td>−100</td><td>(1,B)</td><td>0</td><td>−100 + 0.9·0 = −100</td><td><b>−50</b></td></tr>
-        <tr><td>3</td><td>(1,B)</td><td>−1</td><td>(3,A)</td><td>0</td><td>−1 + 0.9·0 = −1</td><td><b>−0.5</b></td></tr>
-        <tr><td>4</td><td>(3,A)</td><td>−1</td><td>(4,A)</td><td>0</td><td>−1 + 0.9·0 = −1</td><td><b>−0.5</b></td></tr>
-        <tr><td>5</td><td>(4,A)</td><td>−1</td><td>G (terminal)</td><td>0</td><td>−1</td><td><b>−0.5</b></td></tr>
+        <tr><td>1</td><td>(1,A)</td><td>−1</td><td>(2,B)</td><td>0</td><td>−1 + 0.9·0 = −1</td><td>0 + 0.5(−1 − 0) = <b>−0.5</b></td></tr>
+        <tr><td>2</td><td>(2,B)</td><td>−100</td><td>(1,B)</td><td>0</td><td>−100 + 0.9·0 = −100</td><td>0 + 0.5(−100 − 0) = <b>−50</b></td></tr>
+        <tr><td>3</td><td>(1,B)</td><td>−1</td><td>(3,A)</td><td>0</td><td>−1 + 0.9·0 = −1</td><td>0 + 0.5(−1 − 0) = <b>−0.5</b></td></tr>
+        <tr><td>4</td><td>(3,A)</td><td>−1</td><td>(4,A)</td><td>0</td><td>−1 + 0.9·0 = −1</td><td>0 + 0.5(−1 − 0) = <b>−0.5</b></td></tr>
+        <tr><td>5</td><td>(4,A)</td><td>−1</td><td>G (terminal)</td><td>0</td><td>−1</td><td>0 + 0.5(−1 − 0) = <b>−0.5</b></td></tr>
         <tr><td colspan="7" class="l"><b>Episode 2</b> (start from the table after ep1)</td></tr>
-        <tr style="background:var(--mark-soft)"><td>6</td><td>(1,A)</td><td>−1</td><td><b>(2,B)</b></td><td>−0.5</td><td>−1 + 0.9·(−50) = −46</td><td>−0.5 + 0.5(−45.5) = <b>−23.25</b></td></tr>
-        <tr style="background:var(--mark-soft)"><td>7</td><td>(2,B)</td><td>−100</td><td>(1,A)</td><td>−50</td><td>−100 + 0.9·(−23.25) = −120.925</td><td>−50 + 0.5(−70.925) = <b>−85.4625</b></td></tr>
-        <tr style="background:var(--mark-soft)"><td>8</td><td>(1,A)</td><td>−1</td><td>(2,A)</td><td>−23.25</td><td>−1 + 0.9·0 = −1</td><td>−23.25 + 0.5(22.25) = <b>−12.125</b></td></tr>
-        <tr><td>9</td><td>(2,A)</td><td>−1</td><td>G (terminal)</td><td>0</td><td>−1</td><td><b>−0.5</b></td></tr>
+        <tr style="background:var(--mark-soft)"><td>6</td><td>(1,A)</td><td>−1</td><td><b>(2,B)</b></td><td>−0.5</td><td>−1 + 0.9·(−50) = −46</td><td>−0.5 + 0.5(−46 − (−0.5))<br>= −0.5 + 0.5(−45.5)<br>= −0.5 − 22.75 = <b>−23.25</b></td></tr>
+        <tr style="background:var(--mark-soft)"><td>7</td><td>(2,B)</td><td>−100</td><td>(1,A)</td><td>−50</td><td>−100 + 0.9·(−23.25) = −120.925</td><td>−50 + 0.5(−120.925 − (−50))<br>= −50 + 0.5(−70.925)<br>= −50 − 35.4625 = <b>−85.4625</b></td></tr>
+        <tr style="background:var(--mark-soft)"><td>8</td><td>(1,A)</td><td>−1</td><td>(2,A)</td><td>−23.25</td><td>−1 + 0.9·0 = −1</td><td>−23.25 + 0.5(−1 − (−23.25))<br>= −23.25 + 0.5(22.25)<br>= −23.25 + 11.125 = <b>−12.125</b></td></tr>
+        <tr><td>9</td><td>(2,A)</td><td>−1</td><td>G (terminal)</td><td>0</td><td>−1</td><td>0 + 0.5(−1 − 0) = <b>−0.5</b></td></tr>
       </table></div>
       <p><b>Final SARSA Q-table:</b></p>
       <div class="tblwrap"><table><tr><th>x \ u</th><th>A</th><th>B</th></tr><tr><td>1</td><td>−12.125</td><td>−0.5</td></tr><tr><td>2</td><td>−0.5</td><td>−85.4625</td></tr><tr><td>3</td><td>−0.5</td><td>0</td></tr><tr><td>4</td><td>−0.5</td><td>0</td></tr></table></div>
@@ -116,16 +116,16 @@
       <div class="tblwrap"><table>
         <tr><th>#</th><th>(x,u)</th><th>g</th><th>x′</th><th>Q<sub>old</sub></th><th>target g + 0.9·max<sub>v</sub> Q(x′,v)</th><th>Q<sub>new</sub> = Q<sub>old</sub> + 0.5(target − Q<sub>old</sub>)</th></tr>
         <tr><td colspan="7" class="l"><b>Episode 1</b></td></tr>
-        <tr><td>1</td><td>(1,A)</td><td>−1</td><td>2</td><td>0</td><td>−1 + 0.9·max(0, 0) = −1</td><td><b>−0.5</b></td></tr>
-        <tr><td>2</td><td>(2,B)</td><td>−100</td><td>1</td><td>0</td><td>−100 + 0.9·max(−0.5, 0) = −100</td><td><b>−50</b></td></tr>
-        <tr><td>3</td><td>(1,B)</td><td>−1</td><td>3</td><td>0</td><td>−1 + 0.9·max(0, 0) = −1</td><td><b>−0.5</b></td></tr>
-        <tr><td>4</td><td>(3,A)</td><td>−1</td><td>4</td><td>0</td><td>−1 + 0.9·max(0, 0) = −1</td><td><b>−0.5</b></td></tr>
-        <tr><td>5</td><td>(4,A)</td><td>−1</td><td>G (terminal)</td><td>0</td><td>−1</td><td><b>−0.5</b></td></tr>
+        <tr><td>1</td><td>(1,A)</td><td>−1</td><td>2</td><td>0</td><td>−1 + 0.9·max(0, 0) = −1</td><td>0 + 0.5(−1 − 0) = <b>−0.5</b></td></tr>
+        <tr><td>2</td><td>(2,B)</td><td>−100</td><td>1</td><td>0</td><td>−100 + 0.9·max(−0.5, 0) = −100</td><td>0 + 0.5(−100 − 0) = <b>−50</b></td></tr>
+        <tr><td>3</td><td>(1,B)</td><td>−1</td><td>3</td><td>0</td><td>−1 + 0.9·max(0, 0) = −1</td><td>0 + 0.5(−1 − 0) = <b>−0.5</b></td></tr>
+        <tr><td>4</td><td>(3,A)</td><td>−1</td><td>4</td><td>0</td><td>−1 + 0.9·max(0, 0) = −1</td><td>0 + 0.5(−1 − 0) = <b>−0.5</b></td></tr>
+        <tr><td>5</td><td>(4,A)</td><td>−1</td><td>G (terminal)</td><td>0</td><td>−1</td><td>0 + 0.5(−1 − 0) = <b>−0.5</b></td></tr>
         <tr><td colspan="7" class="l"><b>Episode 2</b> (start from the table after ep1)</td></tr>
-        <tr style="background:var(--mark-soft)"><td>6</td><td>(1,A)</td><td>−1</td><td>2</td><td>−0.5</td><td>−1 + 0.9·max(<b>0</b>, −50) = −1</td><td>−0.5 + 0.5(−0.5) = <b>−0.75</b></td></tr>
-        <tr style="background:var(--mark-soft)"><td>7</td><td>(2,B)</td><td>−100</td><td>1</td><td>−50</td><td>−100 + 0.9·max(−0.75, <b>−0.5</b>) = −100.45</td><td>−50 + 0.5(−50.45) = <b>−75.225</b></td></tr>
-        <tr style="background:var(--mark-soft)"><td>8</td><td>(1,A)</td><td>−1</td><td>2</td><td>−0.75</td><td>−1 + 0.9·max(<b>0</b>, −75.225) = −1</td><td>−0.75 + 0.5(−0.25) = <b>−0.875</b></td></tr>
-        <tr><td>9</td><td>(2,A)</td><td>−1</td><td>G (terminal)</td><td>0</td><td>−1</td><td><b>−0.5</b></td></tr>
+        <tr style="background:var(--mark-soft)"><td>6</td><td>(1,A)</td><td>−1</td><td>2</td><td>−0.5</td><td>−1 + 0.9·max(<b>0</b>, −50) = −1</td><td>−0.5 + 0.5(−1 − (−0.5))<br>= −0.5 + 0.5(−0.5)<br>= −0.5 − 0.25 = <b>−0.75</b></td></tr>
+        <tr style="background:var(--mark-soft)"><td>7</td><td>(2,B)</td><td>−100</td><td>1</td><td>−50</td><td>−100 + 0.9·max(−0.75, <b>−0.5</b>) = −100.45</td><td>−50 + 0.5(−100.45 − (−50))<br>= −50 + 0.5(−50.45)<br>= −50 − 25.225 = <b>−75.225</b></td></tr>
+        <tr style="background:var(--mark-soft)"><td>8</td><td>(1,A)</td><td>−1</td><td>2</td><td>−0.75</td><td>−1 + 0.9·max(<b>0</b>, −75.225) = −1</td><td>−0.75 + 0.5(−1 − (−0.75))<br>= −0.75 + 0.5(−0.25)<br>= −0.75 − 0.125 = <b>−0.875</b></td></tr>
+        <tr><td>9</td><td>(2,A)</td><td>−1</td><td>G (terminal)</td><td>0</td><td>−1</td><td>0 + 0.5(−1 − 0) = <b>−0.5</b></td></tr>
       </table></div>
       <p><b>Final Q-learning Q-table:</b></p>
       <div class="tblwrap"><table><tr><th>x \ u</th><th>A</th><th>B</th></tr><tr><td>1</td><td>−0.875</td><td>−0.5</td></tr><tr><td>2</td><td>−0.5</td><td>−75.225</td></tr><tr><td>3</td><td>−0.5</td><td>0</td></tr><tr><td>4</td><td>−0.5</td><td>0</td></tr></table></div>
